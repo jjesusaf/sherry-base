@@ -34,6 +34,7 @@ export default function Page() {
           <WalletWrapper
             className="w-[450px] max-w-full"
             text="Sign in to transact"
+            
           />
         )}
       </section>
