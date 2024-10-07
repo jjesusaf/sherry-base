@@ -16,6 +16,7 @@ const config: Config = {
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
+        crimson11: "#CB1D63",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         "background-secondary": "rgba(241, 245, 249, 0.40)",
