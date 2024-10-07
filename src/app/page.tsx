@@ -8,12 +8,14 @@ import { useAccount } from "wagmi";
 import LoginButton from "../components/LoginButton";
 import SignupButton from "../components/SignupButton";
 import { Button } from "../components/ui/button";
+import { ReadBrand } from "../service/brand"
 
 export default function Page() {
   const { address } = useAccount();
 
   return (
     <div className="flex h-full w-96 max-w-full flex-col px-1 md:w-[1008px]">
+      <ReadBrand />
       <section className="mt-6 mb-6 flex w-full flex-col md:flex-row">
         <div className="flex items-center gap-3">
           <SignupButton />
