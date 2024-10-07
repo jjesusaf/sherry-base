@@ -12,7 +12,21 @@ import { Button } from "@/src/components/ui/button";
 import { Bot, Share, MoreHorizontal } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "src/components/ui/avatar";
 
-const CardChallenge: React.FC = () => {
+interface CardChallengeProps {
+  challenger: {
+    name: string;
+    username: string;
+    avatar: string;
+  };
+  challenge: {
+    title: string;
+    description: string;
+    image: string;
+  };
+}
+
+const CardChallenge: React.FC<CardChallengeProps> = ({        challenger, challenge }) => {
+  
   return (
     <div className="flex flex-col gap-[16px] max-w-[352px] w-full">
       <Card className="border-none bg-transparent shadow-none flex justify-between">
