@@ -13,48 +13,52 @@ const pinata = new PinataSDK({
 })
 
 export async function createPost(post: Post) {
-    const image = await uploadFile(post.file);
-    const metadata = await uploadMetadataToPinata(post.name, post.description, image, post.attributes);
-    // Crear Link dub.co
-    // Subir Imagen Pinata
-    // Subir Metadata Pinata
-    // Enviar la tx a la Blockchain
+    try {
+        const image = await uploadFile(post.file);
+        const metadata = await uploadMetadataToPinata(post.name, image, post.description, post.external_url, post.attributes);
+        // Crear Link dub.co
+        // Subir Imagen Pinata
+        // Subir Metadata Pinata
+        // Enviar la tx a la Blockchain
+        return metadata;
+    } catch (error) {
+        console.error('Error creating post:', error);
+        throw error;
+    }
 }
 
 export async function uploadFile(file: File): Promise<string> {
-    const result = "";
     try {
-        const upload = await pinata.upload.file(file)
-        console.log(upload)
-        return upload.IpfsHash
+        const upload = await pinata.upload.file(file);
+        console.log(upload);
+        return upload.IpfsHash;
     } catch (error) {
-        console.log(error);
-    } finally {
-        return result;
+        console.error('Error uploading file:', error);
+        throw error;
     }
 }
 
 export async function uploadMetadataToPinata(
     name: string,
+    image: string,
     description: string,
-    imageUrl: string,
+    external_url: string,
     attributes: Record<string, any>[]
-) {
-    let result = "";
+): Promise<string> {
     try {
-        const finalImgUrl = `${GATEWAY_IPFS}${imageUrl}`
+        const finalImgUrl = `${GATEWAY_IPFS}${image}`;
         const upload = await pinata.upload.json({
             name: name,
             description: description,
+            external_url: external_url,
             image: finalImgUrl,
             attributes: attributes
-        })
+        });
 
-        return result = `${GATEWAY_IPFS}${upload.IpfsHash}`
+        return `${GATEWAY_IPFS}${upload.IpfsHash}`;
     } catch (error) {
-        console.log(error);
-    } finally {
-        return result;
+        console.error('Error uploading metadata:', error);
+        throw error;
     }
 }
 
