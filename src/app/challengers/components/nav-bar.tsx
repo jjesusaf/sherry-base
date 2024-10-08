@@ -1,6 +1,4 @@
 import React from "react";
-import { Button } from "src/components/ui/button";
-import { UserNav } from "./user-nav";
 import TeamSwitcher from "./team-switcher";
 import { Avatar, AvatarFallback, AvatarImage } from "src/components/ui/avatar";
 

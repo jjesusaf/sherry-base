@@ -1,9 +1,10 @@
 import React from "react";
 import CardChallenge from "./components/card-challenge";
+import ActionCardChallenge from "./handle/action-card-challenge";
 const Home: React.FC = () => {
   return (
     <div className="w-full flex justify-center">
-      <CardChallenge />
+      <ActionCardChallenge />
     </div>
   );
 };
