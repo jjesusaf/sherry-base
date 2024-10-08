@@ -12,75 +12,90 @@ import { Button } from "@/src/components/ui/button";
 import { Bot, Share, MoreHorizontal } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "src/components/ui/avatar";
 
-interface CardChallengeProps {
-  challenger: {
-    name: string;
-    username: string;
-    avatar: string;
-  };
-  challenge: {
-    title: string;
-    description: string;
-    image: string;
-  };
+interface Kol {
+  id_kol: number;
+  name: string;
+  username: string;
+  avatar: string;
 }
 
-const CardChallenge: React.FC<CardChallengeProps> = ({        challenger, challenge }) => {
-  
+interface Challenge {
+  id_challenge: number;
+  title: string;
+  description: string;
+  image: string;
+  kol: Kol;
+}
+
+interface CardChallengeProps {
+  challenges: Challenge[]; 
+}
+
+const CardChallenge: React.FC<CardChallengeProps> = ({ challenges = [] }) => {
   return (
-    <div className="flex flex-col gap-[16px] max-w-[352px] w-full">
-      <Card className="border-none bg-transparent shadow-none flex justify-between">
-        <CardHeader>
-          <div className="flex items-center gap-2">
-            <Avatar className="w-[40px] h-[40px] rounded-full border border-border items-center justify-center">
-              <AvatarImage
-                src="https://github.com/shadcn.png"
-                alt="@shadcn"
-                className="w-[24px] h-[24px] rounded-full"
-              />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
-            <div className="flex flex-col gap-1">
-              <CardTitle>@jessicafit</CardTitle>
-              <CardDescription>Fitness model</CardDescription>
-            </div>
+    <div className="flex flex-wrap items-center justify-center gap-[30px]">
+      {challenges.length > 0 ? (
+        challenges.map((challenge) => (
+          <div key={challenge.id_challenge} className="max-w-[352px] w-full">
+            <Card className="border-none bg-transparent shadow-none flex justify-between">
+              <CardHeader>
+                <div className="flex items-center gap-2">
+                  <Avatar className="w-[40px] h-[40px] rounded-full border border-border items-center justify-center">
+                    <AvatarImage
+                      src={challenge.kol.avatar}
+                      alt={`@${challenge.kol.username}`}
+                      className="w-[24px] h-[24px] rounded-full"
+                    />
+                    <AvatarFallback>
+                      {challenge.kol.username.charAt(0).toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex flex-col gap-1">
+                    <CardTitle>@{challenge.kol.username}</CardTitle>
+                    <CardDescription>{challenge.kol.name}</CardDescription>
+                  </div>
+                </div>
+              </CardHeader>
+              <Button variant="ghost" size="icon" className="h-8 w-8">
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </Card>
+            <Card>
+              <CardContent className="p-0">
+                <Image
+                  src={challenge.image}
+                  alt={challenge.title}
+                  width={300}
+                  height={200}
+                  className="w-full h-[440px]"
+                />
+              </CardContent>
+              <CardFooter className="p-[16px] flex flex-col gap-2 w-full">
+                <div className="flex justify-between py-[12px] items-center text-[12px] gap-2 text-center">
+                  <p className="font-semibold">@{challenge.kol.username}</p>
+                  <p>{challenge.title}</p>
+                </div>
+                <div className="flex w-full justify-between">
+                  <Button
+                    variant="outline"
+                    size="default"
+                    className="gap-1.5 text-sm"
+                  >
+                    <Share className="size-3.5" />
+                    Share
+                  </Button>
+                  <Button className="px-4 py-2 gap-2 bg-crimson11 items-center">
+                    Vote
+                    <Bot className="text-[18px]" />
+                  </Button>
+                </div>
+              </CardFooter>
+            </Card>
           </div>
-        </CardHeader>
-        <Button variant="ghost" size="icon" className="h-8 w-8">
-          <MoreHorizontal className="h-4 w-4" />
-        </Button>
-      </Card>
-      <Card>
-        <CardContent className="p-0">
-          <Image
-            src="/images/example.png"
-            alt="image"
-            width={300}
-            height={200}
-            className="w-full h-[440px]"
-          />
-        </CardContent>
-        <CardFooter className="p-[16px] flex flex-col gap-2 w-full">
-          <div className="flex justify-between py-[12px] items-center text-[12px] gap-2 text-center">
-            <p className="font-semibold">@jessicafit</p>
-            <p>What do you think on my skincare routine?</p>
-          </div>
-          <div className="flex w-full justify-between">
-            <Button
-              variant="outline"
-              size="default"
-              className="gap-1.5 text-sm"
-            >
-              <Share className="size-3.5" />
-              Share
-            </Button>
-            <Button className=" px-4 py-2 gap-2 bg-crimson11 items-center">
-              Vote
-              <Bot className="text-[18px]" />
-            </Button>
-          </div>
-        </CardFooter>
-      </Card>
+        ))
+      ) : (
+        <p>No challenges available</p>
+      )}
     </div>
   );
 };

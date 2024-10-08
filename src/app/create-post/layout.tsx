@@ -1,7 +1,7 @@
-import NavBar from "./components/nav-bar";
-import TabBar from "./components/tab-bar";
+import NavBar from "../challengers/components/nav-bar";
+import TabBar from "../challengers/components/tab-bar";
 import NavMain from "./components/nav-main";
-export default function RootLayout({
+export default function CreatePostLayout({
   children,
 }: {
   children: React.ReactNode;
