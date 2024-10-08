@@ -8,7 +8,8 @@ import { useAccount } from "wagmi";
 import LoginButton from "../components/LoginButton";
 import SignupButton from "../components/SignupButton";
 import { Button } from "../components/ui/button";
-import { ReadBrand } from "../service/brand"
+import { ReadBrand } from "../service/brand";
+import AddKolWrapper from "../components/blockchain/AddKolWrapper";
 
 export default function Page() {
   const { address } = useAccount();
@@ -31,7 +32,10 @@ export default function Page() {
           </div>
         </div>
         {address ? (
-          <TransactionWrapper address={address} />
+          <>
+            <AddKolWrapper address={address} />
+            <TransactionWrapper address={address} />
+          </>
         ) : (
           <WalletWrapper
             className="w-[450px] max-w-full"
