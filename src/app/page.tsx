@@ -10,6 +10,7 @@ import SignupButton from "../components/SignupButton";
 import { Button } from "../components/ui/button";
 import { ReadBrand } from "../service/brand";
 import AddKolWrapper from "../components/blockchain/AddKolWrapper";
+import CheckSenderWrapper from "../components/blockchain/CheckSenderWrapper";
 
 export default function Page() {
   const { address } = useAccount();
@@ -35,6 +36,7 @@ export default function Page() {
           <>
             <AddKolWrapper address={address} />
             <TransactionWrapper address={address} />
+            <CheckSenderWrapper />
           </>
         ) : (
           <WalletWrapper
