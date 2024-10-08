@@ -32,6 +32,7 @@
     "lucide-react": "^0.447.0",
     "next": "^14.2.5",
     "permissionless": "^0.1.26",
+    "pinata-web3": "^0.5.0",
     "react": "^18",
     "react-dom": "^18",
     "siwe": "^2.3.2",
