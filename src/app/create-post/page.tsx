@@ -2,7 +2,7 @@ import React from "react";
 import ActionFormPost from "./handle/action-form-post";
 const CreatePost: React.FC = () => {
     return (
-        <div>
+        <div className="">
            <ActionFormPost />
         </div>
     )

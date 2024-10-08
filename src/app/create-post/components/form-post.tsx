@@ -49,8 +49,8 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 
 const FormPost: React.FC<FormPostProps> = ({
-  shareOptions = [], // Default to empty array if not provided
-  contentTypeOptions = [], // Default to empty array if not provided
+  shareOptions = [], 
+  contentTypeOptions = [],
   descriptionPlaceholder,
   onSubmit,
 }) => {
@@ -61,6 +61,11 @@ const FormPost: React.FC<FormPostProps> = ({
     setValue,
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      description: '',
+      share: '',
+      contentType: ''
+    }
   });
 
   return (

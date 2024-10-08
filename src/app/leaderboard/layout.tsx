@@ -1,7 +1,7 @@
-import NavBar from "./components/nav-bar";
-import TabBar from "./components/tab-bar";
+import NavBar from "../challengers/components/nav-bar";
+import TabBar from "../challengers/components/tab-bar";
 import NavMain from "./components/nav-main";
-export default function ChallengersLayout({
+export default function LeaderboardLayout({
   children,
 }: {
   children: React.ReactNode;
