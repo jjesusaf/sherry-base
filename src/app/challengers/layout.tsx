@@ -7,13 +7,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <div className="flex items-start justify-center min-h-screen p-[1rem] mb-[65px] bg-background-secondary mt-[119px]">
-        <NavBar />
-        <NavMain />
-        {children}
-        <TabBar />
-      </div>
-    </html>
+    <div className="flex items-start justify-center min-h-screen p-[1rem] mb-[65px] bg-background-secondary mt-[119px]">
+      <NavBar />
+      <NavMain />
+      {children}
+      <TabBar />
+    </div>
   );
 }
