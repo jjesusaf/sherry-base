@@ -1,68 +1,74 @@
-import { Post } from "@/src/interface/post"
-import { PinataSDK } from "pinata-web3"
+import { Post } from "@/src/interface/post";
+import { PinataSDK } from "pinata-web3";
 
-const PINATA_JTW = process.env.PINATA_API_KEY || ''
-const GATEWAY_IPFS = process.env.VITE_GATEWAY_IPFS || ''
+const PINATA_JTW = process.env.NEXT_PUBLIC_PINATA_API_KEY || "";
+const GATEWAY_IPFS = process.env.NEXT_PUBLIC_GATEWAY_IPFS || "";
 
 if (!PINATA_JTW || !GATEWAY_IPFS) {
-    throw new Error("PINATA_JWT or GATEWAY_IPFS not set")
+  throw new Error("PINATA_JWT or GATEWAY_IPFS not set");
 }
 
 const pinata = new PinataSDK({
-    pinataJwt: PINATA_JTW
-})
+  pinataJwt: PINATA_JTW,
+});
 
 export async function createPost(post: Post) {
-    try {
-        const image = await uploadFile(post.file);
-        const metadata = await uploadMetadataToPinata(post.name, image, post.description, post.external_url, post.attributes);
-        // Crear Link dub.co
-        // Subir Imagen Pinata
-        // Subir Metadata Pinata
-        // Enviar la tx a la Blockchain
-        return metadata;
-    } catch (error) {
-        console.error('Error creating post:', error);
-        throw error;
-    }
+  try {
+    const image = await uploadFile(post.file);
+    const metadata = await uploadMetadataToPinata(
+      post.name,
+      image,
+      post.description,
+      post.external_url,
+      post.attributes
+    );
+    // Crear Link dub.co
+    // Subir Imagen Pinata
+    // Subir Metadata Pinata
+    // Enviar la tx a la Blockchain
+    return metadata;
+  } catch (error) {
+    console.error("Error creating post:", error);
+    throw error;
+  }
 }
 
 export async function uploadFile(file: File): Promise<string> {
-    try {
-        const upload = await pinata.upload.file(file);
-        console.log(upload);
-        return upload.IpfsHash;
-    } catch (error) {
-        console.error('Error uploading file:', error);
-        throw error;
-    }
+  try {
+    const upload = await pinata.upload.file(file);
+    console.log(upload);
+    return upload.IpfsHash;
+  } catch (error) {
+    console.error("Error uploading file:", error);
+    throw error;
+  }
 }
 
 export async function uploadMetadataToPinata(
-    name: string,
-    image: string,
-    description: string,
-    external_url: string,
-    attributes: Record<string, any>[]
+  name: string,
+  image: string,
+  description: string,
+  external_url: string,
+  attributes: Record<string, any>[]
 ): Promise<string> {
-    try {
-        const finalImgUrl = `${GATEWAY_IPFS}${image}`;
-        const upload = await pinata.upload.json({
-            name: name,
-            description: description,
-            external_url: external_url,
-            image: finalImgUrl,
-            attributes: attributes
-        });
+  try {
+    const finalImgUrl = `${GATEWAY_IPFS}${image}`;
+    const upload = await pinata.upload.json({
+      name: name,
+      description: description,
+      external_url: external_url,
+      image: finalImgUrl,
+      attributes: attributes,
+    });
 
-        return `${GATEWAY_IPFS}${upload.IpfsHash}`;
-    } catch (error) {
-        console.error('Error uploading metadata:', error);
-        throw error;
-    }
+    return `${GATEWAY_IPFS}${upload.IpfsHash}`;
+  } catch (error) {
+    console.error("Error uploading metadata:", error);
+    throw error;
+  }
 }
 
 export async function getMetadata(uri: string) {
-    const data = await fetch(uri)
-    return data
+  const data = await fetch(uri);
+  return data;
 }

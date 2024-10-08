@@ -35,6 +35,7 @@ interface FormPostProps {
   contentTypeOptions?: SelectOption[]; // Opcional con "?" por si no se pasa
   descriptionPlaceholder: string;
   onSubmit: (data: FormData) => void;
+  onLink: () => void; 
 }
 
 // Define el esquema de validación con Zod
@@ -53,6 +54,7 @@ const FormPost: React.FC<FormPostProps> = ({
   contentTypeOptions = [],
   descriptionPlaceholder,
   onSubmit,
+  onLink,
 }) => {
   const {
     register,
@@ -159,7 +161,7 @@ const FormPost: React.FC<FormPostProps> = ({
         <Button variant="outline" type="button">
           Discard
         </Button>
-        <Button className="bg-crimson11" type="submit">
+        <Button className="bg-crimson11"  onClick={onLink}>
           Create post
         </Button>
       </div>
