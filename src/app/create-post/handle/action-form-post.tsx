@@ -1,24 +1,24 @@
 "use client";
 import React from "react";
 import FormPost from "../components/form-post";
+import { createLink } from "../actions/link";   
 
-// Opciones vacías (o no pasar las props en absoluto)
+
 const handleSubmit = (data: any) => {
   console.log("Form Data:", data);
 };
 
 const ActionFormPost = () => {
 
-    // Opciones para Share Options
 const shareOptions: { value: string; label: string }[] = [
     { value: "instagram", label: "Instagram" },
     { value: "facebook", label: "Facebook" },
     { value: "tiktok", label: "TikTok" },
     { value: "youtube", label: "YouTube" },
-    { value: "x", label: "X" }, // Anteriormente conocido como Twitter
+    { value: "x", label: "X" }, 
   ];
   
-  // Opciones para Content Type Options
+
   const contentTypeOptions: { value: string; label: string }[] = [
     { value: "reel", label: "Reel" },
     { value: "story", label: "Story" },
@@ -26,7 +26,13 @@ const shareOptions: { value: string; label: string }[] = [
     { value: "video", label: "Video" },
     { value: "direct_message", label: "Direct Message" },
   ];
-  
+
+  const url = "http://localhost:3000/challengers";
+
+  const handleLink = async () => {
+    const link = await createLink(url);
+    console.log("Link creado:", link);
+  };
 
   return (
     <FormPost
@@ -34,7 +40,7 @@ const shareOptions: { value: string; label: string }[] = [
       onSubmit={handleSubmit}
       shareOptions={shareOptions}
       contentTypeOptions={contentTypeOptions}
-      // Puedes omitir shareOptions y contentTypeOptions si no son necesarias
+      onLink={handleLink}
     />
   );
 };

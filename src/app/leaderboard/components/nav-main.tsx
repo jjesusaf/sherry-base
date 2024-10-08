@@ -8,11 +8,14 @@ import { Badge } from "src/components/ui/badge";
 
 const NavMain: React.FC = () => {
   const router = useRouter();
+  const handleBack = () => {
+    router.back();
+  };
 
   return (
     <div className="fixed top-[58px] z-10 left-0 flex items-center gap-4 w-full justify-between p-[16px] bg-background-secondary">
       <Link href="#">
-        <Button variant="outline" size="icon" className="h-7 w-7">
+        <Button variant="outline" size="icon" className="h-7 w-7" onClick={handleBack}>
           <ChevronLeft className="h-4 w-4" />
         </Button>
       </Link>
