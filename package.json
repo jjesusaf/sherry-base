@@ -17,7 +17,6 @@
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
-    "@apollo/client": "^3.11.8",
     "@coinbase/onchainkit": "^0.32.0",
     "@hookform/resolvers": "^3.9.0",
     "@radix-ui/react-avatar": "^1.1.1",

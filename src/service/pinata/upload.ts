@@ -14,6 +14,10 @@ const pinata = new PinataSDK({
 
 export async function createPost(post: Post) {
   try {
+    if (!post.file) {
+      throw new Error("No file provided for the post.");
+    }
+
     const image = await uploadFile(post.file);
     const metadata = await uploadMetadataToPinata(
       post.name,
@@ -22,10 +26,10 @@ export async function createPost(post: Post) {
       post.external_url,
       post.attributes
     );
-    // Crear Link dub.co
-    // Subir Imagen Pinata
-    // Subir Metadata Pinata
-    // Enviar la tx a la Blockchain
+
+    console.log(image);
+    console.log(metadata);
+    // Aquí continúa con el resto de la lógica
     return metadata;
   } catch (error) {
     console.error("Error creating post:", error);

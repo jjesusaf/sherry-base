@@ -8,5 +8,5 @@ export interface Post {
     description: string;
     external_url: string;
     attributes: Record<string, any>[];
-    file: File,
+    file: File | null;
 }

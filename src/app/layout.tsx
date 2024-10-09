@@ -3,8 +3,9 @@ import { NEXT_PUBLIC_URL } from "../config";
 import "./global.css";
 import "@coinbase/onchainkit/styles.css";
 import "@rainbow-me/rainbowkit/styles.css";
-import dynamic from "next/dynamic";
-import { Provider as ApolloProvider } from "@/src/components/ApolloProvider";
+import dynamic from "next/dynamic"
+import { LoadingProvider } from "../context/LoadingContext";
+import ClientLayoutWithSpinner from "../components/ClientLayoutWithSpinner";
 
 const OnchainProviders = dynamic(
   () => import("src/components/OnchainProviders"),
@@ -37,7 +38,9 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <OnchainProviders>
-          <ApolloProvider>{children}</ApolloProvider>
+          <LoadingProvider>
+            <ClientLayoutWithSpinner>{children}</ClientLayoutWithSpinner>
+          </LoadingProvider>
         </OnchainProviders>
       </body>
     </html>
