@@ -42,7 +42,7 @@ const ActionFormPost = () => {
 
   const url = "http://localhost:3000/challengers";
 
-  const { campaignCoverFile, campaignCover } = useContext(CampaignCoverContext);
+  const { campaignCoverFile, campaignCover, clearCampaignCover } = useContext(CampaignCoverContext);
 
   const handleLink = async () => {
     const link = await createLink(url);
@@ -87,6 +87,10 @@ const ActionFormPost = () => {
     }
   };
 
+  const handleClear = () => {
+    clearCampaignCover();
+  };
+
   return (
     <>
       <FormPost
@@ -95,6 +99,7 @@ const ActionFormPost = () => {
         shareOptions={shareOptions}
         contentTypeOptions={contentTypeOptions}
         onLink={handleLink}
+        onClear={handleClear}
       />
       {isError ? (
         <div className="text-red-500">Error en la transacción</div>
@@ -122,4 +127,4 @@ const contentTypeOptions: { value: string; label: string }[] = [
   { value: "short", label: "Short" },
   { value: "video", label: "Video" },
   { value: "direct_message", label: "Direct Message" },
-
+];
