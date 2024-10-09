@@ -15,6 +15,17 @@ import { Avatar, AvatarFallback, AvatarImage } from "src/components/ui/avatar";
 import WalletWrapper from "src/components/WalletWrapper";
 import { useAccount } from "wagmi";
 import TransactionWrapper from "src/components/TransactionWrapper";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/src/components/ui/alert-dialog";
 
 interface Kol {
   id_kol: number;
@@ -41,7 +52,10 @@ const CardChallenge: React.FC<CardChallengeProps> = ({ challenges = [] }) => {
     <div className="flex flex-wrap items-center justify-center gap-[30px]">
       {challenges.length > 0 ? (
         challenges.map((challenge) => (
-          <div key={challenge.id_challenge} className="max-w-[352px] w-full flex flex-col gap-3">
+          <div
+            key={challenge.id_challenge}
+            className="max-w-[352px] w-full flex flex-col gap-3"
+          >
             <Card className="border-none bg-transparent shadow-none flex justify-between">
               <CardHeader>
                 <div className="flex items-center gap-2">
@@ -57,7 +71,9 @@ const CardChallenge: React.FC<CardChallengeProps> = ({ challenges = [] }) => {
                   </Avatar>
                   <div className="flex flex-col gap-1">
                     <CardTitle>@{challenge.kol.username}</CardTitle>
-                    <CardDescription className="break-all">{challenge.kol.name}</CardDescription>
+                    <CardDescription className="break-all">
+                      Posted on {challenge.title}
+                    </CardDescription>
                   </div>
                 </div>
               </CardHeader>
@@ -78,7 +94,7 @@ const CardChallenge: React.FC<CardChallengeProps> = ({ challenges = [] }) => {
               <CardFooter className="p-[16px] flex flex-col gap-2 w-full">
                 <div className="flex justify-between py-[12px] items-center text-[12px] gap-2 text-center">
                   <p className="font-semibold">@{challenge.kol.username}</p>
-                  <p>{challenge.title}</p>
+                  <p>{challenge.description}</p>
                 </div>
                 <div className="flex w-full justify-between">
                   <Button
@@ -99,9 +115,41 @@ const CardChallenge: React.FC<CardChallengeProps> = ({ challenges = [] }) => {
                       text="Vote"
                     />
                   )} */}
-                  <Button className="px-4 py-2 gap-2 bg-crimson11 items-center">
-                    Vote
-                  </Button>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button className="px-4 py-2 gap-2 bg-crimson11 items-center">
+                        Vote
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent className="rounded-[6px] border border-border  shadow-lg p-[24px] w-full max-w-[352px]">
+                      <AlertDialogHeader className="items-center">
+                        <div className="w-[120px] h-[88px]">
+                          <Image
+                            src="/images/loving.svg"
+                            alt="loving"
+                            width={120}
+                            height={88}
+                            className="w-full"
+                          />
+                        </div>
+                        <AlertDialogTitle>
+                          You’ve Chosen Your Champion!
+                        </AlertDialogTitle>
+                        <AlertDialogDescription>
+                          Once selected, you won’t be able to change your
+                          champion, so choose wisely.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter className="flex flex-row justify-center items-center gap-2">
+                        <AlertDialogCancel className="w-full m-0">
+                          Cancel
+                        </AlertDialogCancel>
+                        <AlertDialogAction className="w-full">
+                          Confirm
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                 </div>
               </CardFooter>
             </Card>

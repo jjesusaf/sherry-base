@@ -21,38 +21,45 @@ const ActionCardChallenge: React.FC = () => {
   const { setLoading } = useLoading();
   const [challenges, setChallenges] = useState<Challenge[]>([]);
 
-  const fetchImageFromIPFS = async (ipfsUrl: string) => {
+  const fetchMetadataAndImageFromIPFS = async (ipfsUrl: string) => {
     try {
       const metadata = await fetchMetadataFromIPFS(ipfsUrl);
-      console.log("Metadata:", metadata);
-      return metadata?.image || "/images/example.png";
+ 
+      return {
+        image: metadata?.image || "/images/example.png",
+        title: metadata?.name || `Challenge`, 
+        description: metadata?.description || `Descripción del post`, 
+      };
     } catch (error) {
       console.error("Error al obtener metadata de IPFS para la URL:", ipfsUrl, error);
-      return "/images/example.png";
+      return {
+        image: "/images/example.png",
+        title: `Challenge`,
+        description: `Descripción del post`,
+      };
     }
   };
-  
 
   const handleSubGraph = async () => {
     try {
       setLoading(true);
       const response = await subGraph();
       const data = response.data;
+      console.log(data);
 
       if (data && data.postCreateds) {
-   
         const mappedChallenges = await Promise.all(
           data.postCreateds.map(async (post: any, index: number) => {
-            const image = await fetchImageFromIPFS(post.url); 
+            const metadata = await fetchMetadataAndImageFromIPFS(post.url); 
             return {
               id_challenge: index + 1,
-              title: `Challenge #${post.idPost}`,
-              description: `Descripción para el post #${post.idPost}`,
-              image: image,
+              title: metadata.title, 
+              description: metadata.description, 
+              image: metadata.image, 
               kol: {
                 id_kol: index + 1,
-                name: `KOL ${post.kol}`,
-                username: `kol_${post.kol.slice(0, 6)}`,
+                name: ` ${post.kol}`,
+                username: `user_${post.kol.slice(0, 6)}`,
                 avatar: "https://github.com/shadcn.png",
               },
             };
