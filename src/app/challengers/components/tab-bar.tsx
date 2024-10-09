@@ -16,8 +16,8 @@ const TabBar: React.FC = () => {
       <Link href="/create-post">
         <Plus className={`w-6 h-6 ${pathname === '/create-post' ? 'text-crimson11' : 'text-foreground'}`} />
       </Link>
-      <Link href="#">
-        <LayoutDashboard className="w-6 h-6" />
+      <Link href="/dashboard">
+        <LayoutDashboard className={`w-6 h-6 ${pathname === '/dashboard' ? 'text-crimson11' : 'text-foreground'}`}  />
       </Link>
       <Link href="#">
         <Bell className="w-6 h-6" />

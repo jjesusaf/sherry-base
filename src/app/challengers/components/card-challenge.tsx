@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import {
   Card,
@@ -11,7 +12,9 @@ import Image from "next/image";
 import { Button } from "@/src/components/ui/button";
 import { Bot, Share, MoreHorizontal } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "src/components/ui/avatar";
-
+import WalletWrapper from "src/components/WalletWrapper";
+import { useAccount } from "wagmi";
+import TransactionWrapper from "src/components/TransactionWrapper";
 interface Kol {
   id_kol: number;
   name: string;
@@ -28,10 +31,11 @@ interface Challenge {
 }
 
 interface CardChallengeProps {
-  challenges: Challenge[]; 
+  challenges: Challenge[];
 }
 
 const CardChallenge: React.FC<CardChallengeProps> = ({ challenges = [] }) => {
+  const { address } = useAccount();
   return (
     <div className="flex flex-wrap items-center justify-center gap-[30px]">
       {challenges.length > 0 ? (
@@ -84,9 +88,18 @@ const CardChallenge: React.FC<CardChallengeProps> = ({ challenges = [] }) => {
                     <Share className="size-3.5" />
                     Share
                   </Button>
+                  {/**      {address ? (
+                    <>
+                      <TransactionWrapper address={address} />
+                    </>
+                  ) : (
+                    <WalletWrapper
+                      className="w-[20px]px-4 py-2 gap-2 bg-crimson11"
+                      text="Vote"
+                    />
+                  )} */}
                   <Button className="px-4 py-2 gap-2 bg-crimson11 items-center">
                     Vote
-                    <Bot className="text-[18px]" />
                   </Button>
                 </div>
               </CardFooter>
