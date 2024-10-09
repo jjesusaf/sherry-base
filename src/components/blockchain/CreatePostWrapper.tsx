@@ -11,7 +11,7 @@ import {
 } from "@coinbase/onchainkit/transaction";
 import type { Address, ContractFunctionParameters } from "viem";
 
-export default function CheckSenderWrapper({ address }: { address: Address }) {
+export default function CreatePostWrapper({ address }: { address: Address }) {
   const handleError = (e: TransactionError) => {
     console.log("hubo un error");
     console.log(e);
@@ -22,29 +22,33 @@ export default function CheckSenderWrapper({ address }: { address: Address }) {
     console.log(e);
   };
 
-  const checkSender = contracts["CheckSenderContract"];
+  const sherry = contracts["SherryContract"];
+  const sherryAddress = (sherry.address).replace(/^0x/, "")
+
+  console.log("SherryContract : ", sherryAddress)
 
   const checkConfig = [
     {
-      address: `0x${checkSender.address}`,
-      functionName: "checkSender",
-      abi: checkSender.abi,
-      args: [],
+      address: `0x${sherryAddress}`,
+      functionName: "createPost",
+      abi: sherry.abi,
+      args: [1, ""],
     },
   ] as unknown as ContractFunctionParameters[];
 
   return (
-    <div className="flex w-[450px">
+    <div className="flex w-[450px]">
       <Transaction
         contracts={checkConfig}
         className="w-[450px]"
         chainId={BASE_SEPOLIA_CHAIN_ID}
+        onStatus={(e) => console.log("status : ", e)}
         onError={(e) => handleError(e)}
         onSuccess={(r) => handleSuccess(r)}
       >
         <TransactionButton
           className="mt-0 mr-auto ml-auto w-[450px] max-w-full text-[white]"
-          text="Chequear Sender"
+          text="Create Post"
         />
         <TransactionStatus>
           <TransactionStatusLabel />

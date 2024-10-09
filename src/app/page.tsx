@@ -10,7 +10,8 @@ import SignupButton from "../components/SignupButton";
 import { Button } from "../components/ui/button";
 import { ReadBrand } from "../service/brand";
 import AddKolWrapper from "../components/blockchain/AddKolWrapper";
-import CheckSenderWrapper from "../components/blockchain/CheckSenderWrapper";
+import CreatePostWrapper from "../components/blockchain/CreatePostWrapper";
+import JoinCampaign from "../components/blockchain/JoinCampaign";
 
 export default function Page() {
   const { address } = useAccount();
@@ -34,15 +35,17 @@ export default function Page() {
         </div>
         {address ? (
           <>
+            <h1>Paso 1: Unirse como KOL</h1>
             <AddKolWrapper address={address} />
-            <TransactionWrapper address={address} />
-            <CheckSenderWrapper />
+            <h1>Paso 2: Unirse a Campaña</h1>
+            <JoinCampaign address={address} idCampaign={1} />
+            <h1>Paso 3: Crear Post</h1>
+            <CreatePostWrapper address={address} />
           </>
         ) : (
           <WalletWrapper
             className="w-[450px] max-w-full"
             text="Sign in to transact"
-            
           />
         )}
       </section>

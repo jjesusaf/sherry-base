@@ -5,7 +5,7 @@ export interface Contract {
 
 export const contracts: { [name: string]: Contract } = {
   BrandContract: {
-    address: "0xbd84C59CE99A4A6e48727DA7581794442BA7C2eD",
+    address: "0x657E6d2274eD0952C8F8Ed58F16756d99A823Bd8",
     abi: [
       {
         "inputs": [],
@@ -325,7 +325,7 @@ export const contracts: { [name: string]: Contract } = {
     ]
   },
   CampaignContract: {
-    address: "0xbd9a06cC557a9e3Eb72C44943dfC13438683e1b9",
+    address: "0x71AA6213cea1fFfc38576f262acDC2666BdC7e98",
     abi: [
       {
         "inputs": [
@@ -680,7 +680,7 @@ export const contracts: { [name: string]: Contract } = {
     ]
   },
   KolContract: {
-    address: "0xa1ea6cdA04359666d944f9129FE5FC98d534b056",
+    address: "0x766485E35331c92784F257dB68EEA899930C6DAB",
     abi: [
       {
         "inputs": [
@@ -791,6 +791,11 @@ export const contracts: { [name: string]: Contract } = {
             "internalType": "uint256",
             "name": "_idCampaign",
             "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "_kol",
+            "type": "address"
           }
         ],
         "name": "addKolToCampaign",
@@ -1032,7 +1037,7 @@ export const contracts: { [name: string]: Contract } = {
     ]
   },
   SherryContract: {
-    address: "0x9674Ee4cC4321e1641c4c9D0F484F8dc99420aD7",
+    address: "0x727E61467e0A5A72E2234fe0dEDc09526884b14d",
     abi: [
       {
         "inputs": [
