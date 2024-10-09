@@ -15,6 +15,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "src/components/ui/avatar";
 import WalletWrapper from "src/components/WalletWrapper";
 import { useAccount } from "wagmi";
 import TransactionWrapper from "src/components/TransactionWrapper";
+
 interface Kol {
   id_kol: number;
   name: string;
@@ -40,7 +41,7 @@ const CardChallenge: React.FC<CardChallengeProps> = ({ challenges = [] }) => {
     <div className="flex flex-wrap items-center justify-center gap-[30px]">
       {challenges.length > 0 ? (
         challenges.map((challenge) => (
-          <div key={challenge.id_challenge} className="max-w-[352px] w-full">
+          <div key={challenge.id_challenge} className="max-w-[352px] w-full flex flex-col gap-3">
             <Card className="border-none bg-transparent shadow-none flex justify-between">
               <CardHeader>
                 <div className="flex items-center gap-2">
@@ -56,7 +57,7 @@ const CardChallenge: React.FC<CardChallengeProps> = ({ challenges = [] }) => {
                   </Avatar>
                   <div className="flex flex-col gap-1">
                     <CardTitle>@{challenge.kol.username}</CardTitle>
-                    <CardDescription>{challenge.kol.name}</CardDescription>
+                    <CardDescription className="break-all">{challenge.kol.name}</CardDescription>
                   </div>
                 </div>
               </CardHeader>
