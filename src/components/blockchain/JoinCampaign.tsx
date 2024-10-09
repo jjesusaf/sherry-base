@@ -11,7 +11,13 @@ import {
 } from "@coinbase/onchainkit/transaction";
 import type { Address, ContractFunctionParameters } from "viem";
 
-export default function AddKolWrapper({ address }: { address: Address }) {
+export default function JoinCampaignWrapper({
+  address,
+  idCampaign,
+}: {
+  address: string;
+  idCampaign: number;
+}) {
   const handleError = (e: TransactionError) => {
     console.log("hubo un error");
     console.log(e);
@@ -25,19 +31,19 @@ export default function AddKolWrapper({ address }: { address: Address }) {
   const kol = contracts["KolContract"];
   const kolAddress = kol.address.replace(/^0x/, "");
 
-  const kolConfig = [
+  const campaignConfig = [
     {
       address: `0x${kolAddress}`,
-      functionName: "joinAsKol",
+      functionName: "addKolToCampaign",
       abi: kol.abi,
-      args: [address],
+      args: [idCampaign, address],
     },
   ] as unknown as ContractFunctionParameters[];
 
   return (
-    <div className="flex w-[450px">
+    <div className="flex w-[450px]">
       <Transaction
-        contracts={kolConfig}
+        contracts={campaignConfig}
         className="w-[450px]"
         chainId={BASE_SEPOLIA_CHAIN_ID}
         onError={(e) => handleError(e)}
@@ -45,7 +51,7 @@ export default function AddKolWrapper({ address }: { address: Address }) {
       >
         <TransactionButton
           className="mt-0 mr-auto ml-auto w-[450px] max-w-full text-[white]"
-          text="Unirse como KOL"
+          text="Join Campaign"
         />
         <TransactionStatus>
           <TransactionStatusLabel />
