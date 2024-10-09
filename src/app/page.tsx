@@ -12,17 +12,9 @@ import { ReadBrand } from "../service/brand";
 import AddKolWrapper from "../components/blockchain/AddKolWrapper";
 import CreatePostWrapper from "../components/blockchain/CreatePostWrapper";
 import JoinCampaign from "../components/blockchain/JoinCampaign";
-import { GET_DATA } from "../thegraph/queries";
-import { useQuery } from "@apollo/client";
 
 export default function Page() {
   const { address } = useAccount();
-  const { loading, error, data } = useQuery(GET_DATA);
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error ${error.toString()}</p>;
-
-  console.log("data : ", data);
 
   return (
     <div className="flex h-full w-96 max-w-full flex-col px-1 md:w-[1008px]">
@@ -57,16 +49,6 @@ export default function Page() {
             text="Sign in to transact"
           />
         )}
-
-        {data.postCreateds.map((p: any) => (
-          <div key={p.id}>
-            <p>Los votos</p>
-            <p>Id Campaign : {p.idCampaign}</p>
-            <p>Id Post : {p.idPost}</p>
-            <p>Address Kol : {p.kol}</p>
-            <p>URL : {p.url}</p>
-          </div>
-        ))}
       </section>
       <Button>Click me</Button>
       <Footer />

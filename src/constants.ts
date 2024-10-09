@@ -1431,6 +1431,23 @@ export const contracts: { [name: string]: Contract } = {
   }
 }
 
+export const getSherryContract = (): Contract => { 
+  return contracts.SherryContract;
+}
+
+export const getKolContract = (): Contract => { 
+  return contracts.KolContract;
+}
+
+export const getCampaignContract = (): Contract => { 
+  return contracts.CampaignContract;
+}
+
+export const getBrandContract = (): Contract => { 
+  return contracts.BrandContract;
+}
+
+
 export const BASE_SEPOLIA_CHAIN_ID = 84532;
 export const mintContractAddress = '0xA3e40bBe8E8579Cd2619Ef9C6fEA362b760dac9f';
 export const mintABI = [
