@@ -17,6 +17,7 @@
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
+    "@apollo/client": "^3.11.8",
     "@coinbase/onchainkit": "^0.32.0",
     "@hookform/resolvers": "^3.9.0",
     "@radix-ui/react-avatar": "^1.1.1",
@@ -32,6 +33,7 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
     "dub": "^0.43.4",
+    "graphql": "^16.9.0",
     "lucide-react": "^0.447.0",
     "next": "^14.2.5",
     "permissionless": "^0.1.26",
