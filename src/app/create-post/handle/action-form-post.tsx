@@ -1,23 +1,21 @@
 "use client";
-import React from "react";
+import React, { useContext } from "react";
 import FormPost from "../components/form-post";
-import { createLink } from "../actions/link";   
-
-
-const handleSubmit = (data: any) => {
-  console.log("Form Data:", data);
-};
+import { createLink } from "../actions/link";
+import { subGraph } from "../actions/link";
+import { Post } from "@/src/interface/post";
+import { CampaignCoverContext } from "../context/CampaignCoverContext";
+import { createPost } from "@/src/service/pinata/upload";
+import { useLoading } from "@/src/context/LoadingContext";
 
 const ActionFormPost = () => {
-
-const shareOptions: { value: string; label: string }[] = [
+  const shareOptions: { value: string; label: string }[] = [
     { value: "instagram", label: "Instagram" },
     { value: "facebook", label: "Facebook" },
     { value: "tiktok", label: "TikTok" },
     { value: "youtube", label: "YouTube" },
-    { value: "x", label: "X" }, 
+    { value: "x", label: "X" },
   ];
-  
 
   const contentTypeOptions: { value: string; label: string }[] = [
     { value: "reel", label: "Reel" },
@@ -26,12 +24,41 @@ const shareOptions: { value: string; label: string }[] = [
     { value: "video", label: "Video" },
     { value: "direct_message", label: "Direct Message" },
   ];
+  const { setLoading } = useLoading();
 
   const url = "http://localhost:3000/challengers";
 
+  const { campaignCoverFile, campaignCover } = useContext(CampaignCoverContext);
   const handleLink = async () => {
     const link = await createLink(url);
     console.log("Link creado:", link);
+  };
+
+  const handleSubmit = async (data: any) => {
+    try {
+      setLoading(true);
+      console.log(campaignCover);
+      if (!campaignCoverFile) {
+        console.error("No campaign cover file available");
+        return;
+      }
+
+      const link = await createLink(url);
+      const post: Post = {
+        name: data.share,
+        description: data.description,
+        external_url: "https://example.com",
+        attributes: [{ contentType: data.contentType }],
+        file: campaignCoverFile,
+      };
+      const ipfs = await createPost(post);
+      console.log("IPFS:", ipfs);
+      console.log("Mapped Post Data:", post);
+    } catch (error) {
+      console.error("Error creating post:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

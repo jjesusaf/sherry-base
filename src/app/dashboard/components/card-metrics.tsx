@@ -14,11 +14,11 @@ const CardMetrics: React.FC<CardMetricsProps> = ({ title, value }) => {
       <CardHeader className="flex items-center">
         <VideoIcon className="w-6 h-6 text-primary" />
         <CardTitle>
-          <h1 className="text-[14px] font-medium">{title}</h1>
+          <span className="text-[14px] font-medium">{title}</span>
         </CardTitle>
       </CardHeader>
       <CardContent className="p-0">
-        <h1 className="text-[24px] font-bold text-primary">{value}</h1>
+        <span className="text-[24px] font-bold text-primary">{value}</span>
       </CardContent>
     </Card>
   );

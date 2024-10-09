@@ -35,7 +35,7 @@ interface FormPostProps {
   contentTypeOptions?: SelectOption[]; // Opcional con "?" por si no se pasa
   descriptionPlaceholder: string;
   onSubmit: (data: FormData) => void;
-  onLink: () => void; 
+  onLink: () => void;
 }
 
 // Define el esquema de validación con Zod
@@ -50,7 +50,7 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 
 const FormPost: React.FC<FormPostProps> = ({
-  shareOptions = [], 
+  shareOptions = [],
   contentTypeOptions = [],
   descriptionPlaceholder,
   onSubmit,
@@ -64,10 +64,10 @@ const FormPost: React.FC<FormPostProps> = ({
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      description: '',
-      share: '',
-      contentType: ''
-    }
+      description: "",
+      share: "",
+      contentType: "",
+    },
   });
 
   return (
@@ -154,17 +154,17 @@ const FormPost: React.FC<FormPostProps> = ({
                 )}
               </div>
             </div>
+            <div className="flex justify-between mt-4">
+              <Button variant="outline" type="button">
+                Discard
+              </Button>
+              <Button className="bg-crimson11" type="submit">
+                Create post
+              </Button>
+            </div>
           </form>
         </CardContent>
       </Card>
-      <div className="flex justify-between mt-4">
-        <Button variant="outline" type="button">
-          Discard
-        </Button>
-        <Button className="bg-crimson11"  onClick={onLink}>
-          Create post
-        </Button>
-      </div>
     </div>
   );
 };

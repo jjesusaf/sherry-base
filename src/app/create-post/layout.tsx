@@ -1,6 +1,7 @@
 import NavBar from "../challengers/components/nav-bar";
 import TabBar from "../challengers/components/tab-bar";
 import NavMain from "./components/nav-main";
+import { CampaignCoverProvider } from "./context/CampaignCoverContext";
 export default function CreatePostLayout({
   children,
 }: {
@@ -8,10 +9,12 @@ export default function CreatePostLayout({
 }) {
   return (
     <main className="flex w-full items-start justify-center min-h-screen p-[1rem] mb-[65px] bg-background-secondary mt-[119px]">
-      <NavBar />
-      <NavMain />
-      {children}
-      <TabBar />
+      <CampaignCoverProvider>
+        <NavBar />
+        <NavMain />
+        {children}
+        <TabBar />
+      </CampaignCoverProvider>
     </main>
   );
 }
