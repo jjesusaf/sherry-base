@@ -1,5 +1,5 @@
 "use client";
-import { BASE_SEPOLIA_CHAIN_ID, contracts } from "@/src/constants";
+import { BASE_SEPOLIA_CHAIN_ID, Contract, getSherryContract } from "@/src/constants";
 import {
   Transaction,
   TransactionButton,
@@ -22,10 +22,8 @@ export default function CreatePostWrapper({ address }: { address: Address }) {
     console.log(e);
   };
 
-  const sherry = contracts["SherryContract"];
+  const sherry: Contract = getSherryContract();
   const sherryAddress = (sherry.address).replace(/^0x/, "")
-
-  console.log("SherryContract : ", sherryAddress)
 
   const checkConfig = [
     {

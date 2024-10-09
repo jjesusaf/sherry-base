@@ -26,10 +26,7 @@ export async function createPost(post: Post) {
       post.external_url,
       post.attributes
     );
-
-    console.log(image);
-    console.log(metadata);
-    // Aquí continúa con el resto de la lógica
+    
     return metadata;
   } catch (error) {
     console.error("Error creating post:", error);
