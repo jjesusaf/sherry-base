@@ -6,6 +6,7 @@ import "@rainbow-me/rainbowkit/styles.css";
 import dynamic from "next/dynamic"
 import { LoadingProvider } from "../context/LoadingContext";
 import ClientLayoutWithSpinner from "../components/ClientLayoutWithSpinner";
+import { Toaster } from "../components/ui/toaster";
 
 const OnchainProviders = dynamic(
   () => import("src/components/OnchainProviders"),
@@ -40,6 +41,7 @@ export default function RootLayout({
         <OnchainProviders>
           <LoadingProvider>
             <ClientLayoutWithSpinner>{children}</ClientLayoutWithSpinner>
+            <Toaster />
           </LoadingProvider>
         </OnchainProviders>
       </body>

@@ -2,11 +2,13 @@
 import React, { useContext } from "react";
 import FormPost from "../components/form-post";
 import { createLink } from "../actions/link";
-import { subGraph } from "../actions/link";
 import { Post } from "@/src/interface/post";
 import { CampaignCoverContext } from "../context/CampaignCoverContext";
 import { createPost } from "@/src/service/pinata/upload";
 import { useLoading } from "@/src/context/LoadingContext";
+import { ToastAction } from "@/src/components/ui/toast";
+import { useToast } from "@/src/hooks/use-toast";
+
 
 const ActionFormPost = () => {
   const shareOptions: { value: string; label: string }[] = [
@@ -25,10 +27,10 @@ const ActionFormPost = () => {
     { value: "direct_message", label: "Direct Message" },
   ];
   const { setLoading } = useLoading();
-
+  const { toast } = useToast();
   const url = "http://localhost:3000/challengers";
 
-  const { campaignCoverFile, campaignCover } = useContext(CampaignCoverContext);
+  const { campaignCoverFile, campaignCover,clearCampaignCover } = useContext(CampaignCoverContext);
   const handleLink = async () => {
     const link = await createLink(url);
     console.log("Link creado:", link);
@@ -37,18 +39,25 @@ const ActionFormPost = () => {
   const handleSubmit = async (data: any) => {
     try {
       setLoading(true);
+      console.log(data);
       console.log(campaignCover);
       if (!campaignCoverFile) {
         console.error("No campaign cover file available");
+        toast({
+          variant: "destructive",
+          title: "Falta archivo",
+          description: "No se ha proporcionado un archivo de campaña.",
+          action: <ToastAction altText="Ok">Ok</ToastAction>,
+        });
         return;
       }
 
-      const link = await createLink(url);
+      //const link = await createLink(url);
       const post: Post = {
         name: data.share,
         description: data.description,
         external_url: "https://example.com",
-        attributes: [{ contentType: data.contentType }],
+        attributes: [{ contentType: data.contentType, share: data.share }],
         file: campaignCoverFile,
       };
       const ipfs = await createPost(post);
@@ -68,6 +77,7 @@ const ActionFormPost = () => {
       shareOptions={shareOptions}
       contentTypeOptions={contentTypeOptions}
       onLink={handleLink}
+      onClear={clearCampaignCover}
     />
   );
 };
