@@ -36,6 +36,7 @@ interface FormPostProps {
   descriptionPlaceholder: string;
   onSubmit: (data: FormData) => void;
   onLink: () => void;
+  onClear: () => void;
 }
 
 // Define el esquema de validación con Zod
@@ -55,6 +56,7 @@ const FormPost: React.FC<FormPostProps> = ({
   descriptionPlaceholder,
   onSubmit,
   onLink,
+  onClear,
 }) => {
   const {
     register,
@@ -67,6 +69,7 @@ const FormPost: React.FC<FormPostProps> = ({
       description: "",
       share: "",
       contentType: "",
+      
     },
   });
 
@@ -155,7 +158,7 @@ const FormPost: React.FC<FormPostProps> = ({
               </div>
             </div>
             <div className="flex justify-between mt-4">
-              <Button variant="outline" type="button">
+              <Button variant="outline" onClick={onClear}>
                 Discard
               </Button>
               <Button className="bg-crimson11" type="submit">
