@@ -36,15 +36,15 @@ export default function TransactionWrapper({ address }: { address: Address }) {
   };
 
   return (
-    <div className="flex w-[450px]">
+    <div className="flex w-[100px]">
       <Transaction
         contracts={contracts}
-        className="w-[450px]"
+        className="w-[100px]"
         chainId={BASE_SEPOLIA_CHAIN_ID}
         onError={handleError}
         onSuccess={handleSuccess}
       >
-        <TransactionButton className="mt-0 mr-auto ml-auto w-[450px] max-w-full text-[white]" />
+        <TransactionButton className="mt-0 mr-auto ml-auto w-[100px] max-w-full text-[white]" />
         <TransactionStatus>
           <TransactionStatusLabel />
           <TransactionStatusAction />
