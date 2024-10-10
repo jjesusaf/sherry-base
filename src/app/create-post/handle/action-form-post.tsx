@@ -9,13 +9,18 @@ import { useLoading } from "@/src/context/LoadingContext";
 import { useWriteContract } from "wagmi";
 import { Contract, getSherryContract } from "@/src/constants";
 import { getTransactionEvents } from "../actions/events";
+import WalletWrapper from "@/src/components/WalletWrapper";
+import { useAccount } from "wagmi";
+import { buttonVariants } from "@/src/components/ui/button";
+import { ButtonChain } from "@/src/components/ButtonChain";
 
 const DEFAULT_ID_KOL_CAMPAIGN = 1;
 
 const ActionFormPost = () => {
   const sherry: Contract = getSherryContract();
   const sherryAddress = sherry.address.replace(/^0x/, "");
-  
+  const { address } = useAccount();
+
   const {
     writeContractAsync: createPostContract,
     isPending,
@@ -42,7 +47,8 @@ const ActionFormPost = () => {
 
   const url = "http://localhost:3000/challengers";
 
-  const { campaignCoverFile, campaignCover, clearCampaignCover } = useContext(CampaignCoverContext);
+  const { campaignCoverFile, campaignCover, clearCampaignCover } =
+    useContext(CampaignCoverContext);
 
   const handleLink = async () => {
     const link = await createLink(url);
@@ -101,12 +107,6 @@ const ActionFormPost = () => {
         onLink={handleLink}
         onClear={handleClear}
       />
-      {isError ? (
-        <div className="text-red-500">Error en la transacción</div>
-      ) : null}
-      {isSuccess ? (
-        <div className="text-green-500">Transacción exitosa</div>
-      ) : null}
     </>
   );
 };
