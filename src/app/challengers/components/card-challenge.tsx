@@ -15,6 +15,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "src/components/ui/avatar";
 import WalletWrapper from "src/components/WalletWrapper";
 import { useAccount } from "wagmi";
 import TransactionWrapper from "src/components/TransactionWrapper";
+import Link from "next/link";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -26,6 +27,9 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/src/components/ui/alert-dialog";
+import { getLink } from "../actions/link";
+import { useToast } from "@/src/hooks/use-toast";
+import { ToastAction } from "@/src/components/ui/toast"
 
 interface Kol {
   id_kol: number;
@@ -36,18 +40,60 @@ interface Kol {
 
 interface Challenge {
   id_challenge: number;
+  id_post: string;
   title: string;
   description: string;
   image: string;
+  external_url?: string;
   kol: Kol;
 }
 
 interface CardChallengeProps {
   challenges: Challenge[];
+  handleNav?: () => void;
 }
 
 const CardChallenge: React.FC<CardChallengeProps> = ({ challenges = [] }) => {
+  const { toast } = useToast();
   const { address } = useAccount();
+  const handleShare = async (external_url: string) => {
+    try {
+      const linkData = await getLink(external_url); // Llama a la función getLink
+      console.log("Datos del enlace:", linkData); // Muestra los datos para depuración
+
+      // Busca el objeto en el array cuyo `url` o `id` coincida con el `external_url`
+      const matchingLink = linkData.find(
+        (link: any) => link.id === external_url
+      );
+
+      if (matchingLink && matchingLink.shortLink) {
+        // Abre el shortLink en una nueva ventana
+        await navigator.clipboard.writeText(matchingLink.shortLink);
+        console.log("Link copiado al portapapeles:", matchingLink.shortLink);
+        toast({
+          variant: "default",
+          title: "Link copied to clipboard",
+          className: "bg-green-500 border-green-500",
+          description: "Share the link with your friends.",
+          action: <ToastAction altText="Ok">Ok</ToastAction>,
+        })
+        return;
+      } else {
+        console.error(
+          "No se encontró un enlace que coincida con el external_url."
+        );
+        toast({
+          variant: "destructive",
+          title: "No link found",
+          description: "This post is not available link.",
+          action: <ToastAction altText="Ok">Ok</ToastAction>,
+        })
+      }
+    } catch (error) {
+      console.error("Error al obtener el enlace para compartir:", error);
+    }
+  };
+
   return (
     <div className="flex flex-wrap items-center justify-center gap-[30px]">
       {challenges.length > 0 ? (
@@ -82,15 +128,21 @@ const CardChallenge: React.FC<CardChallengeProps> = ({ challenges = [] }) => {
               </Button>
             </Card>
             <Card>
-              <CardContent className="p-0">
-                <Image
-                  src={challenge.image}
-                  alt={challenge.title}
-                  width={300}
-                  height={200}
-                  className="w-full h-[440px]"
-                />
-              </CardContent>
+              <Link
+                href={`/challengers/${challenge.id_post}`}
+                className="w-full"
+              >
+                <CardContent className="p-0 h-[440px] items-center justify-center flex">
+                  <Image
+                    src={challenge.image}
+                    alt={challenge.title}
+                    width={300}
+                    height={200}
+                    className="w-full max-h-[440px] h-auto rounded-t-[11px]"
+                  />
+                </CardContent>
+              </Link>
+
               <CardFooter className="p-[16px] flex flex-col gap-2 w-full">
                 <div className="flex justify-between py-[12px] items-center text-[12px] gap-2 text-center">
                   <p className="font-semibold">@{challenge.kol.username}</p>
@@ -101,6 +153,7 @@ const CardChallenge: React.FC<CardChallengeProps> = ({ challenges = [] }) => {
                     variant="outline"
                     size="default"
                     className="gap-1.5 text-sm"
+                    onClick={() => handleShare(challenge.external_url!)}
                   >
                     <Share className="size-3.5" />
                     Share
