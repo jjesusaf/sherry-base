@@ -5,7 +5,7 @@ export interface Contract {
 
 export const contracts: { [name: string]: Contract } = {
   BrandContract: {
-    address: "0x657E6d2274eD0952C8F8Ed58F16756d99A823Bd8",
+    address: "0x106267b9D291622325D76B64a22aB370E9f1C691",
     abi: [
       {
         "inputs": [],
@@ -325,7 +325,7 @@ export const contracts: { [name: string]: Contract } = {
     ]
   },
   CampaignContract: {
-    address: "0x71AA6213cea1fFfc38576f262acDC2666BdC7e98",
+    address: "0x05c9ff225F5F5720D61083F1616dbc8c2E5eADE4",
     abi: [
       {
         "inputs": [
@@ -680,7 +680,7 @@ export const contracts: { [name: string]: Contract } = {
     ]
   },
   KolContract: {
-    address: "0x766485E35331c92784F257dB68EEA899930C6DAB",
+    address: "0xB8c3340221c9aE4B3Cad007846b54353c698D339",
     abi: [
       {
         "inputs": [
@@ -1037,7 +1037,7 @@ export const contracts: { [name: string]: Contract } = {
     ]
   },
   SherryContract: {
-    address: "0x727E61467e0A5A72E2234fe0dEDc09526884b14d",
+    address: "0x4E83392C32a616e7393ECf620dc68314637E8C29",
     abi: [
       {
         "inputs": [
@@ -1113,25 +1113,6 @@ export const contracts: { [name: string]: Contract } = {
           {
             "indexed": true,
             "internalType": "address",
-            "name": "voter",
-            "type": "address"
-          }
-        ],
-        "name": "Voted",
-        "type": "event"
-      },
-      {
-        "anonymous": false,
-        "inputs": [
-          {
-            "indexed": true,
-            "internalType": "uint256",
-            "name": "idPost",
-            "type": "uint256"
-          },
-          {
-            "indexed": true,
-            "internalType": "address",
             "name": "kol",
             "type": "address"
           },
@@ -1148,7 +1129,26 @@ export const contracts: { [name: string]: Contract } = {
             "type": "string"
           }
         ],
-        "name": "postCreated",
+        "name": "PostCreated",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "uint256",
+            "name": "idPost",
+            "type": "uint256"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "voter",
+            "type": "address"
+          }
+        ],
+        "name": "Voted",
         "type": "event"
       },
       {
@@ -1414,6 +1414,11 @@ export const contracts: { [name: string]: Contract } = {
             "internalType": "uint256",
             "name": "_idPost",
             "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "_voter",
+            "type": "address"
           }
         ],
         "name": "vote",
@@ -1431,19 +1436,19 @@ export const contracts: { [name: string]: Contract } = {
   }
 }
 
-export const getSherryContract = (): Contract => { 
+export const getSherryContract = (): Contract => {
   return contracts.SherryContract;
 }
 
-export const getKolContract = (): Contract => { 
+export const getKolContract = (): Contract => {
   return contracts.KolContract;
 }
 
-export const getCampaignContract = (): Contract => { 
+export const getCampaignContract = (): Contract => {
   return contracts.CampaignContract;
 }
 
-export const getBrandContract = (): Contract => { 
+export const getBrandContract = (): Contract => {
   return contracts.BrandContract;
 }
 
