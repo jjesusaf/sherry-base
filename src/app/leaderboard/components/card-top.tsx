@@ -25,7 +25,7 @@ import { Share } from "lucide-react";
 
 const CardTop: React.FC = () => {
   return (
-    <Tabs className="w-full items-center flex flex-col">
+    <Tabs className="w-full items-center flex flex-col" defaultValue="7 Days">
       <Card className="p-[24px] max-w-[352px] w-full gap-3 flex flex-col">
         <CardHeader className="flex flex-col gap-2">
           <CardTitle className="text-[24px]">Top voted</CardTitle>

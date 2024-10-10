@@ -59,9 +59,12 @@ const FormPost: React.FC<FormPostProps> = ({
   onLink,
   onClear,
 }) => {
+
+
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
     setValue,
   } = useForm<FormData>({
