@@ -9,13 +9,24 @@ import { useLoading } from "@/src/context/LoadingContext";
 import { useWriteContract } from "wagmi";
 import { Contract, getSherryContract } from "@/src/constants";
 import { getTransactionEvents } from "../actions/events";
+<<<<<<< HEAD
 import { useToast } from "@/src/hooks/use-toast";
 import { ToastAction } from "@/src/components/ui/toast";
 import { useAccount } from "wagmi";
+=======
+import { useRouter } from "next/navigation";
+import { useToast } from "@/src/hooks/use-toast";
+import { ToastAction } from "@/src/components/ui/toast"
+
+import { useAccount } from "wagmi";
+
+
+>>>>>>> main
 
 const DEFAULT_ID_KOL_CAMPAIGN = 1;
 
 const ActionFormPost = () => {
+  const router = useRouter();
   const sherry: Contract = getSherryContract();
   const sherryAddress = sherry.address.replace(/^0x/, "");
 
@@ -64,10 +75,18 @@ const ActionFormPost = () => {
         console.error("No campaign cover file available");
         toast({
           variant: "destructive",
+<<<<<<< HEAD
           title: "Uh oh! Something went wrong.",
           description: "There was a problem with your request.",
           action: <ToastAction altText="Try again">Try again</ToastAction>,
         });
+=======
+          title: "Upload a cover image",
+          description: "Please upload a cover image to create a post.",
+          className: "bg-yellow-500 border-yellow-500",
+          action: <ToastAction altText="Ok">Ok</ToastAction>,
+        })
+>>>>>>> main
         return;
       }
 
@@ -78,7 +97,7 @@ const ActionFormPost = () => {
       const post: Post = {
         name: data.share,
         description: data.description,
-        external_url: link.url,
+        external_url: link.i,
         attributes: [{ contentType: data.contentType }],
         file: campaignCoverFile,
       };
@@ -93,6 +112,8 @@ const ActionFormPost = () => {
 
       const updated = await updateLink(link.id, `${url}/${event.idPost}`);
       console.log("Link actualizado:", updated);
+      clearCampaignCover();
+      router.push(`/challengers/${event.idPost}`);
       return true;
     } catch (error) {
       console.error("Error creating post:", error);
