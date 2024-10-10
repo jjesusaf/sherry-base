@@ -2,7 +2,7 @@
 
 export async function postDetail(idPost: string) {
   const response = await fetch(
-    "https://api.studio.thegraph.com/query/90736/sherryg/version/latest",
+    "https://api.studio.thegraph.com/query/91138/sherry-posts/version/latest",
     {
       method: "POST",
       headers: {
