@@ -23,6 +23,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/src/components/ui/select";
+import { ButtonChain } from "@/src/components/ButtonChain";
 
 // Define las interfaces para los selects y los campos del formulario
 interface SelectOption {
@@ -164,9 +165,7 @@ const FormPost: React.FC<FormPostProps> = ({
               <Button variant="outline" onClick={onClear}>
                 Discard
               </Button>
-              <Button className="bg-crimson11" type="submit">
-                Create post
-              </Button>
+              <ButtonChain textIfTrue="Crear Post" textIfFalse="Sign In" className="bg-crimson11" type="submit"/>
             </div>
           </form>
         </CardContent>
