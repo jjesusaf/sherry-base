@@ -9,13 +9,17 @@ import { useLoading } from "@/src/context/LoadingContext";
 import { useWriteContract } from "wagmi";
 import { Contract, getSherryContract } from "@/src/constants";
 import { getTransactionEvents } from "../actions/events";
+import { useToast } from "@/src/hooks/use-toast";
+import { ToastAction } from "@/src/components/ui/toast"
+
+
 
 const DEFAULT_ID_KOL_CAMPAIGN = 1;
 
 const ActionFormPost = () => {
   const sherry: Contract = getSherryContract();
   const sherryAddress = sherry.address.replace(/^0x/, "");
-  
+  const { toast } = useToast();
   const {
     writeContractAsync: createPostContract,
     isPending,
@@ -53,6 +57,12 @@ const ActionFormPost = () => {
       setLoading(true);
       if (!campaignCoverFile) {
         console.error("No campaign cover file available");
+        toast({
+          variant: "destructive",
+          title: "Uh oh! Something went wrong.",
+          description: "There was a problem with your request.",
+          action: <ToastAction altText="Try again">Try again</ToastAction>,
+        })
         return;
       }
 
