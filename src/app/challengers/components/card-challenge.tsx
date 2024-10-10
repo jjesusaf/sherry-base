@@ -10,11 +10,9 @@ import {
 } from "@/src/components/ui/card";
 import Image from "next/image";
 import { Button } from "@/src/components/ui/button";
-import { Bot, Share, MoreHorizontal } from "lucide-react";
+import { Share, MoreHorizontal } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "src/components/ui/avatar";
-import WalletWrapper from "src/components/WalletWrapper";
 import { useAccount } from "wagmi";
-import TransactionWrapper from "src/components/TransactionWrapper";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -26,6 +24,9 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/src/components/ui/alert-dialog";
+import { ButtonChain } from "@/src/components/ButtonChain";
+import { useWriteContract, useReadContract } from "wagmi";
+import { Contract, getSherryContract } from "@/src/constants";
 
 interface Kol {
   id_kol: number;
@@ -48,6 +49,27 @@ interface CardChallengeProps {
 
 const CardChallenge: React.FC<CardChallengeProps> = ({ challenges = [] }) => {
   const { address } = useAccount();
+  const [open, setOpen] = React.useState(false);
+  const sherry: Contract = getSherryContract();
+  const sherryAddress = sherry.address.replace(/^0x/, "");
+
+  const { writeContractAsync: vote } = useWriteContract();
+
+  const result = useReadContract({
+      abi: sherry.abi,
+      address: `0x${sherry.address}`,
+      functionName: ""
+  })
+
+  const sendVoteTx = async (idPost: number) => {
+    const tx = await vote({
+      abi: sherry.abi,
+      address: `0x${sherryAddress}`,
+      functionName: "vote",
+      args: [idPost, address],
+    });
+  };
+
   return (
     <div className="flex flex-wrap items-center justify-center gap-[30px]">
       {challenges.length > 0 ? (
@@ -105,21 +127,14 @@ const CardChallenge: React.FC<CardChallengeProps> = ({ challenges = [] }) => {
                     <Share className="size-3.5" />
                     Share
                   </Button>
-                  {/**      {address ? (
-                    <>
-                      <TransactionWrapper address={address} />
-                    </>
-                  ) : (
-                    <WalletWrapper
-                      className="w-[20px]px-4 py-2 gap-2 bg-crimson11"
-                      text="Vote"
-                    />
-                  )} */}
-                  <AlertDialog>
+
+                  <AlertDialog >
                     <AlertDialogTrigger asChild>
-                      <Button className="px-4 py-2 gap-2 bg-crimson11 items-center">
-                        Vote
-                      </Button>
+                      <ButtonChain
+                        className="bg-crimson11"
+                        textIfTrue="Vote"
+                        textIfFalse="Log In"
+                      />
                     </AlertDialogTrigger>
                     <AlertDialogContent className="rounded-[6px] border border-border  shadow-lg p-[24px] w-full max-w-[352px]">
                       <AlertDialogHeader className="items-center">
@@ -144,9 +159,14 @@ const CardChallenge: React.FC<CardChallengeProps> = ({ challenges = [] }) => {
                         <AlertDialogCancel className="w-full m-0">
                           Cancel
                         </AlertDialogCancel>
-                        <AlertDialogAction className="w-full">
-                          Confirm
-                        </AlertDialogAction>
+                        
+                          <ButtonChain
+                            className="bg-crimson11 w-full"
+                            textIfTrue="Confirm"
+                            textIfFalse="Log In"
+                            onClick={() => sendVoteTx(challenge.id_challenge)}
+                          />
+                     
                       </AlertDialogFooter>
                     </AlertDialogContent>
                   </AlertDialog>
