@@ -55,7 +55,7 @@ const CardPostInfo: React.FC<CardPostInfoProps> = ({ challenges = [] }) => {
           </Card>
         ))
       ) : (
-        <p>No available challenges</p>
+        <p>No posts found</p>
       )}
     </div>
   );

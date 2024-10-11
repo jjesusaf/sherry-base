@@ -6,7 +6,7 @@ import { useLoading } from "@/src/context/LoadingContext";
 import { useRouter } from "next/navigation";
 import { useAccount } from "wagmi";
 import { postDetail } from "../actions/graph";
-import { subGraphPostCreateds } from "../../create-post/actions/link";
+import { subGraphPostCreateds, subGraphVotes } from "../../create-post/actions/link";
 
 interface Challenge {
   id_challenge: number;

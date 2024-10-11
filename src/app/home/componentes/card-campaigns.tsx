@@ -25,7 +25,7 @@ interface CardCampaignsProps {
 
 const CardCampaigns: React.FC<CardCampaignsProps> = ({ campaign }) => {
   const {
-    writeContractAsync: createPost,
+    writeContractAsync: addKolToCampaign,
     isPending,
     isSuccess,
     isError,
@@ -37,7 +37,7 @@ const CardCampaigns: React.FC<CardCampaignsProps> = ({ campaign }) => {
   const kolAddress = kol.address.replace(/^0x/, "");
 
   const sendTx = async () => {
-    const tx = await createPost({
+    const tx = await addKolToCampaign({
       abi: kol.abi,
       address: `0x${kolAddress}`,
       functionName: "addKolToCampaign",

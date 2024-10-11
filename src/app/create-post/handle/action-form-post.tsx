@@ -88,7 +88,7 @@ const ActionFormPost = () => {
       // Sube a IPFS Imagen y Metadata
       const hashMetadata = await createPost(post);
       //console.log("hashMetadata:", hashMetadata);
-      const txHashPost = await sendTx(1, hashMetadata);
+      const txHashPost = await sendTx(2, hashMetadata);
       const event = await getTransactionEvents(txHashPost);
       if (!event) {
         throw new Error("Error getting transaction events");

@@ -6,7 +6,6 @@ export interface Contract {
 export const contracts: { [name: string]: Contract } = {
   BrandContract: {
     address: "0x5907d70Dcb0D658801d531F17D3952368f37b182",
-
     abi: [
       {
         "inputs": [],
@@ -327,7 +326,6 @@ export const contracts: { [name: string]: Contract } = {
   },
   CampaignContract: {
     address: "0x8Fb01f3d9c4d0639F200E9ae5B1929fe1563c65a",
-
     abi: [
       {
         "inputs": [
@@ -388,6 +386,24 @@ export const contracts: { [name: string]: Contract } = {
             "internalType": "uint256",
             "name": "amount",
             "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "startDate",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "endDate",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "string",
+            "name": "uri",
+            "type": "string"
           }
         ],
         "name": "CampaignCreated",
@@ -463,6 +479,11 @@ export const contracts: { [name: string]: Contract } = {
             "internalType": "uint256",
             "name": "_endDate",
             "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "_uri",
+            "type": "string"
           }
         ],
         "name": "createCampaign",
@@ -514,6 +535,25 @@ export const contracts: { [name: string]: Contract } = {
             "internalType": "uint256",
             "name": "",
             "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "_idCampaign",
+            "type": "uint256"
+          }
+        ],
+        "name": "getUriCampaign",
+        "outputs": [
+          {
+            "internalType": "string",
+            "name": "",
+            "type": "string"
           }
         ],
         "stateMutability": "view",
@@ -636,6 +676,25 @@ export const contracts: { [name: string]: Contract } = {
       {
         "inputs": [
           {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "name": "s_uriCampaign",
+        "outputs": [
+          {
+            "internalType": "string",
+            "name": "",
+            "type": "string"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
             "internalType": "address",
             "name": "newOwner",
             "type": "address"
@@ -683,7 +742,6 @@ export const contracts: { [name: string]: Contract } = {
   },
   KolContract: {
     address: "0xfCf749b848f04d28339D4212eb15a757c6d18C8a",
-
     abi: [
       {
         "inputs": [

@@ -44,3 +44,13 @@ export async function postsKol(address: string) {
     throw error;
   }
 }
+
+/*
+  Metricas:
+  - Posts: postsByUser cand Campaign
+  - Views: FROM DUB CO
+  - Votes: votesByCampaign and Post (Obtener los posts que vienen de arriba
+  y luego los votos por post)
+ */
+
+
