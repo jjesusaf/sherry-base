@@ -28,7 +28,7 @@ import {
 } from "@/src/components/ui/alert-dialog";
 import { getLink } from "../actions/link";
 import { useToast } from "@/src/hooks/use-toast";
-import { ToastAction } from "@/src/components/ui/toast"
+import { ToastAction } from "@/src/components/ui/toast";
 import { ButtonChain } from "@/src/components/ButtonChain";
 import { useWriteContract, useReadContract } from "wagmi";
 import { Contract, getSherryContract } from "@/src/constants";
@@ -48,6 +48,10 @@ interface Challenge {
   image: string;
   external_url?: string;
   kol: Kol;
+  hasVoted?: boolean;
+  hasVotedCampaign?: boolean;
+  campaignName?: string;
+  brandName?: string;
 }
 
 interface CardChallengeProps {
@@ -62,13 +66,15 @@ const CardChallenge: React.FC<CardChallengeProps> = ({ challenges = [] }) => {
   const sherry: Contract = getSherryContract();
   const sherryAddress = sherry.address.replace(/^0x/, "");
 
-  const { writeContractAsync: vote } = useWriteContract();
+  const { writeContractAsync: vote, isPending, isSuccess } = useWriteContract();
 
+  /*
   const result = useReadContract({
       abi: sherry.abi,
       address: `0x${sherry.address}`,
       functionName: ""
   })
+  */
 
   const sendVoteTx = async (idPost: number) => {
     const tx = await vote({
@@ -98,7 +104,7 @@ const CardChallenge: React.FC<CardChallengeProps> = ({ challenges = [] }) => {
           className: "bg-green-500 border-green-500",
           description: "Share the link with your friends.",
           action: <ToastAction altText="Ok">Ok</ToastAction>,
-        })
+        });
         return;
       } else {
         console.error(
@@ -109,7 +115,7 @@ const CardChallenge: React.FC<CardChallengeProps> = ({ challenges = [] }) => {
           title: "No link found",
           description: "This post is not available link.",
           action: <ToastAction altText="Ok">Ok</ToastAction>,
-        })
+        });
       }
     } catch (error) {
       console.error("Error al obtener el enlace para compartir:", error);
@@ -181,13 +187,17 @@ const CardChallenge: React.FC<CardChallengeProps> = ({ challenges = [] }) => {
                     Share
                   </Button>
 
-                  <AlertDialog >
+                  <AlertDialog>
                     <AlertDialogTrigger asChild>
-                      <ButtonChain
-                        className="bg-crimson11"
-                        textIfTrue="Vote"
-                        textIfFalse="Log In"
-                      />
+                      {challenge.hasVotedCampaign ? (
+                        <Button className="bg-black" disabled={true}>Already Voted</Button>
+                      ) : (
+                        <ButtonChain
+                          className="bg-crimson11"
+                          textIfTrue="Vote"
+                          textIfFalse="Log In"
+                        />
+                      )}
                     </AlertDialogTrigger>
                     <AlertDialogContent className="rounded-[6px] border border-border  shadow-lg p-[24px] w-full max-w-[352px]">
                       <AlertDialogHeader className="items-center">
@@ -212,14 +222,12 @@ const CardChallenge: React.FC<CardChallengeProps> = ({ challenges = [] }) => {
                         <AlertDialogCancel className="w-full m-0">
                           Cancel
                         </AlertDialogCancel>
-                        
-                          <ButtonChain
-                            className="bg-crimson11 w-full"
-                            textIfTrue="Confirm"
-                            textIfFalse="Log In"
-                            onClick={() => sendVoteTx(challenge.id_challenge)}
-                          />
-                     
+                        <ButtonChain
+                          className="bg-crimson11 w-full"
+                          textIfTrue="Confirm"
+                          textIfFalse="Log In"
+                          onClick={() => sendVoteTx(challenge.id_challenge)}
+                        />
                       </AlertDialogFooter>
                     </AlertDialogContent>
                   </AlertDialog>
