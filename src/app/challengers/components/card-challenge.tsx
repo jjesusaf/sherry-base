@@ -125,7 +125,7 @@ const CardChallenge: React.FC<CardChallengeProps> = ({ challenges = [] }) => {
   };
 
   return (
-    <div className="flex flex-wrap items-center justify-center gap-[30px]">
+    <div className="flex flex-wrap items-center md:justify-start justify-center gap-[30px]">
       {challenges.length > 0 ? (
         challenges.map((challenge) => (
           <div
@@ -228,7 +228,7 @@ const CardChallenge: React.FC<CardChallengeProps> = ({ challenges = [] }) => {
                           className="bg-crimson11 w-full"
                           textIfTrue="Confirm"
                           textIfFalse="Log In"
-                          onClick={() => sendVoteTx(challenge.id_challenge)}
+                          onClick={() => sendVoteTx(parseInt(challenge.id_post))}
                         />
                       </AlertDialogFooter>
                     </AlertDialogContent>

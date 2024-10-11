@@ -1,5 +1,5 @@
-import NavBar from "../challengers/components/nav-bar";
-import TabBar from "../challengers/components/tab-bar";
+import NavBar from "../../components/global/nav-bar";
+import TabBar from "../../components/global/tab-bar";
 import NavMain from "./components/nav-main";
 import { CampaignCoverProvider } from "./context/CampaignCoverContext";
 export default function CreatePostLayout({

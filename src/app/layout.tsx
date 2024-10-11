@@ -4,10 +4,9 @@ import "./global.css";
 import "@coinbase/onchainkit/styles.css";
 import "@rainbow-me/rainbowkit/styles.css";
 import dynamic from "next/dynamic";
-import { LoadingProvider } from "../context/LoadingContext";
 import ClientLayoutWithSpinner from "../components/ClientLayoutWithSpinner";
 import { Toaster } from "../components/ui/toaster";
-import ClientSideTransition from "../components/ClientSideTransition";
+import { AppProvider } from "../context/GlobalContext";
 
 const OnchainProviders = dynamic(
   () => import("src/components/OnchainProviders"),
@@ -39,12 +38,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <OnchainProviders>
-          <LoadingProvider>
+        <AppProvider>
+          <OnchainProviders>
             <ClientLayoutWithSpinner>{children}</ClientLayoutWithSpinner>
             <Toaster />
-          </LoadingProvider>
-        </OnchainProviders>
+          </OnchainProviders>
+        </AppProvider>
       </body>
     </html>
   );

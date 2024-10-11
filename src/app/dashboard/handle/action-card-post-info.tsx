@@ -4,7 +4,7 @@ import CardPostInfo from "../components/card-post-info";
 import { useAccount } from "wagmi";
 import { postsKol } from "../actions/post-kol";
 import { fetchMetadataFromIPFS } from "../../challengers/actions/ipfs";
-import { useLoading } from "@/src/context/LoadingContext";
+import { useAppContext } from "@/src/context/GlobalContext";
 
 interface Challenge {
   id_challenge: number;
@@ -25,7 +25,7 @@ interface Challenge {
 
 const ActionCardPostInfo: React.FC = () => {
   const { address } = useAccount();
-  const { setLoading } = useLoading();
+  const { setLoading } = useAppContext();
   const [challenges, setChallenges] = useState<Challenge[]>([]);
 
   const fetchMetadataAndImageFromIPFS = async (ipfsUrl: string) => {

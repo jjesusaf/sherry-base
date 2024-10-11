@@ -18,6 +18,9 @@ import { ButtonChain } from "@/src/components/ButtonChain";
 import { Send } from "lucide-react";
 import { PlusIcon } from "lucide-react";
 import Link from "next/link";
+import { postsByCampaigns } from "@/src/actions/subgraph/posts-by-campaign";
+import { useAppContext } from "@/src/context/GlobalContext";
+import { useRouter } from "next/navigation";
 
 interface CardCampaignsProps {
   campaign: Campaign;
@@ -30,6 +33,8 @@ const CardCampaigns: React.FC<CardCampaignsProps> = ({ campaign }) => {
     isSuccess,
     isError,
   } = useWriteContract();
+  const { setIdCampaign } = useAppContext();
+  const router = useRouter();
 
   const { address } = useAccount();
 
@@ -44,6 +49,11 @@ const CardCampaigns: React.FC<CardCampaignsProps> = ({ campaign }) => {
       args: [BigInt(campaign.idCampaign), address],
     });
     return tx;
+  };
+
+  const handleNavigateChallenge = () => {
+    setIdCampaign(campaign.idCampaign.toString());
+    router.push(`/challengers`);
   };
 
   return (
@@ -61,7 +71,10 @@ const CardCampaigns: React.FC<CardCampaignsProps> = ({ campaign }) => {
       <CardContent className="space-y-4 p-4">
         <div className="flex items-center justify-between text-sm text-gray-500"></div>
         <div className="relative">
-          <Card className="overflow-hidden">
+          <Card
+            className="overflow-hidden"
+            onClick={handleNavigateChallenge}
+          >
             <img
               alt="Summer Camp model"
               className="h-[180px] w-full object-cover"

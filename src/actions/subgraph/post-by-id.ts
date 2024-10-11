@@ -1,0 +1,203 @@
+"use server";
+import { fetchMetadataFromIPFS } from "@/src/app/challengers/actions/ipfs";
+import {
+  subGraphVotes,
+  subGraphCampaigns,
+  subGraphBrandCreateds,
+} from "@/src/actions/subgraph/posts-by-campaign";
+
+const ENDPOINT_THE_GRAPH = process.env.ENDPOINT_THE_GRAPH as string;
+
+async function postDetail(idPost: string) {
+  const response = await fetch(ENDPOINT_THE_GRAPH, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      query: `
+     {
+    postCreateds(where: {idPost: "${idPost}"}) {
+      idCampaign
+      idPost
+      kol
+      url
+    }
+  }
+        `,
+      operationName: "Subgraphs",
+      variables: {},
+    }),
+  });
+  try {
+  } catch (error) {
+    throw error;
+  }
+
+  const data = await response.json();
+
+  return data;
+}
+
+async function fetchMetadataAndImageFromIPFS(ipfsUrl: string) {
+  try {
+    const metadata = await fetchMetadataFromIPFS(ipfsUrl);
+
+    return {
+      image: metadata?.image || "/images/example.png",
+      title: metadata?.name || `Challenge`,
+      description: metadata?.description || `Descripción del post`,
+      external_url: metadata?.external_url || `Link url`,
+    };
+  } catch (error) {
+    console.error(
+      "Error al obtener metadata de IPFS para la URL:",
+      ipfsUrl,
+      error
+    );
+    return {
+      image: "/images/example.png",
+      title: `Challenge`,
+      description: `Descripción del post`,
+      external_url: `Link url`,
+    };
+  }
+}
+
+async function mergeSubGraphDataByPost(idPost: string, address: string) {
+  try {
+    // Consultar el detalle del post específico
+    const postCreatedsResponse = await postDetail(idPost);
+    const votesResponse = await subGraphVotes();
+    const campaignsResponse = await subGraphCampaigns();
+    const brandsResponse = await subGraphBrandCreateds();
+
+    // Extraer los datos de las respuestas
+    const postCreateds = postCreatedsResponse.data.postCreateds; // Solo 1 post
+    const voteds = votesResponse.data.voteds;
+    const campaigns = campaignsResponse.data.campaignCreateds;
+    const brands = brandsResponse.data.brandCreateds;
+
+    // Convertir la dirección del votante a mayúsculas
+    const upperCaseAddress = address.toUpperCase();
+
+    // Filtrar los votos por la dirección del votante
+    const votedsByAddress = voteds.filter(
+      (vote: any) => vote.voter.toUpperCase() === upperCaseAddress
+    );
+
+    // Tomamos el único post retornado
+    const post = postCreateds[0];
+
+    // Calcular si el usuario ha votado en este post específico
+    const hasVoted = votedsByAddress.some(
+      (vote: any) => vote.idPost === idPost
+    );
+
+    // Calcular si el usuario ha votado en la campaña del post
+    const hasVotedCampaign = votedsByAddress.some((vote: any) => {
+      // Encontrar el post que corresponde al voto
+      const votedPost = postCreateds.find((p: any) => p.idPost === vote.idPost);
+      return votedPost && votedPost.idCampaign === post.idCampaign;
+    });
+
+    // Encontrar la campaña correspondiente al post
+    const campaign = campaigns.find(
+      (c: any) => c.idCampaign === post.idCampaign
+    );
+
+    // Encontrar la marca correspondiente a la campaña
+    const brand = brands.find((b: any) => b.idBrand === campaign?.idBrand);
+
+    // Combinar los datos
+    const combinedData = {
+      ...post,
+      hasVoted, // Si el usuario ha votado en este post específico
+      hasVotedCampaign, // Si el usuario ha votado en la campaña del post
+      campaignName: campaign ? campaign.name : null,
+      brandName: brand ? brand.name : null,
+    };
+
+    // Devolver los datos combinados
+    return { data: { postCreated: combinedData } };
+  } catch (error: any) {
+    throw new Error(error);
+  }
+}
+
+export async function postDetailData(idPost: string) {
+  try {
+    const response = await postDetail(idPost);
+    console.log(response);
+    const post = response.data.postCreateds[0];
+    console.log("Esta es la data del post", post);
+    if (post) {
+      const metadata = await fetchMetadataAndImageFromIPFS(post.url);
+
+      const formattedChallenge: any[] = [
+        {
+          id_challenge: 1,
+          id_post: post.idPost,
+          title: metadata.title,
+          description: metadata.description,
+          image: metadata.image,
+          external_url: metadata.external_url,
+          hasVoted: post.hasVoted,
+          hasVotedCampaign: post.hasVotedCampaign,
+          campaignName: post.campaignName,
+          brandName: post.brandName,
+          kol: {
+            id_kol: 1,
+            name: ` ${post.kol}`,
+            username: `user_${post.kol.slice(0, 6)}`,
+            avatar: "https://github.com/shadcn.png",
+          },
+        },
+      ];
+
+      return formattedChallenge; // Pasar como array
+    } else {
+      console.error("No se encontró el post en la respuesta");
+    }
+  } catch (error) {
+    console.error("Error al obtener los datos del subGraph:", error);
+  }
+}
+
+export async function postDetailDataAddress(idPost: string, address: string) {
+  try {
+    const response = await mergeSubGraphDataByPost(idPost, address); // Pasar idPost y address
+    const post = response.data.postCreated;
+    console.log("Esta es la data del post", post);
+    if (post) {
+      const metadata = await fetchMetadataAndImageFromIPFS(post.url);
+
+      const formattedChallenge: any[] = [
+        {
+          id_challenge: 1,
+          id_post: post.idPost,
+          title: metadata.title,
+          description: metadata.description,
+          image: metadata.image,
+          external_url: metadata.external_url,
+          hasVoted: post.hasVoted,
+          hasVotedCampaign: post.hasVotedCampaign,
+          campaignName: post.campaignName,
+          brandName: post.brandName,
+          kol: {
+            id_kol: 1,
+            name: ` ${post.kol}`,
+            username: `user_${post.kol.slice(0, 6)}`,
+            avatar: "https://github.com/shadcn.png",
+          },
+        },
+      ];
+
+      return formattedChallenge; // Pasar como array
+    } else {
+      console.error("No se encontró el post en la respuesta");
+    }
+  } catch (error) {
+    console.error("Error al obtener los datos del subGraph:", error);
+  }
+}
