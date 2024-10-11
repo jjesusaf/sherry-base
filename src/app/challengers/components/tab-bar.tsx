@@ -19,8 +19,8 @@ const TabBar: React.FC = () => {
       <Link href="/dashboard">
         <LayoutDashboard className={`w-6 h-6 ${pathname === '/dashboard' ? 'text-crimson11' : 'text-foreground'}`}  />
       </Link>
-      <Link href="#">
-        <Bell className="w-6 h-6" />
+      <Link href="/home">
+        <Bell className={`w-6 h-6 ${pathname === '/home' ? 'text-crimson11' : 'text-foreground'}`} />
       </Link>
     </div>
   );
