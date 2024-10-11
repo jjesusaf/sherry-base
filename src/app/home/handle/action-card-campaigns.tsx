@@ -6,13 +6,16 @@ import { Campaign, MetadataCampaign } from "@/src/interface/Campaign";
 import { fetchMetadataFromIPFS } from "../../challengers/actions/ipfs";
 import { useAccount } from "wagmi";
 import { subGraphKolCampaignsByAddress } from "../actions/subgraph";
-import { useLoading } from "@/src/context/LoadingContext";
+import { useAppContext } from "@/src/context/GlobalContext";
 import { Skeleton } from "@/src/components/ui/skeleton";
+import { Button } from "@/src/components/ui/button";
+import { useRouter } from "next/navigation";
 
 const ActionCardCampaigns: React.FC = () => {
+  const router = useRouter();
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const { address } = useAccount();
-  const { setLoading } = useLoading();
+  const { setLoading, setIdCampaign } = useAppContext();
 
   const fetchMetadataCampaigns = async (campaigns: Campaign[]) => {
     console.log("address : ", address);
@@ -71,10 +74,14 @@ const ActionCardCampaigns: React.FC = () => {
     );
   }
 
+
   return (
     <div className="w-full flex flex-wrap justify-center md:justify-start items-center gap-[30px]">
       {campaigns.map((campaign, key) => (
-        <CardCampaigns key={key} campaign={campaign} />
+        <CardCampaigns
+          key={key}
+          campaign={campaign}
+        />
       ))}
     </div>
   );

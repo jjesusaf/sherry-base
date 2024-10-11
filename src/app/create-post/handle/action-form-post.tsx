@@ -5,7 +5,7 @@ import { createLink, updateLink } from "../actions/link";
 import { Post } from "@/src/interface/post";
 import { CampaignCoverContext } from "../context/CampaignCoverContext";
 import { createPost } from "@/src/service/pinata/upload";
-import { useLoading } from "@/src/context/LoadingContext";
+import { useAppContext } from "@/src/context/GlobalContext";
 import { useWriteContract } from "wagmi";
 import { Contract, getSherryContract } from "@/src/constants";
 import { getTransactionEvents } from "../actions/events";
@@ -48,7 +48,7 @@ const ActionFormPost = () => {
     return tx;
   };
 
-  const { setLoading } = useLoading();
+  const { setLoading } = useAppContext();
 
   const url = "http://localhost:3000/challengers";
 

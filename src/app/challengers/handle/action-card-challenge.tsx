@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from "react";
 import CardChallenge from "../components/card-challenge";
-import { fetchMetadataFromIPFS } from "../actions/ipfs"; // Importa la acción del IPFS
-import { mergeSubGraphDataByAddress } from "../../create-post/actions/link";
-import { useLoading } from "@/src/context/LoadingContext";
-import { useRouter } from "next/navigation";
+import { useAppContext } from "@/src/context/GlobalContext";
 import { useAccount } from "wagmi";
+<<<<<<< HEAD
 import { postDetail } from "../actions/graph";
 import { subGraphPostCreateds, subGraphVotes } from "../../create-post/actions/link";
+=======
+import {
+  postsByCampaigns,
+  postsByCampaignsAndAddress,
+} from "@/src/actions/subgraph/posts-by-campaign";
+import { Skeleton } from "@/src/components/ui/skeleton";
+>>>>>>> main
 
 interface Challenge {
   id_challenge: number;
@@ -24,73 +29,17 @@ interface Challenge {
 }
 
 const ActionCardChallenge: React.FC = () => {
-  const { setLoading } = useLoading();
-  const router = useRouter();
+  const { setLoading, idCampaign } = useAppContext();
   const [challenges, setChallenges] = useState<Challenge[]>([]);
   const { address } = useAccount();
-
-  const fetchMetadataAndImageFromIPFS = async (ipfsUrl: string) => {
-    try {
-      const metadata = await fetchMetadataFromIPFS(ipfsUrl);
-
-      return {
-        image: metadata?.image || "/images/example.png",
-        title: metadata?.name || `Challenge`,
-        description: metadata?.description || `Descripción del post`,
-        external_url: metadata?.external_url || `Link url`,
-      };
-    } catch (error) {
-      console.error(
-        "Error al obtener metadata de IPFS para la URL:",
-        ipfsUrl,
-        error
-      );
-      return {
-        image: "/images/example.png",
-        title: `Challenge`,
-        description: `Descripción del post`,
-        external_url: `Link url`,
-      };
-    }
-  };
 
   const handleSubGraph = async () => {
     if (!address) {
       try {
         setLoading(true);
-        const response = await subGraphPostCreateds();
-        console.log(response);
-        const data = response.data;
-
-        if (data && data.postCreateds) {
-          const mappedChallenges = await Promise.all(
-            data.postCreateds.map(async (post: any, index: number) => {
-              const metadata = await fetchMetadataAndImageFromIPFS(post.url);
-              return {
-                id_challenge: index + 1,
-                id_post: post.idPost,
-                title: metadata.title,
-                description: metadata.description,
-                image: metadata.image,
-                external_url: metadata.external_url,
-                hasVoted: post.hasVoted,
-                hasVotedCampaign: post.hasVotedCampaign,
-                campaignName: post.campaignName,
-                brandName: post.brandName,
-                kol: {
-                  id_kol: index + 1,
-                  name: ` ${post.kol}`,
-                  username: `user_${post.kol.slice(0, 6)}`,
-                  avatar: "https://github.com/shadcn.png",
-                },
-              };
-            })
-          );
-          setChallenges(mappedChallenges);
-          console.log(mappedChallenges);
-        } else {
-          console.error("No se encontraron postCreateds en la respuesta");
-        }
+        const response = await postsByCampaigns(idCampaign as string);
+       
+        setChallenges(response ?? []);
       } catch (error) {
         console.error("Error al obtener los datos del subGraph:", error);
       } finally {
@@ -99,38 +48,12 @@ const ActionCardChallenge: React.FC = () => {
     } else {
       try {
         setLoading(true);
-        const response = await mergeSubGraphDataByAddress(address);
-        const data = response.data;
+        const response = await postsByCampaignsAndAddress(
+          idCampaign as string,
+          address
+        );
 
-        if (data && data.postCreateds) {
-          const mappedChallenges = await Promise.all(
-            data.postCreateds.map(async (post: any, index: number) => {
-              const metadata = await fetchMetadataAndImageFromIPFS(post.url);
-              return {
-                id_challenge: index + 1,
-                id_post: post.idPost,
-                title: metadata.title,
-                description: metadata.description,
-                image: metadata.image,
-                external_url: metadata.external_url,
-                hasVoted: post.hasVoted,
-                hasVotedCampaign: post.hasVotedCampaign,
-                campaignName: post.campaignName,
-                brandName: post.brandName,
-                kol: {
-                  id_kol: index + 1,
-                  name: ` ${post.kol}`,
-                  username: `user_${post.kol.slice(0, 6)}`,
-                  avatar: "https://github.com/shadcn.png",
-                },
-              };
-            })
-          );
-          setChallenges(mappedChallenges);
-          console.log(mappedChallenges);
-        } else {
-          console.error("No se encontraron postCreateds en la respuesta");
-        }
+        setChallenges(response ?? []);
       } catch (error) {
         console.error("Error al obtener los datos del subGraph:", error);
       } finally {
@@ -141,7 +64,9 @@ const ActionCardChallenge: React.FC = () => {
 
   useEffect(() => {
     handleSubGraph();
-  }, [address]);
+  }, [address, idCampaign]);
+
+  console.log("Challenges:", challenges);
 
   return (
     <div className="w-full">
