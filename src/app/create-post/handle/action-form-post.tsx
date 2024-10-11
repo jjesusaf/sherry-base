@@ -15,7 +15,6 @@ import { ToastAction } from "@/src/components/ui/toast";
 import { useAccount } from "wagmi";
 import { useRouter } from "next/navigation";
 
-
 const DEFAULT_ID_KOL_CAMPAIGN = 1;
 
 const ActionFormPost = () => {
