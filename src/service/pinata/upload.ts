@@ -26,7 +26,7 @@ export async function createPost(post: Post) {
       post.external_url,
       post.attributes
     );
-    
+
     return metadata;
   } catch (error) {
     console.error("Error creating post:", error);
@@ -73,3 +73,4 @@ export async function getMetadata(uri: string) {
   const data = await fetch(uri);
   return data;
 }
+

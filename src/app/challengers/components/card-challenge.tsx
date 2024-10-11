@@ -81,16 +81,15 @@ const CardChallenge: React.FC<CardChallengeProps> = ({ challenges = [] }) => {
 
   const handleShare = async (external_url: string) => {
     try {
-      const linkData = await getLink(external_url); // Llama a la función getLink
-      console.log("Datos del enlace:", linkData); // Muestra los datos para depuración
+      const linkData = await getLink(external_url);
+      console.log("Datos del enlace:", linkData); 
 
-      // Busca el objeto en el array cuyo `url` o `id` coincida con el `external_url`
       const matchingLink = linkData.find(
         (link: any) => link.id === external_url
       );
 
       if (matchingLink && matchingLink.shortLink) {
-        // Abre el shortLink en una nueva ventana
+      
         await navigator.clipboard.writeText(matchingLink.shortLink);
         console.log("Link copiado al portapapeles:", matchingLink.shortLink);
         toast({
