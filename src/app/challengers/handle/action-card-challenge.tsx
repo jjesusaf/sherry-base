@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import CardChallenge from "../components/card-challenge";
 import { fetchMetadataFromIPFS } from "../actions/ipfs"; // Importa la acción del IPFS
-import { subGraph } from "../../create-post/actions/link";
+import { mergeSubGraphDataByAddress } from "../../create-post/actions/link";
 import { useLoading } from "@/src/context/LoadingContext";
 import { useRouter } from "next/navigation";
+import { useAccount } from "wagmi";
 
 
 interface Challenge {
@@ -25,7 +26,8 @@ const ActionCardChallenge: React.FC = () => {
   const { setLoading } = useLoading();
   const router = useRouter();
   const [challenges, setChallenges] = useState<Challenge[]>([]);
-
+  const { address } = useAccount();
+  
   const fetchMetadataAndImageFromIPFS = async (ipfsUrl: string) => {
     try {
       const metadata = await fetchMetadataFromIPFS(ipfsUrl);
@@ -52,9 +54,13 @@ const ActionCardChallenge: React.FC = () => {
   };
 
   const handleSubGraph = async () => {
+    if(!address) return;
     try {
       setLoading(true);
-      const response = await subGraph();
+      //const response = await subGraphPostCreateds();
+      const response = await mergeSubGraphDataByAddress(address);
+      //console.log("Respuesta del subGraph:", otherResponse);
+
       const data = response.data;
       console.log(data);
 
@@ -69,6 +75,10 @@ const ActionCardChallenge: React.FC = () => {
               description: metadata.description,
               image: metadata.image,
               external_url: metadata.external_url,
+              hasVoted: post.hasVoted,
+              hasVotedCampaign: post.hasVotedCampaign,
+              campaignName: post.campaignName,
+              brandName: post.brandName,
               kol: {
                 id_kol: index + 1,
                 name: ` ${post.kol}`,
@@ -90,12 +100,9 @@ const ActionCardChallenge: React.FC = () => {
     }
   };
 
-
   useEffect(() => {
     handleSubGraph();
-  }, []);
-
- 
+  }, [address]);
 
   return (
     <div className="">
