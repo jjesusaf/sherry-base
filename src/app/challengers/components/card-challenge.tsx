@@ -191,7 +191,7 @@ const CardChallenge: React.FC<CardChallengeProps> = ({ challenges = [] }) => {
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
                       {challenge.hasVotedCampaign ? (
-                        <Button className="bg-black" disabled={true}>Already Voted</Button>
+                        <Button className="bg-crimson11" disabled={true}>Already Voted</Button>
                       ) : (
                         <ButtonChain
                           className="bg-crimson11"
