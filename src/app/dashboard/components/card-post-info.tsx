@@ -33,7 +33,7 @@ interface CardPostInfoProps {
 
 const CardPostInfo: React.FC<CardPostInfoProps> = ({ challenges = [] }) => {
   return (
-    <div className="flex flex-wrap gap-[24px]">
+    <div className="flex flex-wrap justify-center md:justify-start w-full gap-[24px]">
       {challenges.length > 0 ? (
         challenges.map((challenge) => (
           <Card
@@ -50,7 +50,7 @@ const CardPostInfo: React.FC<CardPostInfoProps> = ({ challenges = [] }) => {
               <p>getsherry.link/230294</p>
             </CardHeader>
             <CardContent>
-              <CardDescription>{challenge.description}</CardDescription>
+              <CardDescription className="break-all">{challenge.description}</CardDescription>
             </CardContent>
           </Card>
         ))

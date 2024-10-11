@@ -1,10 +1,10 @@
 "use server";
+const ENDPOINT_THE_GRAPH = process.env.ENDPOINT_THE_GRAPH as string;
+
 
 export async function postDetail(idPost: string) {
-  const response = await fetch(
-    "https://api.studio.thegraph.com/query/91138/sherry-posts/version/latest",
-    {
-      method: "POST",
+  const response = await fetch(ENDPOINT_THE_GRAPH, {
+    method: "POST",
       headers: {
         "Content-Type": "application/json",
       },

@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Badge } from "@/src/components/ui/badge";
 const EndsCampaign: React.FC<{ end_date: number }> = ({ end_date }) => {
   const calculateTimeRemaining = (endDate: number) => {
     const currentDate = Math.floor(Date.now() / 1000); // Fecha actual en timestamp (segundos)
@@ -19,9 +19,9 @@ const EndsCampaign: React.FC<{ end_date: number }> = ({ end_date }) => {
   };
 
   return (
-    <span className="inline-block rounded-full bg-gray-100 px-3 py-1 text-xs font-medium whitespace-nowrap">
+    <Badge className="bg-transparent border-border text-foreground">
       Ends in {calculateTimeRemaining(end_date)}
-    </span>
+    </Badge>
   );
 };
 

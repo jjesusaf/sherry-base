@@ -60,7 +60,7 @@ const ActionCardPostInfo: React.FC = () => {
         return;
       }
       setLoading(true);
-      const response = await postsKol("0x36f62f8a0d9ce566af8e2b8ca0262a1aab06dd73");
+      const response = await postsKol(address);
       const data = response;
       console.log(data);
 
