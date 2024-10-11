@@ -64,9 +64,9 @@ const ActionCardPostInfo: React.FC = () => {
       const data = response;
       console.log(data);
 
-      if (data && data.postCreateds) {
+      if (data) {
         const mappedChallenges = await Promise.all(
-          data.postCreateds.map(async (post: any, index: number) => {
+          data.map(async (post: any, index: number) => {
             const metadata = await fetchMetadataAndImageFromIPFS(post.url);
             return {
               id_challenge: index + 1,

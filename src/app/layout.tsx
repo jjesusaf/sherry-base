@@ -3,10 +3,11 @@ import { NEXT_PUBLIC_URL } from "../config";
 import "./global.css";
 import "@coinbase/onchainkit/styles.css";
 import "@rainbow-me/rainbowkit/styles.css";
-import dynamic from "next/dynamic"
+import dynamic from "next/dynamic";
 import { LoadingProvider } from "../context/LoadingContext";
 import ClientLayoutWithSpinner from "../components/ClientLayoutWithSpinner";
 import { Toaster } from "../components/ui/toaster";
+import ClientSideTransition from "../components/ClientSideTransition";
 
 const OnchainProviders = dynamic(
   () => import("src/components/OnchainProviders"),

@@ -32,6 +32,8 @@ import { ToastAction } from "@/src/components/ui/toast";
 import { ButtonChain } from "@/src/components/ButtonChain";
 import { useWriteContract, useReadContract } from "wagmi";
 import { Contract, getSherryContract } from "@/src/constants";
+import { Skeleton } from "@/src/components/ui/skeleton"
+
 
 interface Kol {
   id_kol: number;
@@ -237,7 +239,7 @@ const CardChallenge: React.FC<CardChallengeProps> = ({ challenges = [] }) => {
           </div>
         ))
       ) : (
-        <p>No challenges available</p>
+        <Skeleton className="w-[352px] h-[440px]" />
       )}
     </div>
   );

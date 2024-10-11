@@ -62,7 +62,6 @@ const ActionCardChallenge: React.FC = () => {
       //console.log("Respuesta del subGraph:", otherResponse);
 
       const data = response.data;
-      console.log(data);
 
       if (data && data.postCreateds) {
         const mappedChallenges = await Promise.all(
