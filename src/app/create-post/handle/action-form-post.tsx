@@ -9,12 +9,7 @@ import { useLoading } from "@/src/context/LoadingContext";
 import { useWriteContract } from "wagmi";
 import { Contract, getSherryContract } from "@/src/constants";
 import { getTransactionEvents } from "../actions/events";
-import { useRouter } from "next/navigation";
-import { useToast } from "@/src/hooks/use-toast";
-import { ToastAction } from "@/src/components/ui/toast";
 import { uploadMetadataToPinata } from "@/src/service/pinata/upload";
-
-import { useAccount } from "wagmi";
 import { useToast } from "@/src/hooks/use-toast";
 import { ToastAction } from "@/src/components/ui/toast";
 import { useAccount } from "wagmi";
@@ -76,9 +71,6 @@ const ActionFormPost = () => {
           description: "Please upload a cover image to create a post.",
           className: "bg-yellow-500 border-yellow-500",
           action: <ToastAction altText="Ok">Ok</ToastAction>,
-          title: "Uh oh! Something went wrong.",
-          description: "There was a problem with your request.",
-          action: <ToastAction altText="Try again">Try again</ToastAction>,
         });
         return;
       }
