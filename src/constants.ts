@@ -5,7 +5,7 @@ export interface Contract {
 
 export const contracts: { [name: string]: Contract } = {
   BrandContract: {
-    address: "0x106267b9D291622325D76B64a22aB370E9f1C691",
+    address: "0x5907d70Dcb0D658801d531F17D3952368f37b182",
     abi: [
       {
         "inputs": [],
@@ -325,7 +325,7 @@ export const contracts: { [name: string]: Contract } = {
     ]
   },
   CampaignContract: {
-    address: "0x05c9ff225F5F5720D61083F1616dbc8c2E5eADE4",
+    address: "0x8Fb01f3d9c4d0639F200E9ae5B1929fe1563c65a",
     abi: [
       {
         "inputs": [
@@ -680,7 +680,7 @@ export const contracts: { [name: string]: Contract } = {
     ]
   },
   KolContract: {
-    address: "0xB8c3340221c9aE4B3Cad007846b54353c698D339",
+    address: "0xfCf749b848f04d28339D4212eb15a757c6d18C8a",
     abi: [
       {
         "inputs": [
@@ -1037,7 +1037,7 @@ export const contracts: { [name: string]: Contract } = {
     ]
   },
   SherryContract: {
-    address: "0x4E83392C32a616e7393ECf620dc68314637E8C29",
+    address: "0x9B14d31eAc8Cc7fCb372cEE87de67c8697183a28",
     abi: [
       {
         "inputs": [

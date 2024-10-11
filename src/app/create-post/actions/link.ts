@@ -1,6 +1,6 @@
 "use server";
 
-const ENDPOINT_THE_GRAPH = "https://api.studio.thegraph.com/query/91138/sherry-posts/version/latest"
+const ENDPOINT_THE_GRAPH = process.env.ENDPOINT_THE_GRAPH as string;
 
 export async function createLink(url: string) {
   try {
@@ -122,6 +122,9 @@ export async function subGraphCampaigns() {
               idBrand
               idCampaign
               name
+              uri,
+              startDate,
+              endDate
             }
           }
           `,
