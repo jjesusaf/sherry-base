@@ -83,7 +83,7 @@ const ActionFormPost = () => {
         name: data.share,
         description: data.description,
         external_url: link.id,
-        attributes: [{ contentType: data.contentType }],
+        attributes: [{ contentType: data.contentType, share: data.share }],
         file: campaignCoverFile,
       };
       // Sube a IPFS Imagen y Metadata

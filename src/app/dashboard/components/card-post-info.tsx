@@ -27,13 +27,13 @@ interface Challenge {
   kol: Kol;
 }
 
-interface CardChallengeProps {
+interface CardPostInfoProps {
   challenges: Challenge[];
 }
 
-const CardPostInfo: React.FC<CardChallengeProps> = ({ challenges }) => {
+const CardPostInfo: React.FC<CardPostInfoProps> = ({ challenges = [] }) => {
   return (
-    <div>
+    <div className="flex flex-wrap gap-[24px]">
       {challenges.length > 0 ? (
         challenges.map((challenge) => (
           <Card
