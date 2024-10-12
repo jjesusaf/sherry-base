@@ -44,7 +44,7 @@ interface ChildComponentProps {
 
 const ActionCardPostInfo: React.FC<ChildComponentProps> = ({ setMetrics }) => {
   const { address } = useAccount();
-  const { setLoading } = useAppContext();
+  const { setLoading, idCampaign } = useAppContext();
   const [challenges, setChallenges] = useState<Challenge[]>([]);
 
   const fetchMetadataAndImageFromIPFS = async (ipfsUrl: string) => {
@@ -79,9 +79,8 @@ const ActionCardPostInfo: React.FC<ChildComponentProps> = ({ setMetrics }) => {
 
     try {
       //if (!address) return;
-
       setLoading(true);
-      const response = await postsKol(address!);
+      const response = await postsKol(address!, idCampaign!);
       console.log("response : ", response);
       console.log("address : ", address);
       const votesByPostsKol = await subGraphVotes();
@@ -156,7 +155,7 @@ const ActionCardPostInfo: React.FC<ChildComponentProps> = ({ setMetrics }) => {
 
   useEffect(() => {
     handleSubGraph();
-  }, []);
+  }, [idCampaign]);
 
   console.log(`challenges`, challenges);
 

@@ -1,4 +1,3 @@
-// src/context/AppContext.tsx
 "use client";
 import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
 
@@ -24,20 +23,30 @@ export const useAppContext = () => {
 
 // Crear el provider que manejará el contexto global de la app
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  // Al inicializar, intenta obtener el valor desde el sessionStorage
-  const [idCampaign, setIdCampaignState] = useState<string | null>(
-    () => sessionStorage.getItem("idCampaign") || null
-  );
-  
+  // Inicializa el estado con null, y luego en useEffect obtenemos el valor de sessionStorage
+  const [idCampaign, setIdCampaignState] = useState<string | null>(null);
+
   // Estados del LoadingContext
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  // useEffect para obtener el valor de sessionStorage al cargar en el cliente
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedIdCampaign = sessionStorage.getItem("idCampaign");
+      if (storedIdCampaign) {
+        setIdCampaignState(storedIdCampaign);
+      }
+    }
+  }, []); // Solo se ejecuta una vez al montar el componente
+
   // useEffect para actualizar el sessionStorage cada vez que idCampaign cambie
   useEffect(() => {
-    if (idCampaign) {
-      sessionStorage.setItem("idCampaign", idCampaign);
-    } else {
-      sessionStorage.removeItem("idCampaign");
+    if (typeof window !== "undefined") {
+      if (idCampaign) {
+        sessionStorage.setItem("idCampaign", idCampaign);
+      } else {
+        sessionStorage.removeItem("idCampaign");
+      }
     }
   }, [idCampaign]);
 

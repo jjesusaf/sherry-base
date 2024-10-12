@@ -1,6 +1,6 @@
 "use server";
 
-export async function postsKol(address: string) {
+export async function postsKol(address: string, idCampaign: string) {
   try {
     const response = await fetch(
       "https://api.studio.thegraph.com/query/91138/sherry-posts/version/latest",
@@ -12,7 +12,7 @@ export async function postsKol(address: string) {
         body: JSON.stringify({
           query: `
             {
-              postCreateds(first: 10, where: {kol: "${address}"}) {
+              postCreateds(first: 10, where: {idCampaign: "${idCampaign}", kol: "${address}"}) {
                 id
                 idCampaign
                 idPost
