@@ -73,16 +73,44 @@ const ActionCardCampaigns: React.FC = () => {
       </div>
     );
   }
-
+  const subscribedCampaigns = campaigns.filter(
+    (campaign) => campaign.subscribed
+  );
+  const discoverCampaigns = campaigns.filter(
+    (campaign) => !campaign.subscribed
+  );
 
   return (
-    <div className="w-full flex flex-wrap justify-center md:justify-start items-center gap-[30px]">
-      {campaigns.map((campaign, key) => (
-        <CardCampaigns
-          key={key}
-          campaign={campaign}
-        />
-      ))}
+    <div className="w-full flex flex-col gap-[2rem]">
+      <section className="flex flex-col gap-[1rem]">
+        <h2 className="text-xl font-semibold text-foreground">My Challenges</h2>
+        {subscribedCampaigns.length > 0 ? (
+          <div className="w-full flex flex-wrap justify-center md:justify-start items-center gap-[30px]">
+            {subscribedCampaigns.map((campaign, key) => (
+              <CardCampaigns key={key} campaign={campaign} />
+            ))}
+          </div>
+        ) : (
+          <p className="text-gray-500">
+            You are not subscribed to any challenges yet.
+          </p>
+        )}
+      </section>
+
+      <section className="flex flex-col gap-[1rem]">
+        <h2 className="text-xl font-semibold text-foreground">
+          Discover More
+        </h2>
+        {discoverCampaigns.length > 0 ? (
+          <div className="w-full flex flex-wrap justify-center md:justify-start items-center gap-[30px]">
+            {discoverCampaigns.map((campaign, key) => (
+              <CardCampaigns key={key} campaign={campaign} />
+            ))}
+          </div>
+        ) : (
+          <p className="text-gray-500">No additional campaigns to discover.</p>
+        )}
+      </section>
     </div>
   );
 };
