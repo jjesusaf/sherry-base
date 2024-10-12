@@ -71,12 +71,12 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
   const getIdKolCampaign = async (id_campaign: string, address: string) => {  
     const { data } = await subGraphKolCampaignsByAddress(address, id_campaign);
-    console.log("DATA CONTEXT", data);
+    //console.log("DATA CONTEXT", data);
     if(data.kolCampaignAddeds.length === 0) {
       setIdKolCampaign(0);
     }else{
       const kolCampaign = data.kolCampaignAddeds[0];
-      console.log("ID KOL CAMPAIGN CONTEXT", kolCampaign.idKolCampaign);
+      //console.log("ID KOL CAMPAIGN CONTEXT", kolCampaign.idKolCampaign);
 
       setIdKolCampaign(kolCampaign.idKolCampaign);
     }
