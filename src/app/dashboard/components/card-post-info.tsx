@@ -9,23 +9,8 @@ import {
 } from "src/components/ui/card";
 import Image from "next/image";
 import { Instagram } from "lucide-react";
+import { Challenge } from "@/src/interface/Challenge";
 
-interface Kol {
-  id_kol: number;
-  name: string;
-  username: string;
-  avatar: string;
-}
-
-interface Challenge {
-  id_challenge: number;
-  id_post: string;
-  title: string;
-  description: string;
-  image: string;
-  external_url?: string;
-  kol: Kol;
-}
 
 interface CardPostInfoProps {
   challenges: Challenge[];
@@ -46,7 +31,7 @@ const CardPostInfo: React.FC<CardPostInfoProps> = ({ challenges = [] }) => {
               </div>
               <CardTitle>{challenge.title}</CardTitle>
               <CardDescription>Votes on post</CardDescription>
-              <span>22</span>
+              <span>{challenge.votes}</span>
               <p>getsherry.link/230294</p>
             </CardHeader>
             <CardContent>

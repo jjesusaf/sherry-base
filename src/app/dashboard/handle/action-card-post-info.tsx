@@ -9,21 +9,9 @@ import {
   subGraphPostCreateds,
   subGraphVotes,
 } from "../../create-post/actions/link";
+import { Challenge } from "@/src/interface/Challenge";
 
-interface Challenge {
-  id_challenge: number;
-  id_post: string;
-  title: string;
-  description: string;
-  image: string;
-  external_url: string;
-  kol: {
-    id_kol: number;
-    name: string;
-    username: string;
-    avatar: string;
-  };
-}
+
 interface Metrics {
   posts: number;
   views: number;
@@ -78,21 +66,11 @@ const ActionCardPostInfo: React.FC<ChildComponentProps> = ({ setMetrics }) => {
     let votesMetrics = 0;
 
     try {
-      //if (!address) return;
       setLoading(true);
       const response = await postsKol(address!, idCampaign!);
-      console.log("response : ", response);
-      console.log("address : ", address);
       const votesByPostsKol = await subGraphVotes();
 
-      if (votesByPostsKol.data) {
-        votesByPostsKol.data.voteds.map((vote: any) => {
-          //console.log("Vote : ", vote);
-        });
-      }
-      //console.log("response : ", response);
       const data = response;
-      //console.log(data);
 
       if (data) {
         postsMetrics = data.length;
@@ -106,8 +84,6 @@ const ActionCardPostInfo: React.FC<ChildComponentProps> = ({ setMetrics }) => {
           }
         });
 
-        console.log("votesCountMap : ", votesCountMap);
-
         const mappedChallenges = await Promise.all(
           data.map(async (post: any, index: number) => {
             const metadata = await fetchMetadataAndImageFromIPFS(post.url);
@@ -118,6 +94,7 @@ const ActionCardPostInfo: React.FC<ChildComponentProps> = ({ setMetrics }) => {
               description: metadata.description,
               image: metadata.image,
               external_url: metadata.external_url,
+              votes: votesCountMap[post.idPost] || 0,
               kol: {
                 id_kol: index + 1,
                 name: ` ${post.kol}`,
@@ -129,7 +106,6 @@ const ActionCardPostInfo: React.FC<ChildComponentProps> = ({ setMetrics }) => {
         );
 
         const userPostIds = response.map((post: Post) => post.idPost);
-        console.log("userPostIds : ", userPostIds);
         const userVotes = votesByPostsKol.data.voteds.filter((vote: Vote) =>
           userPostIds.includes(vote.idPost)
         );
