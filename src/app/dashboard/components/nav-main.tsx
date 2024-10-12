@@ -30,6 +30,7 @@ const NavMain: React.FC =  () => {
   const campaign = activeCampaigns.find((campaign) => campaign.idCampaign === idCampaign);
 
 
+
   return (
     <div className="fixed top-[58px] z-10 left-0 flex items-center gap-4 w-full justify-between p-[16px] bg-background-secondary">
       <Link href="#">
@@ -47,7 +48,7 @@ const NavMain: React.FC =  () => {
         Dashboard
       </h1>
       <div className="flex items-center  gap-2 md:ml-auto">
-        <EndsCampaign end_date={campaign?.metadata?.end_date} />
+        <EndsCampaign end_date={campaign?.endDate} />
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -15,25 +15,26 @@ import EndsCampaign from "./ends-campaign";
 import { useWriteContract, useAccount } from "wagmi";
 import { Contract, getKolContract } from "@/src/constants";
 import { ButtonChain } from "@/src/components/ButtonChain";
-import { Send } from "lucide-react";
-import { PlusIcon } from "lucide-react";
+import { Star } from "lucide-react";
+import { PlusIcon, StarIcon } from "lucide-react";
 import Link from "next/link";
-import { postsByCampaigns } from "@/src/actions/subgraph/posts-by-campaign";
 import { useAppContext } from "@/src/context/GlobalContext";
 import { useRouter } from "next/navigation";
+import { postsByCampaigns } from "@/src/actions/subgraph/posts-by-campaign";
 
 interface CardCampaignsProps {
   campaign: Campaign;
 }
 
 const CardCampaigns: React.FC<CardCampaignsProps> = ({ campaign }) => {
+  const [postCount, setPostCount] = useState(0);
   const {
     writeContractAsync: addKolToCampaign,
     isPending,
     isSuccess,
     isError,
   } = useWriteContract();
-  const { setIdCampaign } = useAppContext();
+  const { setIdCampaign, idCampaign } = useAppContext();
   const router = useRouter();
 
   const { address } = useAccount();
@@ -51,61 +52,92 @@ const CardCampaigns: React.FC<CardCampaignsProps> = ({ campaign }) => {
     return tx;
   };
 
+  const handleSubGraph = async () => {
+    try {
+      const result = await postsByCampaigns(campaign.idCampaign.toString());
+      console.log("Posts:", result);
+      if (result) {
+        setPostCount(result.length);
+      }
+    } catch (error) {
+      console.error("Error fetching posts:", error);
+    }
+  };
+
   const handleNavigateChallenge = () => {
     setIdCampaign(campaign.idCampaign.toString());
     router.push(`/challengers`);
   };
 
+  const handleCreatePost = () => {
+    setIdCampaign(campaign.idCampaign.toString());
+    router.push(`/create-post`);
+  };
+
+  useEffect(() => {
+    handleSubGraph();
+  }, [idCampaign]);
+
   return (
-    <Card className="flex max-w-[352px] w-full ">
-      <CardHeader className="space-y-2 p-4">
+    <Card className="flex max-w-[352px] w-full gap-[10px] items-center justify-between p-4">
+      <CardHeader className="flex flex-col gap-2 h-[220px]">
         <div className="flex items-center justify-between">
-          <EndsCampaign end_date={campaign.endDate} />
+          <EndsCampaign end_date={campaign?.endDate} />
         </div>
-        <h2 className="text-xl font-bold">{campaign.name}</h2>
-        <p className="text-sm text-gray-500">
+        <h2 className="text-xl font-bold mt-0" style={{ margin: 0 }}>
+          {campaign.name}
+        </h2>
+        <p
+          className="text-sm mt-0 text-muted-foreground h-[72px] overflow-y-scroll"
+          style={{ margin: 0 }}
+        >
           {campaign.metadata?.description}
         </p>
-        <span>6 Posts</span>
-      </CardHeader>
-      <CardContent className="space-y-4 p-4">
-        <div className="flex items-center justify-between text-sm text-gray-500"></div>
-        <div className="relative">
-          <Card
-            className="overflow-hidden"
-            onClick={handleNavigateChallenge}
-          >
-            <img
-              alt="Summer Camp model"
-              className="h-[180px] w-full object-cover"
-              src={campaign.metadata?.image}
-              style={{
-                aspectRatio: "300/180",
-                objectFit: "cover",
-              }}
-            />
-          </Card>
-          <div className="absolute bottom-2 left-2 bg-white p-2 rounded-lg">
-            <h3 className="font-bold">{campaign.metadata?.brand_name}</h3>
-            <p className="text-xs text-gray-500">34 challenges</p>
-          </div>
-        </div>
+        <span
+          className="text-sm text-muted-foreground
+        "
+        >
+          {postCount} Posts
+        </span>
         {campaign.subscribed ? (
-          <Link href={`/create-post/`}>
-            <Button variant="outline" className="w-full text-black">
-              <PlusIcon className="mr-2 h-4 w-4" />
-              Create post
-            </Button>
-          </Link>
+          <Button
+            variant="outline"
+            className="w-full text-black"
+            onClick={handleCreatePost}
+          >
+            <PlusIcon className="mr-2 h-4 w-4" />
+            Create post
+          </Button>
         ) : (
-          <ButtonChain
-            onClick={sendTx}
-            textIfFalse="Sign In"
-            textIfTrue="Subscribe"
-            className="w-full bg-transparent text-black"
-          />
+          <div className="flex items-center gap-2 justify-center rounded-[8px] w-full border border-border max-w-[116px] ">
+            <StarIcon className="h-[14px] w-[14px]" />
+            <ButtonChain
+              onClick={sendTx}
+              textIfFalse="Sign In"
+              textIfTrue="Subscribe"
+              className="bg-transparent p-0 text-[14px] text-black  font-medium"
+            />
+          </div>
         )}
-      </CardContent>
+      </CardHeader>
+      <Card
+        className="p-0 max-w-[140px] w-full flex flex-col h-fit justify-center"
+        onClick={handleNavigateChallenge}
+      >
+        <Image
+          alt={campaign.metadata?.brand_name || "Campaign image"}
+          src={campaign.metadata?.image || "/placeholder.jpg"}
+          width={300}
+          height={180} 
+          style={{ objectFit: "cover" }} 
+          className="w-full object-cover rounded-t-[8px] h-[140px]"
+          
+        />
+        <CardContent className=" px-[1rem] pt-[1.75rem] pb-[1rem]">
+          <h3 className="font-bold">{campaign.metadata?.brand_name}</h3>
+          <p className="text-xs text-gray-500">34 challenges</p>
+        </CardContent>
+      </Card>
     </Card>
   );
 };
