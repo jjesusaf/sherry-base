@@ -19,7 +19,7 @@ const EndsCampaign: React.FC<{ end_date: number }> = ({ end_date }) => {
   };
 
   return (
-    <Badge className="bg-transparent border-border text-foreground">
+    <Badge className="bg-transparent border-border text-foreground hover:text-white">
       Ends in {calculateTimeRemaining(end_date)}
     </Badge>
   );

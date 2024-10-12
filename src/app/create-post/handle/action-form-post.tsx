@@ -13,9 +13,12 @@ import { useToast } from "@/src/hooks/use-toast";
 import { ToastAction } from "@/src/components/ui/toast";
 import { useAccount } from "wagmi";
 import { useRouter } from "next/navigation";
+import { Button } from "@/src/components/ui/button";
+import { useEffect } from "react";
+import { kMaxLength } from "buffer";
 
 const ActionFormPost = () => {
-  const [idKolCampaign, setIdKolCampaign] = React.useState<number>(0);
+  //const [idKolCampaign, setIdKolCampaign] = React.useState<number>(0);
   const router = useRouter();
   const sherry: Contract = getSherryContract();
   const sherryAddress = sherry.address.replace(/^0x/, "");
@@ -41,7 +44,7 @@ const ActionFormPost = () => {
     return tx;
   };
 
-  const { setLoading } = useAppContext();
+  const { setLoading, idCampaign, idKolCampaign, isLoading } = useAppContext();
 
   const url = "http://localhost:3000/challengers";
 
@@ -53,8 +56,8 @@ const ActionFormPost = () => {
   };
 
   const handleSubmit = async (data: any) => {
-    if(!idKolCampaign) throw new Error("No idKolCampaign available");
-    
+    if (!idKolCampaign) throw new Error("No idKolCampaign available");
+
     try {
       setLoading(true);
       if (!campaignCoverFile) {
@@ -81,7 +84,6 @@ const ActionFormPost = () => {
       // Sube a IPFS Imagen y Metadata
       const hashMetadata = await createPost(post);
 
-
       const txHashPost = await sendTx(hashMetadata);
       const event = await getTransactionEvents(txHashPost);
       if (!event) {
@@ -89,7 +91,7 @@ const ActionFormPost = () => {
       }
 
       const updated = await updateLink(link.id, `${url}/${event.idPost}`);
-      //console.log("Link actualizado:", updated);
+
       clearCampaignCover();
       router.push(`/challengers/${event.idPost}`);
       return true;
@@ -105,17 +107,31 @@ const ActionFormPost = () => {
     clearCampaignCover();
   };
 
+
   return (
     <>
-      <FormPost
-        descriptionPlaceholder="Enter a description..."
-        onSubmit={handleSubmit}
-        shareOptions={shareOptions}
-        contentTypeOptions={contentTypeOptions}
-        onLink={handleLink}
-        onClear={handleClear}
-        setIdKolCampaign={setIdKolCampaign}
-      />
+      {idKolCampaign  ? (
+        <FormPost
+          descriptionPlaceholder="Enter a description..."
+          onSubmit={handleSubmit}
+          shareOptions={shareOptions}
+          contentTypeOptions={contentTypeOptions}
+          onLink={handleLink}
+          onClear={handleClear}
+        />
+      ) : (
+        <>
+          <div>You must subscribed to this Campaign</div>
+          <Button
+            className="w-full my-2 bg-crimson11"
+            onClick={() => {
+              router.push(`/home/`);
+            }}
+          >
+            Subscribe!
+          </Button>
+        </>
+      )}
     </>
   );
 };

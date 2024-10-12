@@ -38,12 +38,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <AppProvider>
-          <OnchainProviders>
+        <OnchainProviders>
+          <AppProvider>
             <ClientLayoutWithSpinner>{children}</ClientLayoutWithSpinner>
             <Toaster />
-          </OnchainProviders>
-        </AppProvider>
+          </AppProvider>
+        </OnchainProviders>
       </body>
     </html>
   );
