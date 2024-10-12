@@ -6,6 +6,7 @@ import { CardContent } from "src/components/ui/card";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
 import { CampaignCoverContext } from "../context/CampaignCoverContext";
+import UploadPreview from "./upload-preview";
 
 interface CampaignCoverForm {
     campaignCover: File | null;
@@ -13,6 +14,7 @@ interface CampaignCoverForm {
 const UploadImage: React.FC = () => {
     const { register, setValue } = useForm<CampaignCoverForm>();
     const [preview, setPreview] = useState<string | null>(null);
+    const [fileType, setFileType] = useState<string | null>(null);
   
     const { campaignCover, setCampaignCover, clearCampaignCover } =
       useContext(CampaignCoverContext);
@@ -26,10 +28,16 @@ const UploadImage: React.FC = () => {
           alert("El tamaño de la imagen debe ser menor a 10MB.");
           return;
         }
-        if (!["image/jpeg", "image/png"].includes(file.type)) {
+        if (!["image/jpeg", "image/png", "video/mp4"].includes(file.type)) {
           alert("Solo se permiten imágenes en formato JPG o PNG.");
           return;
         }
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          //setPreview(reader.result as string);
+          setFileType(file.type);
+        };
+        reader.readAsDataURL(file);
         setPreview(URL.createObjectURL(file));
         setCampaignCover(file);
       }
@@ -57,7 +65,7 @@ const UploadImage: React.FC = () => {
           <input
             type="file"
             id="campaignCover"
-            accept="image/jpeg, image/png"
+            accept="image/jpeg, image/png, video/mp4"
             {...register("campaignCover")}
             onChange={handleFileChange}
             className="hidden"
@@ -67,17 +75,7 @@ const UploadImage: React.FC = () => {
           <label htmlFor="campaignCover" className="cursor-pointer">
             {preview ? (
               <div className="relative">
-                <Image
-                  src={preview}
-                  alt="Uploaded preview"
-                  className="h-48 object-cover"
-                  width={300}
-                  height={300}
-                />
-                <i
-                  className="ri-close-large-line text-red-500 text-[20px] absolute top-0 right-0 cursor-pointer"
-                  onClick={dropImage}
-                ></i>
+                <UploadPreview preview={preview} fileType={fileType ?? "image"}  dropImage={dropImage} />
               </div>
             ) : (
               <div className="text-gray-500">

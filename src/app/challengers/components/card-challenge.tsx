@@ -32,29 +32,9 @@ import { ToastAction } from "@/src/components/ui/toast";
 import { ButtonChain } from "@/src/components/ButtonChain";
 import { useWriteContract, useReadContract } from "wagmi";
 import { Contract, getSherryContract } from "@/src/constants";
-import { Skeleton } from "@/src/components/ui/skeleton"
-
-
-interface Kol {
-  id_kol: number;
-  name: string;
-  username: string;
-  avatar: string;
-}
-
-interface Challenge {
-  id_challenge: number;
-  id_post: string;
-  title: string;
-  description: string;
-  image: string;
-  external_url?: string;
-  kol: Kol;
-  hasVoted?: boolean;
-  hasVotedCampaign?: boolean;
-  campaignName?: string;
-  brandName?: string;
-}
+import { Skeleton } from "@/src/components/ui/skeleton";
+import { Challenge } from "@/src/interface/Challenge";
+import MediaPreview  from "./media-previa";
 
 interface CardChallengeProps {
   challenges: Challenge[];
@@ -64,27 +44,18 @@ interface CardChallengeProps {
 const CardChallenge: React.FC<CardChallengeProps> = ({ challenges = [] }) => {
   const { toast } = useToast();
   const { address } = useAccount();
-  const [open, setOpen] = React.useState(false);
   const sherry: Contract = getSherryContract();
   const sherryAddress = sherry.address.replace(/^0x/, "");
 
   const { writeContractAsync: vote, isPending, isSuccess } = useWriteContract();
 
-  /*
-  const result = useReadContract({
-      abi: sherry.abi,
-      address: `0x${sherry.address}`,
-      functionName: ""
-  })
-  */
-
   const sendVoteTx = async (idPost: number) => {
-    console.log("Address:", address);
-    
-    if(!address) { console.log("NO HAY ADDRESS")}
-    console.log("Votando por el post:", idPost);
+    if (!address) {
+      console.log("NO HAY ADDRESS");
+      return;
+    }
 
-    const tx = await vote({
+    await vote({
       abi: sherry.abi,
       address: `0x${sherryAddress}`,
       functionName: "vote",
@@ -95,14 +66,13 @@ const CardChallenge: React.FC<CardChallengeProps> = ({ challenges = [] }) => {
   const handleShare = async (external_url: string) => {
     try {
       const linkData = await getLink(external_url);
-      console.log("Datos del enlace:", linkData); 
+      console.log("Datos del enlace:", linkData);
 
       const matchingLink = linkData.find(
         (link: any) => link.id === external_url
       );
 
       if (matchingLink && matchingLink.shortLink) {
-      
         await navigator.clipboard.writeText(matchingLink.shortLink);
         console.log("Link copiado al portapapeles:", matchingLink.shortLink);
         toast({
@@ -168,13 +138,13 @@ const CardChallenge: React.FC<CardChallengeProps> = ({ challenges = [] }) => {
                 className="w-full"
               >
                 <CardContent className="p-0 h-[440px] items-center justify-center flex">
-                  <Image
-                    src={challenge.image}
-                    alt={challenge.title}
-                    width={300}
-                    height={200}
-                    className="w-full max-h-[440px] h-auto rounded-t-[11px]"
-                  />
+                <MediaPreview
+                src={challenge.image}
+                alt={challenge.title}
+                width={300}
+                height={200}
+                className="w-full max-h-[440px] h-auto rounded-t-[11px]"
+              />
                 </CardContent>
               </Link>
 
@@ -197,7 +167,9 @@ const CardChallenge: React.FC<CardChallengeProps> = ({ challenges = [] }) => {
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
                       {challenge.hasVotedCampaign ? (
-                        <Button className="bg-crimson11" disabled={true}>Already Voted</Button>
+                        <Button className="bg-crimson11" disabled={true}>
+                          Already Voted
+                        </Button>
                       ) : (
                         <ButtonChain
                           className="bg-crimson11"
@@ -233,7 +205,9 @@ const CardChallenge: React.FC<CardChallengeProps> = ({ challenges = [] }) => {
                           className="bg-crimson11 w-full"
                           textIfTrue="Confirm"
                           textIfFalse="Log In"
-                          onClick={() => sendVoteTx(parseInt(challenge.id_post))}
+                          onClick={() =>
+                            sendVoteTx(parseInt(challenge.id_post))
+                          }
                         />
                       </AlertDialogFooter>
                     </AlertDialogContent>

@@ -2,7 +2,6 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
 import { subGraphKolCampaignsByAddress } from "@/src/actions/subgraph/kol-campaigns-by-kol";
 import { useAccount } from "wagmi";
-import { set } from "zod";
 
 // Definir el tipo de valor para nuestro contexto combinado
 interface AppContextType {
@@ -11,6 +10,7 @@ interface AppContextType {
   isLoading: boolean;
   setLoading: (isLoading: boolean) => void;
   idKolCampaign: number;
+  address: string;
 }
 
 // Crear el contexto
@@ -90,7 +90,8 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         setIdCampaign,
         isLoading,
         setLoading: setIsLoading,
-        idKolCampaign
+        idKolCampaign,
+        address: address!,
       }}
     >
       {children}

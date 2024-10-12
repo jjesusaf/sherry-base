@@ -10,3 +10,11 @@ export interface Post {
     attributes: Record<string, any>[];
     file: File | null;
 }
+
+export interface PostSubGraph {
+    id: string;
+    idCampaign: string;
+    idPost: string;
+    kol: string;
+    url: string;
+  }

@@ -7,6 +7,10 @@ export interface Challenge {
     external_url: string;
     votes: number
     kol: Kol;
+    hasVoted?: boolean;
+    hasVotedCampaign?: boolean;
+    campaignName?: string;
+    brandName?: string;
   }
 
   interface Kol {

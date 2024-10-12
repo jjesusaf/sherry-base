@@ -90,7 +90,8 @@ export async function subGraphVotes() {
           query: `{
                     voteds {
                       idPost
-                      voter
+                      voter,
+                      blockTimestamp
                   }
                 }  
                 `,

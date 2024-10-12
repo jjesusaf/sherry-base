@@ -35,7 +35,7 @@ export const CampaignCoverProvider: React.FC<{ children: ReactNode }> = ({ child
         setCampaignCoverFile(file); 
   
         console.log("Archivo guardado en el contexto:", file); 
-        localStorage.setItem('campaignCover', result); 
+        //localStorage.setItem('campaignCover', result); 
       };
       reader.readAsDataURL(file);
     } else {

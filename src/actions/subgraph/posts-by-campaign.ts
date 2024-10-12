@@ -135,7 +135,7 @@ async function mergeSubGraphDataByAddress(idCampaign: string, address: string) {
   }
 }
 
-async function subGraphPostCreatedsByCampaign(idCampaign: string) {
+export const subGraphPostCreatedsByCampaign = async (idCampaign: string) => {
   try {
     const response = await fetch(ENDPOINT_THE_GRAPH, {
       method: "POST",

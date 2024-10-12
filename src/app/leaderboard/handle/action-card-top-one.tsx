@@ -1,13 +1,29 @@
 import React from "react";
 import CardTopOne from "../components/card-top-one";
-const ActionCardTopOne: React.FC = () => {
-  const kolData = {
-    id_kol: 1,
-    name: "Jessica Fit",
-    username: "jessicafit",
-    avatar: "https://github.com/shadcn.png",
-  };
-  return <CardTopOne kol={kolData} />;
+
+interface ActionCardProps {
+  address: string;
+  avatar: string;
+  name: string;
+  username: string;
+}
+
+const ActionCardTopOne: React.FC<ActionCardProps> = ({
+  address,
+  avatar,
+  name,
+  username,
+}) => {
+  return (
+    <CardTopOne
+      kol={{
+        address,
+        avatar,
+        name,
+        username,
+      }}
+    />
+  );
 };
 
 export default ActionCardTopOne;
