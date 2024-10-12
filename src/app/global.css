@@ -1,11 +1,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
-
+@import "swiper/css";
+@import "swiper/css/pagination";
+@import "swiper/css/autoplay";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 body {
   font-family: "Inter", sans-serif;
 }
+
+
+.my-swiper-container .swiper-button-next,
+.my-swiper-container .swiper-button-prev {
+  display: none;
+}
+
+.swiperPagination {
+
+}
+
 
 @layer base {
   :root {
