@@ -9,15 +9,13 @@ import { useAppContext } from "@/src/context/GlobalContext";
 import { useWriteContract } from "wagmi";
 import { Contract, getSherryContract } from "@/src/constants";
 import { getTransactionEvents } from "../actions/events";
-import { uploadMetadataToPinata } from "@/src/service/pinata/upload";
 import { useToast } from "@/src/hooks/use-toast";
 import { ToastAction } from "@/src/components/ui/toast";
 import { useAccount } from "wagmi";
 import { useRouter } from "next/navigation";
 
-const DEFAULT_ID_KOL_CAMPAIGN = 1;
-
 const ActionFormPost = () => {
+  const [idKolCampaign, setIdKolCampaign] = React.useState<number>(0);
   const router = useRouter();
   const sherry: Contract = getSherryContract();
   const sherryAddress = sherry.address.replace(/^0x/, "");
@@ -33,17 +31,12 @@ const ActionFormPost = () => {
     isError,
   } = useWriteContract();
 
-  const sendTx = async (idKolCampaign: number = 1, urlMetadata: string) => {
+  const sendTx = async (urlMetadata: string) => {
     const tx = await createPostContract({
       abi: sherry.abi,
       address: `0x${sherryAddress}`,
       functionName: "createPost",
-      args: [
-        idKolCampaign, // Este ID solo funciona para 1 address, es el IdKolCampaign
-        // Un KOL debe unirse a una campaña para poder obtener su propia ID
-        // y crear un post
-        urlMetadata,
-      ],
+      args: [idKolCampaign, urlMetadata],
     });
     return tx;
   };
@@ -60,6 +53,8 @@ const ActionFormPost = () => {
   };
 
   const handleSubmit = async (data: any) => {
+    if(!idKolCampaign) throw new Error("No idKolCampaign available");
+    
     try {
       setLoading(true);
       if (!campaignCoverFile) {
@@ -76,8 +71,6 @@ const ActionFormPost = () => {
 
       // Crea Link dub.co
       const link = await createLink(url);
-      console.log("Link creado:", link);
-      console.log("Link URL:", link.url);
       const post: Post = {
         name: data.share,
         description: data.description,
@@ -87,15 +80,15 @@ const ActionFormPost = () => {
       };
       // Sube a IPFS Imagen y Metadata
       const hashMetadata = await createPost(post);
-      //console.log("hashMetadata:", hashMetadata);
-      const txHashPost = await sendTx(2, hashMetadata);
+
+      const txHashPost = await sendTx(hashMetadata);
       const event = await getTransactionEvents(txHashPost);
       if (!event) {
         throw new Error("Error getting transaction events");
       }
 
       const updated = await updateLink(link.id, `${url}/${event.idPost}`);
-      console.log("Link actualizado:", updated);
+      //console.log("Link actualizado:", updated);
       clearCampaignCover();
       router.push(`/challengers/${event.idPost}`);
       return true;
@@ -120,6 +113,7 @@ const ActionFormPost = () => {
         contentTypeOptions={contentTypeOptions}
         onLink={handleLink}
         onClear={handleClear}
+        setIdKolCampaign={setIdKolCampaign}
       />
     </>
   );
