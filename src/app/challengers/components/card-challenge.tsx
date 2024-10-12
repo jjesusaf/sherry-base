@@ -79,6 +79,11 @@ const CardChallenge: React.FC<CardChallengeProps> = ({ challenges = [] }) => {
   */
 
   const sendVoteTx = async (idPost: number) => {
+    console.log("Address:", address);
+    
+    if(!address) { console.log("NO HAY ADDRESS")}
+    console.log("Votando por el post:", idPost);
+
     const tx = await vote({
       abi: sherry.abi,
       address: `0x${sherryAddress}`,

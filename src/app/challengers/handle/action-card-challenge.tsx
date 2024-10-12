@@ -6,7 +6,7 @@ import {
   postsByCampaigns,
   postsByCampaignsAndAddress,
 } from "@/src/actions/subgraph/posts-by-campaign";
-import { Skeleton } from "@/src/components/ui/skeleton";
+ 
 
 interface Challenge {
   id_challenge: number;

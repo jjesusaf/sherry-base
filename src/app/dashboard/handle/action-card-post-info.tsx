@@ -5,6 +5,10 @@ import { useAccount } from "wagmi";
 import { postsKol } from "../actions/post-kol";
 import { fetchMetadataFromIPFS } from "../../challengers/actions/ipfs";
 import { useAppContext } from "@/src/context/GlobalContext";
+import {
+  subGraphPostCreateds,
+  subGraphVotes,
+} from "../../create-post/actions/link";
 
 interface Challenge {
   id_challenge: number;
@@ -20,10 +24,25 @@ interface Challenge {
     avatar: string;
   };
 }
+interface Metrics {
+  posts: number;
+  views: number;
+  votes: number;
+}
 
+interface Vote {
+  idPost: string;
+}
 
+interface Post {
+  idPost: string;
+}
 
-const ActionCardPostInfo: React.FC = () => {
+interface ChildComponentProps {
+  setMetrics: React.Dispatch<React.SetStateAction<Metrics>>;
+}
+
+const ActionCardPostInfo: React.FC<ChildComponentProps> = ({ setMetrics }) => {
   const { address } = useAccount();
   const { setLoading } = useAppContext();
   const [challenges, setChallenges] = useState<Challenge[]>([]);
@@ -54,17 +73,42 @@ const ActionCardPostInfo: React.FC = () => {
   };
 
   const handleSubGraph = async () => {
+    let postsMetrics = 0;
+    let viewsMetrics = 0;
+    let votesMetrics = 0;
+
     try {
-      if (!address) {
-        console.log("No hay wallet");
-        return;
-      }
+      //if (!address) return;
+
       setLoading(true);
-      const response = await postsKol(address);
+      const response = await postsKol(address!);
+      console.log("response : ", response);
+      console.log("address : ", address);
+      const votesByPostsKol = await subGraphVotes();
+
+      if (votesByPostsKol.data) {
+        votesByPostsKol.data.voteds.map((vote: any) => {
+          //console.log("Vote : ", vote);
+        });
+      }
+      //console.log("response : ", response);
       const data = response;
-      console.log(data);
+      //console.log(data);
 
       if (data) {
+        postsMetrics = data.length;
+
+        const votesCountMap: { [key: string]: number } = {};
+        votesByPostsKol.data.voteds.forEach((vote: Vote) => {
+          if (votesCountMap[vote.idPost]) {
+            votesCountMap[vote.idPost]++;
+          } else {
+            votesCountMap[vote.idPost] = 1;
+          }
+        });
+
+        console.log("votesCountMap : ", votesCountMap);
+
         const mappedChallenges = await Promise.all(
           data.map(async (post: any, index: number) => {
             const metadata = await fetchMetadataAndImageFromIPFS(post.url);
@@ -84,6 +128,15 @@ const ActionCardPostInfo: React.FC = () => {
             };
           })
         );
+
+        const userPostIds = response.map((post: Post) => post.idPost);
+        console.log("userPostIds : ", userPostIds);
+        const userVotes = votesByPostsKol.data.voteds.filter((vote: Vote) =>
+          userPostIds.includes(vote.idPost)
+        );
+
+        votesMetrics = userVotes.length;
+
         setChallenges(mappedChallenges);
         console.log(mappedChallenges);
       } else {
@@ -93,18 +146,19 @@ const ActionCardPostInfo: React.FC = () => {
       console.error("Error al obtener los datos del subGraph:", error);
     } finally {
       setLoading(false);
+      setMetrics({
+        posts: postsMetrics,
+        views: viewsMetrics,
+        votes: votesMetrics,
+      });
     }
   };
 
   useEffect(() => {
-    if (address) {
-      handleSubGraph();
-    }
+    handleSubGraph();
   }, []);
-  
 
-console.log(`challenges`, challenges);
-
+  console.log(`challenges`, challenges);
 
   return (
     <div className="flex gap-[16px] flex-wrap items-center justify-center">
