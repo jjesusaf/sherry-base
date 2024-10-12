@@ -14,8 +14,6 @@ import { ToastAction } from "@/src/components/ui/toast";
 import { useAccount } from "wagmi";
 import { useRouter } from "next/navigation";
 import { Button } from "@/src/components/ui/button";
-import { useEffect } from "react";
-import { kMaxLength } from "buffer";
 
 const ActionFormPost = () => {
   //const [idKolCampaign, setIdKolCampaign] = React.useState<number>(0);
