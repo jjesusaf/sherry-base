@@ -2,16 +2,11 @@ import React, { useEffect, useState } from "react";
 import CardChallenge from "../components/card-challenge";
 import { useAppContext } from "@/src/context/GlobalContext";
 import { useAccount } from "wagmi";
-<<<<<<< HEAD
-import { postDetail } from "../actions/graph";
-import { subGraphPostCreateds, subGraphVotes } from "../../create-post/actions/link";
-=======
 import {
   postsByCampaigns,
   postsByCampaignsAndAddress,
 } from "@/src/actions/subgraph/posts-by-campaign";
-import { Skeleton } from "@/src/components/ui/skeleton";
->>>>>>> main
+ 
 
 interface Challenge {
   id_challenge: number;
