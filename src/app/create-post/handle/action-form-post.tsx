@@ -16,7 +16,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/src/components/ui/button";
 
 const ActionFormPost = () => {
-  //const [idKolCampaign, setIdKolCampaign] = React.useState<number>(0);
+ 
   const router = useRouter();
   const sherry: Contract = getSherryContract();
   const sherryAddress = sherry.address.replace(/^0x/, "");
