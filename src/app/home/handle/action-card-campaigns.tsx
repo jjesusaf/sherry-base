@@ -52,15 +52,20 @@ const ActionCardCampaigns: React.FC = () => {
   };
 
   useEffect(() => {
-    if (!address) {
-      setLoading(false);
-      return;
-    }
-    const fetchData = async () => {
-      await handleSubGraph();
-    };
+    try {
+      setLoading(true);
+      const fetchData = async () => {
+        await handleSubGraph();
+      };
 
-    fetchData();
+      fetchData();
+    } catch (error) {
+      console.error("Error al obtener las campañas", error);
+    } finally {
+      setLoading(false);
+    }
+
+   
   }, [address]);
 
   if (campaigns.length === 0) {
