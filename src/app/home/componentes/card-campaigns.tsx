@@ -70,7 +70,6 @@ const CardCampaigns: React.FC<CardCampaignsProps> = ({
     } catch (error) {
       console.error("Error fetching posts:", error);
     } finally {
-      //setLoading(false);
     }
   };
 

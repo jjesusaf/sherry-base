@@ -46,27 +46,30 @@ const ActionCardCampaigns: React.FC = () => {
       const response = await subGraphCampaigns();
       const fetchedCampaigns = response.data.campaignCreateds;
       await fetchMetadataCampaigns(fetchedCampaigns);
+      console.log("Estas campaigns",campaigns);
     } catch (error) {
       console.error("Error al obtener las campañas", error);
     }
   };
 
   useEffect(() => {
-    try {
-      setLoading(true);
-      const fetchData = async () => {
+    
+    const fetchData = async () => {
+      try {
+        setLoading(true);
         await handleSubGraph();
-      };
-
-      fetchData();
-    } catch (error) {
-      console.error("Error al obtener las campañas", error);
-    } finally {
-      setLoading(false);
-    }
+      } catch (error) {
+        console.error("Error al obtener las campañas", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    fetchData();
   }, [address]);
 
-  if (campaigns.length === 0) {
+  if (campaigns.length == 0) {
+    console.log("cam",campaigns.length)
     return (
       <div className="w-full flex justify-center items-center">
         <Skeleton className="w-[352px] h-[300px]" />
