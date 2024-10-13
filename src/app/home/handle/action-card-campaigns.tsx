@@ -126,7 +126,6 @@ const ActionCardCampaigns: React.FC = () => {
           )}
         </section>
       )}
-
       <section className="flex flex-col gap-[1rem]">
         <h2 className="text-xl font-semibold text-foreground">Discover More</h2>
         {discoverCampaigns.length > 0 && idCampaign ? (

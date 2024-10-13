@@ -118,7 +118,7 @@ const CardCampaigns: React.FC<CardCampaignsProps> = ({
         {campaign.subscribed ? (
           <Button
             variant="outline"
-            className="w-full text-black"
+            className="w-full text-black cursor-pointer"
             onClick={handleCreatePost}
           >
             <PlusIcon className="mr-2 h-4 w-4" />
@@ -137,7 +137,7 @@ const CardCampaigns: React.FC<CardCampaignsProps> = ({
         )}
       </CardHeader>
       <Card
-        className="p-0 max-w-[140px] w-full flex flex-col h-fit justify-center"
+        className="p-0 max-w-[140px] w-full flex flex-col h-fit justify-center cursor-pointer"
         onClick={handleNavigateChallenge}
       >
         <Image
