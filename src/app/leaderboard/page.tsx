@@ -6,6 +6,7 @@ import { useAppContext } from "@/src/context/GlobalContext";
 import { fetchMetrics } from "./actions/metrics";
 import { Metrics } from "@/src/interface/Metrics";
 import { calculateUserRanking } from "./actions/metrics";
+import { set } from "zod";
 
 interface ActionCardProps {
   address: string;
@@ -20,7 +21,6 @@ interface ActionCardProps {
 
 const Leaderboard: React.FC = () => {
   const { setLoading, idCampaign, isLoading, address } = useAppContext();
-  //const [isThereData, setIsThereData] = React.useState<boolean>(false);
   const [metrics, setMetrics] = React.useState<Metrics[]>([]);
   const [rank, setRank] = React.useState<number>(0);
   const [percentage, setPercentage] = React.useState<string>("");
@@ -39,9 +39,10 @@ const Leaderboard: React.FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      //setLoading(true);
+      setLoading(true);
       console.log("ENTROOO AQUIII");
-      if (idCampaign && !isLoading) {
+      if (idCampaign && address) {
+        console.log("ENTROOO AQUIII 2");
         setIsLoadingFilter(true);
         try {
           const metrics = await fetchMetrics(idCampaign);
@@ -62,10 +63,11 @@ const Leaderboard: React.FC = () => {
         }
       }
       setLoading(false);
+      setIsLoadingFilter(false);
     };
 
     fetchData();
-  }, [idCampaign]);
+  }, [idCampaign, address]);
 
   return (
     <div className="flex flex-col w-full items-center gap-[16px]">

@@ -8,7 +8,6 @@ import { subGraphPostCreatedsByCampaign, postsByCampaigns } from "@/src/actions/
 import { subGraphVotes } from "@/src/app/create-post/actions/link";
 import { Vote } from "@/src/interface/Vote";
 import { Challenge } from "@/src/interface/Challenge";
-import { isNumber } from "util";
 
 export interface Metrics {
     idPost: number;
