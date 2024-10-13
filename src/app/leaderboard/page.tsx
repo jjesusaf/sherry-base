@@ -40,9 +40,7 @@ const Leaderboard: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      console.log("ENTROOO AQUIII");
       if (idCampaign && address) {
-        console.log("ENTROOO AQUIII 2");
         setIsLoadingFilter(true);
         try {
           const metrics = await fetchMetrics(idCampaign);
