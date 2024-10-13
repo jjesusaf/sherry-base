@@ -7,6 +7,7 @@ import dynamic from "next/dynamic";
 import ClientLayoutWithSpinner from "../components/ClientLayoutWithSpinner";
 import { Toaster } from "../components/ui/toaster";
 import { AppProvider } from "../context/GlobalContext";
+import NextTopLoader from "nextjs-toploader";
 
 const OnchainProviders = dynamic(
   () => import("src/components/OnchainProviders"),
@@ -37,7 +38,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-       <head>
+      <head>
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#ffffff" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -45,7 +46,10 @@ export default function RootLayout({
       <body>
         <OnchainProviders>
           <AppProvider>
-            <ClientLayoutWithSpinner>{children}</ClientLayoutWithSpinner>
+            <ClientLayoutWithSpinner>
+              <NextTopLoader />
+              {children}
+            </ClientLayoutWithSpinner>
             <Toaster />
           </AppProvider>
         </OnchainProviders>

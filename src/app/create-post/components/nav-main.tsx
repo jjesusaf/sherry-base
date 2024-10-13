@@ -2,9 +2,8 @@
 import React, { useContext } from "react";
 import { ChevronLeft } from "lucide-react";
 import { Button } from "src/components/ui/button";
-import { useRouter } from "next/navigation";
+import { useRouter } from 'nextjs-toploader/app';
 import Link from "next/link";
-import { Badge } from "src/components/ui/badge";
 
 const NavMain: React.FC = () => {
   const router = useRouter();

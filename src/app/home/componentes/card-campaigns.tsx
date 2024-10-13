@@ -16,7 +16,7 @@ import { Contract, getKolContract } from "@/src/constants";
 import { ButtonChain } from "@/src/components/ButtonChain";
 import { PlusIcon, StarIcon } from "lucide-react";
 import { useAppContext } from "@/src/context/GlobalContext";
-import { useRouter } from "next/navigation";
+import { useRouter } from 'nextjs-toploader/app';
 import { postsByCampaigns } from "@/src/actions/subgraph/posts-by-campaign";
 import { campaignsByIdBrand } from "@/src/actions/subgraph/campaigns-by-idbrand";
 

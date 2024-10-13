@@ -12,7 +12,7 @@ import { getTransactionEvents } from "../actions/events";
 import { useToast } from "@/src/hooks/use-toast";
 import { ToastAction } from "@/src/components/ui/toast";
 import { useAccount } from "wagmi";
-import { useRouter } from "next/navigation";
+import { useRouter } from 'nextjs-toploader/app';
 import { Button } from "@/src/components/ui/button";
 
 const ActionFormPost = () => {
