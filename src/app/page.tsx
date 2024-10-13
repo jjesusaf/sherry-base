@@ -12,12 +12,40 @@ import { ReadBrand } from "../service/brand";
 import AddKolWrapper from "../components/blockchain/AddKolWrapper";
 import CreatePostWrapper from "../components/blockchain/CreatePostWrapper";
 import JoinCampaign from "../components/blockchain/JoinCampaign";
+import { NextPage } from "next";
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
   const { address } = useAccount();
+  const router = useRouter();
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      router.push("/home");
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, [router]);
   return (
-    <div className="flex h-full w-96 max-w-full flex-col px-1 md:w-[1008px]">
+    <div
+      className={`flex items-center flex-col gap-[20px] relative justify-center h-screen p-[20px]`}
+    >
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 2 }}
+      >
+        <Image
+          src="/icons/icon-192x192.png"
+          width={100}
+          height={100}
+          alt="logo"
+        />
+      </motion.div>
+
+      {/**    <div className="flex h-full w-96 max-w-full flex-col px-1 md:w-[1008px]">
       <ReadBrand />
 
       <section className="mt-6 mb-6 flex w-full flex-col md:flex-row">
@@ -52,6 +80,7 @@ export default function Page() {
       </section>
       <Button>Click me</Button>
       <Footer />
+    </div> */}
     </div>
   );
 }

@@ -34,7 +34,8 @@ const Leaderboard: React.FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (idCampaign && !isLoading) {
+      setLoading(true);
+      if (idCampaign) {
         try {
           const metrics = await fetchMetrics(idCampaign);
           if (metrics.length > 0) {
@@ -52,10 +53,11 @@ const Leaderboard: React.FC = () => {
           console.error("Error fetching data: ", error);
         }
       }
+      setLoading(false);
     };
 
     fetchData();
-  }, [idCampaign, isLoading]);
+  }, [idCampaign]);
 
   return (
     <div className="flex flex-col w-full items-center gap-[16px]">
