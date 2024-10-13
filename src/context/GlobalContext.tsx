@@ -9,7 +9,6 @@ import React, {
 import { subGraphKolCampaignsByAddress } from "@/src/actions/subgraph/kol-campaigns-by-kol";
 import { useAccount } from "wagmi";
 
-
 interface AppContextType {
   idCampaign: string | null;
   setIdCampaign: (id: string) => void;
@@ -34,7 +33,6 @@ export const useAppContext = () => {
 export const AppProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-
   const [idCampaign, setIdCampaignState] = useState<string | null>(() => {
     if (typeof window !== "undefined") {
       return localStorage.getItem("idCampaign") || null;
@@ -62,8 +60,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({
     }
 
     getIdKolCampaign(idCampaign, address);
-  }, [idCampaign, address]); 
-
+  }, [idCampaign, address]);
 
   const setIdCampaign = (id: string) => {
     setIdCampaignState(id);

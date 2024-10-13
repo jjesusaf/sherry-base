@@ -24,17 +24,15 @@ import {
 import { Share } from "lucide-react";
 import { Metrics } from "@/src/interface/Metrics";
 import { formatAddress } from "@/src/utils/address";
-import { calculateUserRanking } from "../actions/metrics";
+import { SpinnerLeader } from "./spinner";
 
 interface CardTopProps {
   metrics: Metrics[];
   address: string;
+  isLoading: boolean;
 }
 
-const CardTop: React.FC<CardTopProps> = ({
-  metrics,
-  address
-}) => {
+const CardTop: React.FC<CardTopProps> = ({ metrics, address, isLoading }) => {
   return (
     <Tabs className="w-full items-center flex flex-col" defaultValue="7 Days">
       <Card className="p-[24px] max-w-[352px] w-full gap-3 flex flex-col">

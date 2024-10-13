@@ -8,6 +8,8 @@ interface ActionCardProps {
   username: string;
   rank: number;
   percentage: string;
+  total: number;
+  isLoading: boolean;
 }
 
 const ActionCardTopOne: React.FC<ActionCardProps> = ({
@@ -16,7 +18,9 @@ const ActionCardTopOne: React.FC<ActionCardProps> = ({
   name,
   username,
   rank,
-  percentage
+  percentage,
+  total,
+  isLoading
 }) => {
   return (
     <CardTopOne
@@ -26,7 +30,9 @@ const ActionCardTopOne: React.FC<ActionCardProps> = ({
         name,
         username,
         rank,
-        percentage
+        percentage,
+        total,
+        isLoading
       }}
     />
   );

@@ -8,6 +8,7 @@ import { subGraphPostCreatedsByCampaign, postsByCampaigns } from "@/src/actions/
 import { subGraphVotes } from "@/src/app/create-post/actions/link";
 import { Vote } from "@/src/interface/Vote";
 import { Challenge } from "@/src/interface/Challenge";
+import { isNumber } from "util";
 
 export interface Metrics {
     idPost: number;
@@ -64,7 +65,7 @@ export const fetchMetrics = async (idCampaign: string) => {
 };
 
 export const calculateUserRanking = (metrics: Metrics[], userKol: string) => {
-    console.log("CALCULATE USER RANKING")
+    console.log("CALCULATE USER RANKING");
 
     // Step 1: Group votes by KOL
     const kolVotes = metrics.reduce((acc, metric) => {
@@ -81,23 +82,20 @@ export const calculateUserRanking = (metrics: Metrics[], userKol: string) => {
         .map(([kol, votes]) => ({ kol, votes }))
         .sort((a, b) => b.votes - a.votes);
 
-    // Step 3: Calculate total votes
-    const totalVotes = sortedKols.reduce((sum, kol) => sum + kol.votes, 0);
+    console.log("Sorted KOLs: ", sortedKols);
 
-    // Step 4: Normalize userKol and find user ranking and percentage
+    // Step 3: Normalize userKol and find user ranking and percentage
     const normalizedUserKol = userKol.trim().toUpperCase();
     const userIndex = sortedKols.findIndex(k => k.kol === normalizedUserKol);
 
-    if (userIndex === -1) {
-        return null; // User not found
-    }
-
     const userRanking = {
         kol: userKol,
-        votes: sortedKols[userIndex].votes,
-        rank: userIndex + 1,
-        percentage: ((sortedKols[userIndex].votes / totalVotes) * 100).toFixed(2),
+        votes: userIndex === -1 ? 0 : sortedKols[userIndex].votes,
+        rank: userIndex === -1 ? 0 : userIndex + 1,
+        percentage: (((sortedKols.length - userIndex) / sortedKols.length) * 100).toFixed(2),
     };
+
+    console.log("User ranking: ", userRanking);
 
     return { rank: userRanking.rank, percentage: userRanking.percentage };
 };
