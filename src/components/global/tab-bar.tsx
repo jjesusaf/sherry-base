@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 const TabBar: React.FC = () => {
   const pathname = usePathname();
   return (
-    <div className="fixed bottom-0 left-0 w-full flex justify-around items-center  py-[1.5rem] bg-background border-t border-border">
+    <div className="fixed bottom-0 left-0 w-full flex justify-around items-center  py-[1.5rem] bg-background border-t border-border pb-[40px]">
       <Link href="/home">
         <Home className={`w-6 h-6 ${pathname === '/challengers' || pathname === '/home' ? 'text-crimson11' : 'text-foreground'}`} />
       </Link>

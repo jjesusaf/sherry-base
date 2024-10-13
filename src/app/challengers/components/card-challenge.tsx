@@ -63,18 +63,45 @@ const CardChallenge: React.FC<CardChallengeProps> = ({ challenges = [] }) => {
     });
   };
 
+  const fallbackCopyTextToClipboard = (text: string) => {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    // Asegúrate de que el textarea no sea visible
+    textArea.style.position = "fixed";
+    textArea.style.left = "-999999px";
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    try {
+      const successful = document.execCommand("copy");
+      if (successful) {
+        console.log("Fallback: Copiado exitosamente al portapapeles");
+      } else {
+        console.error("Fallback: No se pudo copiar");
+      }
+    } catch (err) {
+      console.error("Fallback: Error al copiar", err);
+    }
+    document.body.removeChild(textArea);
+  };
+
   const handleShare = async (external_url: string) => {
     try {
       const linkData = await getLink(external_url);
       console.log("Datos del enlace:", linkData);
-
+  
       const matchingLink = linkData.find(
         (link: any) => link.id === external_url
       );
-
+  
       if (matchingLink && matchingLink.shortLink) {
-        await navigator.clipboard.writeText(matchingLink.shortLink);
-        console.log("Link copiado al portapapeles:", matchingLink.shortLink);
+        try {
+          await navigator.clipboard.writeText(matchingLink.shortLink);
+          console.log("Link copiado al portapapeles:", matchingLink.shortLink);
+        } catch (error) {
+          console.warn("Fallo al usar clipboard API, usando fallback.");
+          fallbackCopyTextToClipboard(matchingLink.shortLink);
+        }
         toast({
           variant: "default",
           title: "Link copied to clipboard",
