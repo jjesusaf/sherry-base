@@ -45,9 +45,9 @@ const CardTopOne: React.FC<CardTopOneProps> = ({ kol }) => {
         <CardTitle className="flex flex-row items-center">
           Rank #
           {kol.isLoading ? (
-            <div className="mx-2">
+            <span className="mx-2">
               <SpinnerLeader />
-            </div>
+            </span>
           ) : (
             kol.rank
           )}
@@ -59,9 +59,9 @@ const CardTopOne: React.FC<CardTopOneProps> = ({ kol }) => {
         <CardTitle className="flex flex-row items-center">
           Best{" "}
           {kol.isLoading ? (
-            <div className="mx-2">
+            <span className="mx-2">
               <SpinnerLeader />
-            </div>
+            </span>
           ) : (
             kol.percentage
           )}
@@ -70,9 +70,9 @@ const CardTopOne: React.FC<CardTopOneProps> = ({ kol }) => {
         <CardDescription className="flex flex-row items-center">
           Out of{" "}
           {kol.isLoading ? (
-            <div className="mx-2">
+            <span className="mx-2">
               <SpinnerLeader />
-            </div>
+            </span>
           ) : (
             kol.total
           )}{" "}
