@@ -8,6 +8,7 @@ import {
 import { Avatar, AvatarImage, AvatarFallback } from "src/components/ui/avatar";
 import { Trophy } from "lucide-react";
 import { formatAddress } from "@/src/utils/address";
+import { SpinnerLeader } from "./spinner";
 
 interface Kol {
   address: string;
@@ -16,6 +17,8 @@ interface Kol {
   avatar: string;
   rank: number;
   percentage: string;
+  total: number;
+  isLoading: boolean;
 }
 
 interface CardTopOneProps {
@@ -39,13 +42,42 @@ const CardTopOne: React.FC<CardTopOneProps> = ({ kol }) => {
           </Avatar>
           <CardDescription>{`@${formatAddress(kol.username)}`}</CardDescription>
         </div>
-        <CardTitle>Rank #{kol.rank}</CardTitle>
+        <CardTitle className="flex flex-row items-center">
+          Rank #
+          {kol.isLoading ? (
+            <div className="mx-2">
+              <SpinnerLeader />
+            </div>
+          ) : (
+            kol.rank
+          )}
+        </CardTitle>
         <CardDescription>1 voter</CardDescription>
       </CardHeader>
       <CardHeader className="flex text-right items-end gap-3">
         <Trophy className={`w-6 h-6`} />
-        <CardTitle>Best {kol.percentage}%</CardTitle>
-        <CardDescription>Out of 3,202 challengers</CardDescription>
+        <CardTitle className="flex flex-row items-center">
+          Best{" "}
+          {kol.isLoading ? (
+            <div className="mx-2">
+              <SpinnerLeader />
+            </div>
+          ) : (
+            kol.percentage
+          )}
+          %
+        </CardTitle>
+        <CardDescription className="flex flex-row items-center">
+          Out of{" "}
+          {kol.isLoading ? (
+            <div className="mx-2">
+              <SpinnerLeader />
+            </div>
+          ) : (
+            kol.total
+          )}{" "}
+          challengers
+        </CardDescription>
       </CardHeader>
     </Card>
   );

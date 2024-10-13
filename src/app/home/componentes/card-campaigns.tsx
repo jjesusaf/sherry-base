@@ -10,23 +10,25 @@ import {
 import { Button } from "src/components/ui/button";
 import { Campaign } from "@/src/interface/Campaign";
 import Image from "next/image";
-import { Plus } from "lucide-react";
 import EndsCampaign from "./ends-campaign";
 import { useWriteContract, useAccount } from "wagmi";
 import { Contract, getKolContract } from "@/src/constants";
 import { ButtonChain } from "@/src/components/ButtonChain";
-import { Star } from "lucide-react";
 import { PlusIcon, StarIcon } from "lucide-react";
-import Link from "next/link";
 import { useAppContext } from "@/src/context/GlobalContext";
 import { useRouter } from "next/navigation";
 import { postsByCampaigns } from "@/src/actions/subgraph/posts-by-campaign";
 import { campaignsByIdBrand } from "@/src/actions/subgraph/campaigns-by-idbrand";
+
 interface CardCampaignsProps {
   campaign: Campaign;
+  id_campaign: number;
 }
 
-const CardCampaigns: React.FC<CardCampaignsProps> = ({ campaign }) => {
+const CardCampaigns: React.FC<CardCampaignsProps> = ({
+  campaign,
+  id_campaign,
+}) => {
   const [postCount, setPostCount] = useState(0);
   const [postByBrand, setPostByBrand] = useState(0);
   const {
@@ -35,7 +37,7 @@ const CardCampaigns: React.FC<CardCampaignsProps> = ({ campaign }) => {
     isSuccess,
     isError,
   } = useWriteContract();
-  const { setIdCampaign, idCampaign } = useAppContext();
+  const { setIdCampaign, setLoading } = useAppContext();
   const router = useRouter();
 
   const { address } = useAccount();
@@ -44,12 +46,14 @@ const CardCampaigns: React.FC<CardCampaignsProps> = ({ campaign }) => {
   const kolAddress = kol.address.replace(/^0x/, "");
 
   const sendTx = async () => {
+    setLoading(true);
     const tx = await addKolToCampaign({
       abi: kol.abi,
       address: `0x${kolAddress}`,
       functionName: "addKolToCampaign",
       args: [BigInt(campaign.idCampaign), address],
     });
+    setLoading(false);
     return tx;
   };
 
@@ -65,6 +69,8 @@ const CardCampaigns: React.FC<CardCampaignsProps> = ({ campaign }) => {
       }
     } catch (error) {
       console.error("Error fetching posts:", error);
+    } finally {
+      //setLoading(false);
     }
   };
 
@@ -79,8 +85,14 @@ const CardCampaigns: React.FC<CardCampaignsProps> = ({ campaign }) => {
   };
 
   useEffect(() => {
-    handleSubGraph();
-  }, [idCampaign]);
+    if (!id_campaign) return;
+    console.log("ID CAMPAIGN", id_campaign);
+    const fetchData = async () => {
+      await handleSubGraph();
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <Card className="flex max-w-[352px] w-full gap-[10px] items-center justify-between p-4">
@@ -132,16 +144,13 @@ const CardCampaigns: React.FC<CardCampaignsProps> = ({ campaign }) => {
           alt={campaign.metadata?.brand_name || "Campaign image"}
           src={campaign.metadata?.image || "/placeholder.jpg"}
           width={300}
-          height={180} 
-          style={{ objectFit: "cover" }} 
+          height={180}
+          style={{ objectFit: "cover" }}
           className="w-full object-cover rounded-t-[8px] h-[140px]"
-          
         />
         <CardContent className=" px-[1rem] pt-[1.75rem] pb-[1rem]">
           <h3 className="font-bold">{campaign.metadata?.brand_name}</h3>
-          <p className="text-xs text-gray-500">
-            {postByBrand} challenges
-          </p>
+          <p className="text-xs text-gray-500">{postByBrand} challenges</p>
         </CardContent>
       </Card>
     </Card>
