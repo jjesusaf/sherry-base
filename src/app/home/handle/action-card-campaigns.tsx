@@ -49,7 +49,6 @@ const ActionCardCampaigns: React.FC = () => {
     try {
       setLoading(true);
       const response = await subGraphCampaigns();
-      console.log("Campañas:", response.data.campaignCreateds);
       const fetchedCampaigns = response.data.campaignCreateds;
       await fetchMetadataCampaigns(fetchedCampaigns);
     } catch (error) {
@@ -76,6 +75,8 @@ const ActionCardCampaigns: React.FC = () => {
   const discoverCampaigns = campaigns.filter(
     (campaign) => !campaign.subscribed
   );
+
+
 
   return (
     <div className="w-full flex flex-col gap-[2rem]">

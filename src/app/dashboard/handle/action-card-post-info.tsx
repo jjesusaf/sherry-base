@@ -38,12 +38,12 @@ const ActionCardPostInfo: React.FC<ChildComponentProps> = ({ setMetrics }) => {
   const fetchMetadataAndImageFromIPFS = async (ipfsUrl: string) => {
     try {
       const metadata = await fetchMetadataFromIPFS(ipfsUrl);
-
       return {
         image: metadata?.image || "/images/example.png",
         title: metadata?.name || `Challenge`,
         description: metadata?.description || `Descripción del post`,
         external_url: metadata?.external_url || `Link url`,
+        content: metadata?.attributes[0]?.contentType || `Contenido del post`,
       };
     } catch (error) {
       console.error(
@@ -56,6 +56,7 @@ const ActionCardPostInfo: React.FC<ChildComponentProps> = ({ setMetrics }) => {
         title: `Challenge`,
         description: `Descripción del post`,
         external_url: `Link url`,
+        content: `Contenido del post`,
       };
     }
   };
@@ -92,6 +93,7 @@ const ActionCardPostInfo: React.FC<ChildComponentProps> = ({ setMetrics }) => {
               id_post: post.idPost,
               title: metadata.title,
               description: metadata.description,
+              content: metadata.content,
               image: metadata.image,
               external_url: metadata.external_url,
               votes: votesCountMap[post.idPost] || 0,
@@ -133,7 +135,6 @@ const ActionCardPostInfo: React.FC<ChildComponentProps> = ({ setMetrics }) => {
     handleSubGraph();
   }, [idCampaign]);
 
-  console.log(`challenges`, challenges);
 
   return (
     <div className="flex gap-[16px] flex-wrap items-center justify-center">

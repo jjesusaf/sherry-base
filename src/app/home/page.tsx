@@ -4,7 +4,7 @@ import ActionCardCampaigns from "./handle/action-card-campaigns";
 
 const Home: React.FC = () => {
   return (
-    <div className=" w-full">
+    <div className=" w-full flex justify-center">
       <ActionCardCampaigns />
     </div>
   );

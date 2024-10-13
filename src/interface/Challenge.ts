@@ -5,8 +5,9 @@ export interface Challenge {
     description: string;
     image: string;
     external_url: string;
-    votes: number
+    votes?: number
     kol: Kol;
+    content?: string;
     hasVoted?: boolean;
     hasVotedCampaign?: boolean;
     campaignName?: string;
