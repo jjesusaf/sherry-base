@@ -44,7 +44,7 @@ const ActionFormPost = () => {
 
   const { setLoading, idCampaign, idKolCampaign, isLoading } = useAppContext();
 
-  const url = "http://localhost:3000/challengers";
+  const url = process.env.NEXT_PUBLIC_APP_URL as string;
 
   const { campaignCoverFile, campaignCover, clearCampaignCover } =
     useContext(CampaignCoverContext);

@@ -21,13 +21,14 @@ import Link from "next/link";
 import { useAppContext } from "@/src/context/GlobalContext";
 import { useRouter } from "next/navigation";
 import { postsByCampaigns } from "@/src/actions/subgraph/posts-by-campaign";
-
+import { campaignsByIdBrand } from "@/src/actions/subgraph/campaigns-by-idbrand";
 interface CardCampaignsProps {
   campaign: Campaign;
 }
 
 const CardCampaigns: React.FC<CardCampaignsProps> = ({ campaign }) => {
   const [postCount, setPostCount] = useState(0);
+  const [postByBrand, setPostByBrand] = useState(0);
   const {
     writeContractAsync: addKolToCampaign,
     isPending,
@@ -55,9 +56,12 @@ const CardCampaigns: React.FC<CardCampaignsProps> = ({ campaign }) => {
   const handleSubGraph = async () => {
     try {
       const result = await postsByCampaigns(campaign.idCampaign.toString());
-      console.log("Posts:", result);
+      const resultBrand = await campaignsByIdBrand(campaign.idBrand.toString());
       if (result) {
         setPostCount(result.length);
+      }
+      if (resultBrand) {
+        setPostByBrand(resultBrand.length);
       }
     } catch (error) {
       console.error("Error fetching posts:", error);
@@ -135,7 +139,9 @@ const CardCampaigns: React.FC<CardCampaignsProps> = ({ campaign }) => {
         />
         <CardContent className=" px-[1rem] pt-[1.75rem] pb-[1rem]">
           <h3 className="font-bold">{campaign.metadata?.brand_name}</h3>
-          <p className="text-xs text-gray-500">34 challenges</p>
+          <p className="text-xs text-gray-500">
+            {postByBrand} challenges
+          </p>
         </CardContent>
       </Card>
     </Card>
