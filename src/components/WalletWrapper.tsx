@@ -1,11 +1,11 @@
-'use client';
+"use client";
 import {
   Address,
   Avatar,
   EthBalance,
   Identity,
   Name,
-} from '@coinbase/onchainkit/identity';
+} from "@coinbase/onchainkit/identity";
 import {
   ConnectWallet,
   Wallet,
@@ -14,7 +14,9 @@ import {
   WalletDropdownDisconnect,
   WalletDropdownFundLink,
   WalletDropdownLink,
-} from '@coinbase/onchainkit/wallet';
+} from "@coinbase/onchainkit/wallet";
+import { useAccount } from "wagmi";
+import { base } from "viem/chains";
 
 type WalletWrapperParams = {
   text?: string;
@@ -26,16 +28,25 @@ export default function WalletWrapper({
   text,
   withWalletAggregator = false,
 }: WalletWrapperParams) {
+  const { address } = useAccount();
   return (
     <>
       <Wallet>
         <ConnectWallet
           withWalletAggregator={withWalletAggregator}
           text={text}
-          className={`${className} bg-crimson11`}
+          className={`${className} bg-transparent `}
         >
-          <Avatar className="h-6 w-6" />
-          <Name />
+          <Avatar
+            className="h-6 w-6"
+            address={address}
+            chain={base}
+            defaultComponent={
+              <div className="size-8 border">
+                <img src="/icons/icon-192x192.png" alt="@sherry" />
+              </div>
+            }
+          />
         </ConnectWallet>
         <WalletDropdown>
           <Identity className="px-4 pt-3 pb-2" hasCopyAddressOnClick={true}>
