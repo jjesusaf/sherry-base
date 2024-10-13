@@ -25,6 +25,9 @@ import { Share } from "lucide-react";
 import { Metrics } from "@/src/interface/Metrics";
 import { formatAddress } from "@/src/utils/address";
 import { SpinnerLeader } from "./spinner";
+import { Avatar, Name } from "@coinbase/onchainkit/identity";
+import { base } from "viem/chains";
+import { Avatar as AvatarSherry, AvatarImage, AvatarFallback } from "@/src/components/ui/avatar";
 
 interface CardTopProps {
   metrics: Metrics[];
@@ -68,7 +71,25 @@ const CardTop: React.FC<CardTopProps> = ({ metrics, address, isLoading }) => {
                     <TableCell className="font-medium p-[16px]">
                       {index + 1}
                     </TableCell>
-                    <TableCell>@{formatAddress(metric.kol)}</TableCell>
+
+                    <TableCell className="flex flex-row gap-1 items-center">
+                      <Avatar
+                        address={`0x${metric.kol.trim().slice(2)}`}
+                        chain={base}
+                        className="size-6"
+                        defaultComponent={
+                          <AvatarSherry className="size-6 border">
+                            <AvatarImage src="/icons/icon-192x192.png" alt="@sherry" />
+                            <AvatarFallback>SC</AvatarFallback>
+                          </AvatarSherry>
+                        }
+                      />
+                      <Name
+                        address={`0x${metric.kol.trim().slice(2)}`}
+                        chain={base}
+                        className="font-light text-sm"
+                      />
+                    </TableCell>
                     <TableCell>{metric.votes}</TableCell>
                   </TableRow>
                 ))

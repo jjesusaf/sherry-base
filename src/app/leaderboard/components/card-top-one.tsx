@@ -5,10 +5,16 @@ import {
   CardTitle,
   CardDescription,
 } from "src/components/ui/card";
-import { Avatar, AvatarImage, AvatarFallback } from "src/components/ui/avatar";
+import {
+  Avatar as AvatarSherry,
+  AvatarImage,
+  AvatarFallback,
+} from "src/components/ui/avatar";
 import { Trophy } from "lucide-react";
 import { formatAddress } from "@/src/utils/address";
 import { SpinnerLeader } from "./spinner";
+import { Avatar, Name } from "@coinbase/onchainkit/identity";
+import { base } from "viem/chains";
 
 interface Kol {
   address: string;
@@ -30,7 +36,8 @@ const CardTopOne: React.FC<CardTopOneProps> = ({ kol }) => {
     <Card className="px-[16px] w-full max-w-[352px] py-[24px] flex justify-between items-center">
       <CardHeader className="flex gap-[6px]">
         <div className="flex items-center gap-3">
-          <Avatar className="w-[40px] h-[40px] rounded-full border border-border items-center justify-center">
+          {/* 
+          <AvatarSherry className="w-[40px] h-[40px] rounded-full border border-border items-center justify-center">
             <AvatarImage
               src={kol.avatar}
               alt={`@${kol.username}`}
@@ -39,8 +46,26 @@ const CardTopOne: React.FC<CardTopOneProps> = ({ kol }) => {
             <AvatarFallback>
               {kol.username.charAt(0).toUpperCase()}
             </AvatarFallback>
-          </Avatar>
-          <CardDescription>{`@${formatAddress(kol.username)}`}</CardDescription>
+          </AvatarSherry>
+          */}
+          <CardDescription className="flex flex-row items-center gap-1">
+            <Avatar
+              address={`0x${kol.address.trim().slice(2)}`}
+              chain={base}
+              className="size-8"
+              defaultComponent={
+                <AvatarSherry className="size-8 border">
+                  <AvatarImage src="/icons/icon-192x192.png" alt="@sherry" />
+                  <AvatarFallback className="border">SC</AvatarFallback>
+                </AvatarSherry>
+              }
+            />
+            <Name
+              address={`0x${kol.address.trim().slice(2)}`}
+              chain={base}
+              className="font-light text-sm"
+            />
+          </CardDescription>
         </div>
         <CardTitle className="flex flex-row items-center">
           Rank #
