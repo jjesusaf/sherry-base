@@ -22,8 +22,19 @@ import {
   TabsTrigger,
 } from "@/src/components/ui/tabs";
 import { Share } from "lucide-react";
+import { Metrics } from "@/src/interface/Metrics";
+import { formatAddress } from "@/src/utils/address";
+import { calculateUserRanking } from "../actions/metrics";
 
-const CardTop: React.FC = () => {
+interface CardTopProps {
+  metrics: Metrics[];
+  address: string;
+}
+
+const CardTop: React.FC<CardTopProps> = ({
+  metrics,
+  address
+}) => {
   return (
     <Tabs className="w-full items-center flex flex-col" defaultValue="7 Days">
       <Card className="p-[24px] max-w-[352px] w-full gap-3 flex flex-col">
@@ -42,7 +53,9 @@ const CardTop: React.FC = () => {
 
         <TabsContent value="7 Days">
           <Table>
-            <TableCaption>Showing 1-10 of 3,202 challengers</TableCaption>
+            <TableCaption>
+              Showing 1-10 of {metrics.length} challengers
+            </TableCaption>
             <TableHeader>
               <TableRow>
                 <TableHead className="w-[70px]"></TableHead>
@@ -51,21 +64,23 @@ const CardTop: React.FC = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              <TableRow>
-                <TableCell className="font-medium p-[16px]">1</TableCell>
-                <TableCell>@juvenwho</TableCell>
-                <TableCell>3020</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell className="font-medium p-[16px]">2</TableCell>
-                <TableCell>@juvenwho</TableCell>
-                <TableCell>3020</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell className="font-medium p-[16px]">3</TableCell>
-                <TableCell>@juvenwho</TableCell>
-                <TableCell>3020</TableCell>
-              </TableRow>
+              {metrics.length > 0 ? (
+                metrics.map((metric, index) => (
+                  <TableRow key={index}>
+                    <TableCell className="font-medium p-[16px]">
+                      {index + 1}
+                    </TableCell>
+                    <TableCell>@{formatAddress(metric.kol)}</TableCell>
+                    <TableCell>{metric.votes}</TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={3} className="text-center">
+                    No data
+                  </TableCell>
+                </TableRow>
+              )}
             </TableBody>
           </Table>
         </TabsContent>

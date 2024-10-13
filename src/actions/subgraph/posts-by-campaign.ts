@@ -1,4 +1,5 @@
 "use server";
+import { Challenge } from "@/src/interface/Challenge";
 import { fetchMetadataFromIPFS } from "../../app/challengers/actions/ipfs";
 
 const ENDPOINT_THE_GRAPH = process.env.ENDPOINT_THE_GRAPH as string;
@@ -193,11 +194,11 @@ async function fetchMetadataAndImageFromIPFS(ipfsUrl: string) {
 export async function postsByCampaigns(idCampaign: string) {
   try {
     const response = await subGraphPostCreatedsByCampaign(idCampaign);
-    console.log(response);
+    //console.log(response);
     const data = response.data;
 
     if (data && data.postCreateds) {
-      const mappedChallenges = await Promise.all(
+      const mappedChallenges: Challenge[] = await Promise.all(
         data.postCreateds.map(async (post: any, index: number) => {
           const metadata = await fetchMetadataAndImageFromIPFS(post.url);
           return {
@@ -220,7 +221,7 @@ export async function postsByCampaigns(idCampaign: string) {
           };
         })
       );
-      console.log(mappedChallenges);
+      //console.log(mappedChallenges);
       return mappedChallenges;
     } else {
       console.error("No se encontraron postCreateds en la respuesta");

@@ -7,12 +7,15 @@ import {
 } from "src/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "src/components/ui/avatar";
 import { Trophy } from "lucide-react";
+import { formatAddress } from "@/src/utils/address";
 
 interface Kol {
   address: string;
   name: string;
   username: string;
   avatar: string;
+  rank: number;
+  percentage: string;
 }
 
 interface CardTopOneProps {
@@ -20,13 +23,6 @@ interface CardTopOneProps {
 }
 
 const CardTopOne: React.FC<CardTopOneProps> = ({ kol }) => {
-  const formatAddress = (address: string): string => {
-    if (address.length <= 8) {
-      return address;
-    }
-    return `${address.slice(0, 4)}...${address.slice(-4)}`;
-  };
-
   return (
     <Card className="px-[16px] w-full max-w-[352px] py-[24px] flex justify-between items-center">
       <CardHeader className="flex gap-[6px]">
@@ -43,12 +39,12 @@ const CardTopOne: React.FC<CardTopOneProps> = ({ kol }) => {
           </Avatar>
           <CardDescription>{`@${formatAddress(kol.username)}`}</CardDescription>
         </div>
-        <CardTitle>Rank #232</CardTitle>
+        <CardTitle>Rank #{kol.rank}</CardTitle>
         <CardDescription>1 voter</CardDescription>
       </CardHeader>
       <CardHeader className="flex text-right items-end gap-3">
         <Trophy className={`w-6 h-6`} />
-        <CardTitle>Best 10%</CardTitle>
+        <CardTitle>Best {kol.percentage}%</CardTitle>
         <CardDescription>Out of 3,202 challengers</CardDescription>
       </CardHeader>
     </Card>

@@ -3,63 +3,50 @@ import React, { useEffect } from "react";
 import ActionCardTopOne from "./handle/action-card-top-one";
 import CardTop from "./components/card-top";
 import { useAppContext } from "@/src/context/GlobalContext";
-import { subGraphVotes } from "../create-post/actions/link";
-import { formatTimestamp } from "@/src/utils/timestamp";
-import {
-  groupVotesByIdPost,
-  filterVotesByDate,
-  filterVotesByCampaign,
-} from "./actions/helper";
-import { subGraphPostCreatedsByCampaign } from "@/src/actions/subgraph/posts-by-campaign";
+import { fetchMetrics } from "./actions/metrics";
+import { Metrics } from "@/src/interface/Metrics";
+import { calculateUserRanking } from "./actions/metrics";
 
 interface ActionCardProps {
   address: string;
   avatar: string;
   name: string;
   username: string;
+  rank: number;
+  percentage: string;
 }
 
 const Leaderboard: React.FC = () => {
   const { setLoading, idCampaign, isLoading, address } = useAppContext();
+  const [isThereData, setIsThereData] = React.useState<boolean>(false);
+  const [metrics, setMetrics] = React.useState<Metrics[]>([]);
+  const [rank, setRank] = React.useState<number>(0);
+  const [percentage, setPercentage] = React.useState<string>("");
 
   const kolData: ActionCardProps = {
     address: address ?? "unkown",
     avatar: "https://github.com/shadcn.png",
     name: "Sherry",
     username: address ?? "unkown",
+    rank,
+    percentage,
   };
 
   useEffect(() => {
     const fetchData = async () => {
       if (idCampaign && !isLoading) {
         try {
-          const votesByCampaignId =
-            await subGraphPostCreatedsByCampaign(idCampaign);
+          const metrics = await fetchMetrics(idCampaign);
+          if (metrics.length > 0) {
+            const result = await calculateUserRanking(metrics, address);
+            console.log("result", result);
+            if (result) {
+              const { rank, percentage } = result;
+              setRank(rank);
+              setPercentage(percentage);
+            }
 
-          if (!(votesByCampaignId.data.postCreateds.length > 0)) return;
-
-          console.log(
-            "votesByCampaignId : ",
-            votesByCampaignId.data.postCreateds
-          );
-          const res = await subGraphVotes();
-          const { data } = res;
-          const votes = data?.voteds;
-          if (res.errors) {
-            console.log("res.errors : ", res.errors);
-            return;
-          }
-
-          if (votes.length > 0) {
-            const filteredVotes = filterVotesByCampaign(
-              votes,
-              votesByCampaignId.data.postCreateds
-            );
-            console.log("filteredVotes : ", filteredVotes);
-            const votesByIdPost = groupVotesByIdPost(votes);
-            const votesByDate = filterVotesByDate(votes, 7);
-            console.log("votesByIdPost : ", votesByIdPost);
-            console.log("votesByDate : ", votesByDate);
+            setMetrics(metrics);
           }
         } catch (error) {
           console.error("Error fetching data: ", error);
@@ -68,13 +55,15 @@ const Leaderboard: React.FC = () => {
     };
 
     fetchData();
-    // debe obtener los posts para saber a que campaña pertenecen
-  }, [isLoading, idCampaign]);
+  }, [idCampaign, isLoading]);
 
   return (
     <div className="flex flex-col w-full items-center gap-[16px]">
       <ActionCardTopOne {...kolData} />
-      <CardTop />
+      <CardTop 
+        address={address} 
+        metrics={metrics} 
+        />
     </div>
   );
 };
