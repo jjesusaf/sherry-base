@@ -106,7 +106,7 @@ const CardCampaigns: React.FC<CardCampaignsProps> = ({ campaign }) => {
         {campaign.subscribed ? (
           <Button
             variant="outline"
-            className="w-full text-black"
+            className="w-full text-black cursor-pointer"
             onClick={handleCreatePost}
           >
             <PlusIcon className="mr-2 h-4 w-4" />
@@ -125,7 +125,7 @@ const CardCampaigns: React.FC<CardCampaignsProps> = ({ campaign }) => {
         )}
       </CardHeader>
       <Card
-        className="p-0 max-w-[140px] w-full flex flex-col h-fit justify-center"
+        className="p-0 max-w-[140px] w-full flex flex-col h-fit justify-center cursor-pointer"
         onClick={handleNavigateChallenge}
       >
         <Image
@@ -135,7 +135,6 @@ const CardCampaigns: React.FC<CardCampaignsProps> = ({ campaign }) => {
           height={180} 
           style={{ objectFit: "cover" }} 
           className="w-full object-cover rounded-t-[8px] h-[140px]"
-          
         />
         <CardContent className=" px-[1rem] pt-[1.75rem] pb-[1rem]">
           <h3 className="font-bold">{campaign.metadata?.brand_name}</h3>
