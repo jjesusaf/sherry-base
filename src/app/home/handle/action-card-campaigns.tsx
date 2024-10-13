@@ -64,8 +64,6 @@ const ActionCardCampaigns: React.FC = () => {
     } finally {
       setLoading(false);
     }
-
-   
   }, [address]);
 
   if (campaigns.length === 0) {
@@ -84,56 +82,51 @@ const ActionCardCampaigns: React.FC = () => {
 
   return (
     <div className="w-full flex flex-col gap-[2rem]">
-      {isLoading ? (
-        "Loading..."
-      ) : (
-        <section className="flex flex-col gap-[1rem] m-0">
-          <h2 className="text-xl font-semibold text-foreground">
-            My Challenges
-          </h2>
-          {subscribedCampaigns.length > 0 ? (
-            <Swiper
-              modules={[Navigation, Pagination, Scrollbar, Autoplay]}
-              spaceBetween={0}
-              slidesPerView={1}
-              navigation={{
-                nextEl: ".swiper-button-next",
-                prevEl: ".swiper-button-prev",
-              }}
-              autoplay={{
-                delay: 2000,
-                disableOnInteraction: false,
-              }}
-              pagination={{ clickable: true }}
-              breakpoints={{
-                640: {
-                  slidesPerView: 1,
-                },
-                768: {
-                  slidesPerView: 2,
-                },
-                1024: {
-                  slidesPerView: 3,
-                },
-              }}
-              className="w-full"
-            >
-              {subscribedCampaigns.map((campaign, key) => (
-                <SwiperSlide key={key}>
-                  <CardCampaigns
-                    campaign={campaign}
-                    id_campaign={Number(idCampaign)}
-                  />
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          ) : (
-            <p className="text-gray-500">
-              You are not subscribed to any challenges yet.
-            </p>
-          )}
-        </section>
-      )}
+      <section className="flex flex-col gap-[1rem] m-0">
+        <h2 className="text-xl font-semibold text-foreground">My Challenges</h2>
+        {subscribedCampaigns.length > 0 ? (
+          <Swiper
+            modules={[Navigation, Pagination, Scrollbar, Autoplay]}
+            spaceBetween={0}
+            slidesPerView={1}
+            navigation={{
+              nextEl: ".swiper-button-next",
+              prevEl: ".swiper-button-prev",
+            }}
+            autoplay={{
+              delay: 2000,
+              disableOnInteraction: false,
+            }}
+            pagination={{ clickable: true }}
+            breakpoints={{
+              640: {
+                slidesPerView: 1,
+              },
+              768: {
+                slidesPerView: 2,
+              },
+              1024: {
+                slidesPerView: 3,
+              },
+            }}
+            className="w-full"
+          >
+            {subscribedCampaigns.map((campaign, key) => (
+              <SwiperSlide key={key}>
+                <CardCampaigns
+                  campaign={campaign}
+                  id_campaign={Number(idCampaign)}
+                />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        ) : (
+          <p className="text-gray-500">
+            You are not subscribed to any challenges yet.
+          </p>
+        )}
+      </section>
+
       <section className="flex flex-col gap-[1rem]">
         <h2 className="text-xl font-semibold text-foreground">Discover More</h2>
         {discoverCampaigns.length > 0 && idCampaign ? (
