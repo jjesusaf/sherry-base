@@ -56,7 +56,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       if (idCampaign) {
         sessionStorage.setItem("idCampaign", idCampaign);
       } else {
-        sessionStorage.removeItem("idCampaign");
+        //sessionStorage.removeItem("idCampaign");
       }
     }
 
