@@ -48,7 +48,7 @@ const CardTopOne: React.FC<CardTopOneProps> = ({ kol }) => {
             </AvatarFallback>
           </AvatarSherry>
           */}
-          <CardDescription className="flex flex-row items-center gap-1">
+          <div className="flex flex-row items-center gap-1">
             <Avatar
               address={`0x${kol.address.trim().slice(2)}`}
               chain={base}
@@ -65,7 +65,7 @@ const CardTopOne: React.FC<CardTopOneProps> = ({ kol }) => {
               chain={base}
               className="font-light text-sm"
             />
-          </CardDescription>
+          </div>
         </div>
         <CardTitle className="flex flex-row items-center">
           Rank #

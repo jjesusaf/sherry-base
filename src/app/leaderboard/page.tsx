@@ -23,7 +23,7 @@ const Leaderboard: React.FC = () => {
   const [metrics, setMetrics] = React.useState<Metrics[]>([]);
   const [rank, setRank] = React.useState<number>(0);
   const [percentage, setPercentage] = React.useState<string>("");
-  const [isLoadingFilter, setIsLoadingFilter] = React.useState<boolean>(true);
+  const [isLoadingFilter, setIsLoadingFilter] = React.useState<boolean>(false);
 
   const kolData: ActionCardProps = {
     address: address ?? "unkown",
@@ -38,17 +38,24 @@ const Leaderboard: React.FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
+      //setLoading(true);
+      setIsLoadingFilter(true);
+      let metricsFetch: Metrics[] = [];
       if (idCampaign) {
-        const metrics = await fetchMetrics(idCampaign);
-        if (metrics.length > 0) setMetrics(metrics);
+        metricsFetch = await fetchMetrics(idCampaign);
+        if (metricsFetch.length > 0) setMetrics(metricsFetch);
       }
 
       if (idCampaign && address) {
-        setIsLoadingFilter(true);
         try {
-          if (metrics.length > 0) {
-            const result = await calculateUserRanking(metrics, address);
+          console.log("Calculating user ranking PREV...");
+          console.log("Metrics: ", metricsFetch);
+
+          if (metricsFetch.length > 0) {
+            console.log("Calculating USER RANKING...");
+            console.log("Metrics: ", metricsFetch);
+            
+            const result = await calculateUserRanking(metricsFetch, address);
             if (result) {
               const { rank, percentage } = result;
               setRank(rank);
@@ -57,11 +64,9 @@ const Leaderboard: React.FC = () => {
           }
         } catch (error) {
           console.error("Error fetching data: ", error);
-        } finally {
-          setIsLoadingFilter(false);
-        }
+        } 
       }
-      setLoading(false);
+      //setLoading(false);
       setIsLoadingFilter(false);
     };
 
