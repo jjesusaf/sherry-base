@@ -3,6 +3,7 @@ import TeamSwitcher from "./team-switcher";
 import { Avatar, AvatarFallback, AvatarImage } from "src/components/ui/avatar";
 import { Menu } from "lucide-react";
 import Image from "next/image";
+import SignupButton from "../SignupButton";
 const NavBarHome: React.FC = () => {
   return (
     <div className="fixed top-0 left-0 flex w-full justify-between items-center py-[0.5rem] z-10 px-[1rem] border border-border rounded-t-lg shadow-md bg-background">
@@ -15,6 +16,10 @@ const NavBarHome: React.FC = () => {
           className="w-[24px] h-[24px] rounded-full"
         />
         <AvatarFallback>CN</AvatarFallback>
+
+        <div className="bg-blue">
+          <SignupButton/>
+        </div>
       </Avatar>
     </div>
   );
