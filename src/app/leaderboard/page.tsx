@@ -6,7 +6,6 @@ import { useAppContext } from "@/src/context/GlobalContext";
 import { fetchMetrics } from "./actions/metrics";
 import { Metrics } from "@/src/interface/Metrics";
 import { calculateUserRanking } from "./actions/metrics";
-import { set } from "zod";
 
 interface ActionCardProps {
   address: string;
@@ -40,10 +39,14 @@ const Leaderboard: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
+      if (idCampaign) {
+        const metrics = await fetchMetrics(idCampaign);
+        if (metrics.length > 0) setMetrics(metrics);
+      }
+
       if (idCampaign && address) {
         setIsLoadingFilter(true);
         try {
-          const metrics = await fetchMetrics(idCampaign);
           if (metrics.length > 0) {
             const result = await calculateUserRanking(metrics, address);
             if (result) {
@@ -51,8 +54,6 @@ const Leaderboard: React.FC = () => {
               setRank(rank);
               setPercentage(percentage);
             }
-
-            setMetrics(metrics);
           }
         } catch (error) {
           console.error("Error fetching data: ", error);

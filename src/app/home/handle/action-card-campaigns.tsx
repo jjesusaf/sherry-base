@@ -17,7 +17,7 @@ import { Navigation, Pagination, Scrollbar, Autoplay } from "swiper/modules";
 const ActionCardCampaigns: React.FC = () => {
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const { address } = useAccount();
-  const { idCampaign, isLoading } = useAppContext();
+  const { idCampaign, isLoading, setLoading } = useAppContext();
 
   const fetchMetadataCampaigns = async (campaigns: Campaign[]) => {
     const result = address
@@ -52,7 +52,10 @@ const ActionCardCampaigns: React.FC = () => {
   };
 
   useEffect(() => {
-    if (!address) return;
+    if (!address) {
+      setLoading(false);
+      return;
+    }
     const fetchData = async () => {
       await handleSubGraph();
     };
