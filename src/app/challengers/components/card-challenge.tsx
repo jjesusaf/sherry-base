@@ -200,7 +200,7 @@ const CardChallenge: React.FC<CardChallengeProps> = ({ challenges = [] }) => {
                       ) : (
                         <ButtonChain
                           className="bg-crimson11"
-                          textIfTrue="Vote"
+                          textIfTrue="Support"
                           textIfFalse="Log In"
                         />
                       )}

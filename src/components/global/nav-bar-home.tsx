@@ -17,7 +17,7 @@ const NavBarHome: React.FC = () => {
       <div className="rounded-full border border-border items-center justify-center flex relative">
         <div className="absolute inset-0 flex items-center justify-center">
           {address ? (
-            <StarIcon className="h-[14px] w-[14px]" />
+            ""
           ) : (
             <Wallet2Icon className="h-[24px] w-[24px] hover:text-crimson11" />
           )}

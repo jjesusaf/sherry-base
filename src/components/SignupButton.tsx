@@ -5,7 +5,7 @@ export default function SignupButton() {
   return (
     <WalletWrapper
       className=" h-[40px] w-[40px]  rounded-full"
-      text=""
+      text="Log In"
     />
   );
 }

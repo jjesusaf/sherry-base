@@ -68,10 +68,10 @@ const ButtonChain = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     if (!address) {
       return (
-        <div className="w-full">
+        <div className="">
           <WalletWrapper
             className={` ${buttonVariants()}`}
-            text=""
+            text="Log In"
           />
         </div>
       );
