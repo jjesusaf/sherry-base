@@ -40,7 +40,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({
     return null;
   });
 
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [idKolCampaign, setIdKolCampaign] = useState<number>(0);
 
