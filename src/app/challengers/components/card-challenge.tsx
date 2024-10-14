@@ -52,7 +52,8 @@ const CardChallenge: React.FC<CardChallengeProps> = ({ challenges }) => {
   const { address } = useAccount();
   const sherry: Contract = getSherryContract();
   const sherryAddress = sherry.address.replace(/^0x/, "");
-  const [finalChallenges, setFinalChallenges] = React.useState<Challenge[]>(challenges); // eslint-disable-line
+  const [finalChallenges, setFinalChallenges] =
+    React.useState<Challenge[]>(challenges); // eslint-disable-line
 
   const { writeContractAsync: vote, isPending, isSuccess } = useWriteContract();
 
@@ -135,7 +136,7 @@ const CardChallenge: React.FC<CardChallengeProps> = ({ challenges }) => {
 
   return (
     <div className="flex flex-wrap items-center md:justify-start justify-center gap-[30px]">
-      {/*       {challenges.length > 0 ? (
+      {challenges.length > 0 ? (
         challenges.map((challenge) => (
           <div
             key={challenge.id_challenge}
@@ -254,7 +255,6 @@ const CardChallenge: React.FC<CardChallengeProps> = ({ challenges }) => {
       ) : (
         <Skeleton className="w-[352px] h-[440px]" />
       )}
-        */}
     </div>
   );
 };
