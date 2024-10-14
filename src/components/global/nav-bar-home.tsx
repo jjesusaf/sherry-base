@@ -1,10 +1,8 @@
 "use client";
 import React from "react";
-import TeamSwitcher from "./team-switcher";
 import { Menu } from "lucide-react";
 import Image from "next/image";
 import SignupButton from "../SignupButton";
-import { Avatar, Name } from "@coinbase/onchainkit/identity";
 import { StarIcon, Wallet2Icon } from "lucide-react";
 import { useAccount } from "wagmi";
 
