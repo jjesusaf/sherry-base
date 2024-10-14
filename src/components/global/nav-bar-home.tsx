@@ -13,7 +13,9 @@ const NavBarHome: React.FC = () => {
   return (
     <div className="fixed top-0 left-0 flex w-full justify-between items-center py-[0.5rem] z-10 px-[1rem] border border-border rounded-t-lg shadow-md bg-background ">
       <Menu className="w-6 h-6 text-foreground" />
-      <Image src="/images/icon.svg" alt="logo" width={24} height={24} />
+
+      <Image src="/icons/icon-192x192.png" alt="logo" width={24} height={24} />
+
       <div className="rounded-full border border-border items-center justify-center flex relative">
         <div className="absolute inset-0 flex items-center justify-center">
           {address ? (
