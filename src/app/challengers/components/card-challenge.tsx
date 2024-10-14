@@ -34,7 +34,13 @@ import { useWriteContract, useReadContract } from "wagmi";
 import { Contract, getSherryContract } from "@/src/constants";
 import { Skeleton } from "@/src/components/ui/skeleton";
 import { Challenge } from "@/src/interface/Challenge";
-import MediaPreview  from "./media-previa";
+import MediaPreview from "./media-previa";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/src/components/ui/tooltip";
 
 interface CardChallengeProps {
   challenges: Challenge[];
@@ -89,11 +95,11 @@ const CardChallenge: React.FC<CardChallengeProps> = ({ challenges = [] }) => {
     try {
       const linkData = await getLink(external_url);
       console.log("Datos del enlace:", linkData);
-  
+
       const matchingLink = linkData.find(
         (link: any) => link.id === external_url
       );
-  
+
       if (matchingLink && matchingLink.shortLink) {
         try {
           await navigator.clipboard.writeText(matchingLink.shortLink);
@@ -165,13 +171,13 @@ const CardChallenge: React.FC<CardChallengeProps> = ({ challenges = [] }) => {
                 className="w-full"
               >
                 <CardContent className="p-0 h-[440px] items-center justify-center flex">
-                <MediaPreview
-                src={challenge.image}
-                alt={challenge.title}
-                width={300}
-                height={200}
-                className="w-full max-h-[440px] h-auto rounded-t-[11px]"
-              />
+                  <MediaPreview
+                    src={challenge.image}
+                    alt={challenge.title}
+                    width={300}
+                    height={200}
+                    className="w-full max-h-[440px] h-auto rounded-t-[11px]"
+                  />
                 </CardContent>
               </Link>
 

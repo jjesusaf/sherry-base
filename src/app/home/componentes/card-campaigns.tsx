@@ -19,7 +19,12 @@ import { useAppContext } from "@/src/context/GlobalContext";
 import { useRouter } from "nextjs-toploader/app";
 import { postsByCampaigns } from "@/src/actions/subgraph/posts-by-campaign";
 import { campaignsByIdBrand } from "@/src/actions/subgraph/campaigns-by-idbrand";
-
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/src/components/ui/tooltip";
 
 interface CardCampaignsProps {
   campaign: Campaign;
@@ -125,9 +130,14 @@ const CardCampaigns: React.FC<CardCampaignsProps> = ({
             Create post
           </Button>
         ) : (
-          <div className={`${address ? "flex items-center gap-2 justify-center rounded-[8px] w-full border border-border max-w-[116px] relative " : "flex relative"}`}>
-            {address ? <StarIcon className="h-[14px] w-[14px]" /> : <Wallet2Icon className="h-[40px] w-[40px] absolute inset-0" />}
-
+          <div
+            className={`${address ? "flex items-center gap-2 justify-center rounded-[8px] w-full border border-border max-w-[116px] relative " : "flex relative"}`}
+          >
+            {address ? (
+              <StarIcon className="h-[14px] w-[14px]" />
+            ) : (
+              <Wallet2Icon className="h-[40px] w-[40px] absolute inset-0" />
+            )}
 
             <ButtonChain
               onClick={sendTx}
@@ -142,14 +152,23 @@ const CardCampaigns: React.FC<CardCampaignsProps> = ({
         className="p-0 max-w-[140px] w-full flex flex-col h-fit justify-center cursor-pointer"
         onClick={handleNavigateChallenge}
       >
-        <Image
-          alt={campaign.metadata?.brand_name || "Campaign image"}
-          src={campaign.metadata?.image || "/placeholder.jpg"}
-          width={300}
-          height={180}
-          style={{ objectFit: "cover" }}
-          className="w-full object-cover rounded-t-[8px] h-[140px]"
-        />
+        <TooltipProvider delayDuration={200}>
+          <Tooltip>
+            <TooltipTrigger asChild >
+              <Image
+                alt={campaign.metadata?.brand_name || "Campaign image"}
+                src={campaign.metadata?.image || "/placeholder.jpg"}
+                width={300}
+                height={180}
+                style={{ objectFit: "cover" }}
+                className="w-full object-cover rounded-t-[8px] h-[140px]"
+              />
+            </TooltipTrigger>
+            <TooltipContent side="bottom" sticky="always" className="bg-black/95 text-white">
+              <p>More Details</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
         <CardContent className=" px-[1rem] pt-[1.75rem] pb-[1rem]">
           <h3 className="font-bold">{campaign.metadata?.brand_name}</h3>
           <p className="text-xs text-gray-500">{postByBrand} challenges</p>
@@ -160,7 +179,3 @@ const CardCampaigns: React.FC<CardCampaignsProps> = ({
 };
 
 export default CardCampaigns;
-
-
-
-
