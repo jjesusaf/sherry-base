@@ -30,11 +30,17 @@ import { getLink } from "../actions/link";
 import { useToast } from "@/src/hooks/use-toast";
 import { ToastAction } from "@/src/components/ui/toast";
 import { ButtonChain } from "@/src/components/ButtonChain";
-import { useWriteContract } from "wagmi";
+import { useWriteContract, useReadContract } from "wagmi";
 import { Contract, getSherryContract } from "@/src/constants";
 import { Skeleton } from "@/src/components/ui/skeleton";
 import { Challenge } from "@/src/interface/Challenge";
 import MediaPreview from "./media-previa";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/src/components/ui/tooltip";
 
 interface CardChallengeProps {
   challenges: Challenge[];
@@ -49,7 +55,7 @@ const CardChallenge: React.FC<CardChallengeProps> = ({ challenges }) => {
   const [finalChallenges, setFinalChallenges] =
     React.useState<Challenge[]>(challenges); // eslint-disable-line
 
-  const { writeContractAsync: vote } = useWriteContract();
+  const { writeContractAsync: vote, isPending, isSuccess } = useWriteContract();
 
   const sendVoteTx = async (idPost: number) => {
     if (!address) {
@@ -97,13 +103,8 @@ const CardChallenge: React.FC<CardChallengeProps> = ({ challenges }) => {
 
       if (matchingLink && matchingLink.shortLink) {
         try {
-          if (navigator.clipboard) {
-            await navigator.clipboard.writeText(matchingLink.shortLink);
-            console.log("Link copiado al portapapeles:", matchingLink.shortLink);
-          } else {
-            console.warn("API de Clipboard no soportada, usando fallback.");
-            fallbackCopyTextToClipboard(matchingLink.shortLink);
-          }
+          await navigator.clipboard.writeText(matchingLink.shortLink);
+          console.log("Link copiado al portapapeles:", matchingLink.shortLink);
           toast({
             variant: "default",
             title: "Link copied to clipboard",
@@ -111,11 +112,20 @@ const CardChallenge: React.FC<CardChallengeProps> = ({ challenges }) => {
             description: "Share the link with your friends.",
             action: <ToastAction altText="Ok">Ok</ToastAction>,
           });
-          return;
-        } catch (error) {
+        } catch (error: unknown) {
           console.warn("Fallo al usar clipboard API, usando fallback.");
           fallbackCopyTextToClipboard(matchingLink.shortLink);
+
+          // Manejo seguro del error
+          const errorMessage = error instanceof Error ? error.message : String(error);
+          toast({
+            variant: "destructive",
+            title: "Error copying link",
+            description: `Failed to copy the link: ${errorMessage}`,
+            action: <ToastAction altText="Ok">Ok</ToastAction>,
+          });
         }
+        return;
       } else {
         console.error("No se encontró un enlace que coincida con el external_url.");
         toast({
@@ -125,11 +135,17 @@ const CardChallenge: React.FC<CardChallengeProps> = ({ challenges }) => {
           action: <ToastAction altText="Ok">Ok</ToastAction>,
         });
       }
-    } catch (error) {
-      console.error("Error al obtener el enlace para compartir:", error);
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      console.error("Error al obtener el enlace para compartir:", errorMessage);
+      toast({
+        variant: "destructive",
+        title: "Error fetching link",
+        description: `Failed to get the link: ${errorMessage}`,
+        action: <ToastAction altText="Ok">Ok</ToastAction>,
+      });
     }
   };
-
   return (
     <div className="flex flex-wrap items-center md:justify-start justify-center gap-[30px]">
       {challenges.length > 0 ? (
