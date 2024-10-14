@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useState } from "react";
 import CardChallenge from "../components/card-challenge";
 import { fetchMetadataFromIPFS } from "../actions/ipfs";
