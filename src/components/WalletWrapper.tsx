@@ -38,7 +38,7 @@ export default function WalletWrapper({
           className={`${className} bg-crimson11 `}
         >
           <Avatar
-            className="h-6 w-6"
+            className="size-10"
             address={address}
             chain={base}
             defaultComponent={

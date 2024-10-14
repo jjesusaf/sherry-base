@@ -36,19 +36,7 @@ const CardTopOne: React.FC<CardTopOneProps> = ({ kol }) => {
     <Card className="px-[16px] w-full max-w-[352px] py-[24px] flex justify-between items-center">
       <CardHeader className="flex gap-[6px]">
         <div className="flex items-center gap-3">
-          {/* 
-          <AvatarSherry className="w-[40px] h-[40px] rounded-full border border-border items-center justify-center">
-            <AvatarImage
-              src={kol.avatar}
-              alt={`@${kol.username}`}
-              className="w-[24px] h-[24px] rounded-full"
-            />
-            <AvatarFallback>
-              {kol.username.charAt(0).toUpperCase()}
-            </AvatarFallback>
-          </AvatarSherry>
-          */}
-          <div className="flex flex-row items-center gap-1">
+          <div className="flex flex-row items-center gap-2">
             <Avatar
               address={`0x${kol.address.trim().slice(2)}`}
               chain={base}
