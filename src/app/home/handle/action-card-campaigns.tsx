@@ -105,12 +105,6 @@ const ActionCardCampaigns: React.FC = () => {
               640: {
                 slidesPerView: 1,
               },
-              768: {
-                slidesPerView: 2,
-              },
-              1024: {
-                slidesPerView: 3,
-              },
             }}
             className="w-full max-w-[352px]"
           >
