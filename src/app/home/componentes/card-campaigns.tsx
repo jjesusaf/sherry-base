@@ -14,11 +14,12 @@ import EndsCampaign from "./ends-campaign";
 import { useWriteContract, useAccount } from "wagmi";
 import { Contract, getKolContract } from "@/src/constants";
 import { ButtonChain } from "@/src/components/ButtonChain";
-import { PlusIcon, StarIcon } from "lucide-react";
+import { PlusIcon, StarIcon, Wallet2Icon } from "lucide-react";
 import { useAppContext } from "@/src/context/GlobalContext";
-import { useRouter } from 'nextjs-toploader/app';
+import { useRouter } from "nextjs-toploader/app";
 import { postsByCampaigns } from "@/src/actions/subgraph/posts-by-campaign";
 import { campaignsByIdBrand } from "@/src/actions/subgraph/campaigns-by-idbrand";
+
 
 interface CardCampaignsProps {
   campaign: Campaign;
@@ -124,13 +125,15 @@ const CardCampaigns: React.FC<CardCampaignsProps> = ({
             Create post
           </Button>
         ) : (
-          <div className="flex items-center gap-2 justify-center rounded-[8px] w-full border border-border max-w-[116px] ">
-            <StarIcon className="h-[14px] w-[14px]" />
+          <div className={`${address ? "flex items-center gap-2 justify-center rounded-[8px] w-full border border-border max-w-[116px] relative " : "flex relative"}`}>
+            {address ? <StarIcon className="h-[14px] w-[14px]" /> : <Wallet2Icon className="h-[40px] w-[40px] absolute inset-0" />}
+
+
             <ButtonChain
               onClick={sendTx}
-              textIfFalse="Sign In"
+              textIfFalse=""
               textIfTrue="Subscribe"
-              className="bg-transparent p-0 text-[14px] text-black  font-medium"
+              className={`${address ? "bg-transparent p-0 text-[14px] text-black  font-medium" : ""}`}
             />
           </div>
         )}

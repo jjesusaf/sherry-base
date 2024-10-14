@@ -4,8 +4,8 @@ import WalletWrapper from './WalletWrapper';
 export default function SignupButton() {
   return (
     <WalletWrapper
-      className=" p-0 text-[#030712] hover:bg-slate-300"
-      text="Sign up"
+      className=" h-[40px] w-[40px]  rounded-full"
+      text=""
     />
   );
 }

@@ -15,7 +15,10 @@ body {
   display: none;
 }
 
-
+.ockConnectWallet_Container {
+  background-color: #000;
+  border-radius: 100%;
+}
 
 
 @layer base {
