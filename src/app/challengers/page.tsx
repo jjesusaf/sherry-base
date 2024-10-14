@@ -6,7 +6,7 @@ const Home: React.FC = () => {
 
   return (
     <div className="w-full flex justify-center">
-      <ActionCardChallenge />
+       <ActionCardChallenge />
     </div>
   );
 };

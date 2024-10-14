@@ -9,12 +9,12 @@ export default function ChallengersLayout({
 }) {
   return (
     
-      <main className="flex items-start justify-center min-h-[calc(100vh-191px)] p-[1rem] mb-[65px] bg-background-secondary mt-[119px]">
+      <div className="flex items-start justify-center min-h-[calc(100vh-191px)] p-[1rem] mb-[65px] bg-background-secondary mt-[119px]">
         <NavBar />
         <NavMain />
         {children}
         <TabBar />
-      </main>
+      </div>
 
   );
 }

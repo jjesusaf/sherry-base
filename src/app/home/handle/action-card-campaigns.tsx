@@ -112,7 +112,7 @@ const ActionCardCampaigns: React.FC = () => {
                 slidesPerView: 3,
               },
             }}
-            className="w-full"
+            className="w-full max-w-[352px]"
           >
             {subscribedCampaigns.map((campaign, key) => (
               <SwiperSlide key={key}>

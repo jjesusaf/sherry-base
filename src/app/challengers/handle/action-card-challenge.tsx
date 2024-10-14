@@ -1,3 +1,4 @@
+"use client"
 import React, { useEffect, useState } from "react";
 import CardChallenge from "../components/card-challenge";
 import { useAppContext } from "@/src/context/GlobalContext";
@@ -29,7 +30,7 @@ const ActionCardChallenge: React.FC = () => {
   const { address } = useAccount();
 
   const handleSubGraph = async () => {
-    if (!address) {
+    if (!address || !idCampaign) {
       try {
         setLoading(true);
         const response = await postsByCampaigns(idCampaign as string);
@@ -58,14 +59,18 @@ const ActionCardChallenge: React.FC = () => {
   };
 
   useEffect(() => {
-    handleSubGraph();
+    const fetchData = async () => {
+      await handleSubGraph();
+    };
+  
+    fetchData();
   }, [address, idCampaign]);
 
-  console.log("Challenges:", challenges);
+  //console.log("Challenges:", challenges);
 
   return (
     <div className="w-full">
-      <CardChallenge challenges={challenges} />
+       <CardChallenge challenges={challenges} />
     </div>
   );
 };

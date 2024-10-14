@@ -46,7 +46,7 @@ export default function RootLayout({
       <body>
         <OnchainProviders>
           <AppProvider>
-            <ClientLayoutWithSpinner>
+            {/*<ClientLayoutWithSpinner>*/}
               <NextTopLoader
                 color="#CB1D63"
                 initialPosition={0.08}
@@ -59,7 +59,7 @@ export default function RootLayout({
                 shadow="0 0 10px #e11d48,0 0 5px #CB1D63"
               />
               {children}
-            </ClientLayoutWithSpinner>
+            {/* </ClientLayoutWithSpinner>*/}
             <Toaster />
           </AppProvider>
         </OnchainProviders>
