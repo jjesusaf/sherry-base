@@ -30,17 +30,11 @@ import { getLink } from "../actions/link";
 import { useToast } from "@/src/hooks/use-toast";
 import { ToastAction } from "@/src/components/ui/toast";
 import { ButtonChain } from "@/src/components/ButtonChain";
-import { useWriteContract, useReadContract } from "wagmi";
+import { useWriteContract } from "wagmi";
 import { Contract, getSherryContract } from "@/src/constants";
 import { Skeleton } from "@/src/components/ui/skeleton";
 import { Challenge } from "@/src/interface/Challenge";
 import MediaPreview from "./media-previa";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/src/components/ui/tooltip";
 
 interface CardChallengeProps {
   challenges: Challenge[];
@@ -55,7 +49,7 @@ const CardChallenge: React.FC<CardChallengeProps> = ({ challenges }) => {
   const [finalChallenges, setFinalChallenges] =
     React.useState<Challenge[]>(challenges); // eslint-disable-line
 
-  const { writeContractAsync: vote, isPending, isSuccess } = useWriteContract();
+  const { writeContractAsync: vote } = useWriteContract();
 
   const sendVoteTx = async (idPost: number) => {
     if (!address) {
@@ -74,7 +68,6 @@ const CardChallenge: React.FC<CardChallengeProps> = ({ challenges }) => {
   const fallbackCopyTextToClipboard = (text: string) => {
     const textArea = document.createElement("textarea");
     textArea.value = text;
-    // Asegúrate de que el textarea no sea visible
     textArea.style.position = "fixed";
     textArea.style.left = "-999999px";
     document.body.appendChild(textArea);
@@ -104,24 +97,27 @@ const CardChallenge: React.FC<CardChallengeProps> = ({ challenges }) => {
 
       if (matchingLink && matchingLink.shortLink) {
         try {
-          await navigator.clipboard.writeText(matchingLink.shortLink);
-          console.log("Link copiado al portapapeles:", matchingLink.shortLink);
+          if (navigator.clipboard) {
+            await navigator.clipboard.writeText(matchingLink.shortLink);
+            console.log("Link copiado al portapapeles:", matchingLink.shortLink);
+          } else {
+            console.warn("API de Clipboard no soportada, usando fallback.");
+            fallbackCopyTextToClipboard(matchingLink.shortLink);
+          }
+          toast({
+            variant: "default",
+            title: "Link copied to clipboard",
+            className: "bg-green-500 border-green-500",
+            description: "Share the link with your friends.",
+            action: <ToastAction altText="Ok">Ok</ToastAction>,
+          });
+          return;
         } catch (error) {
           console.warn("Fallo al usar clipboard API, usando fallback.");
           fallbackCopyTextToClipboard(matchingLink.shortLink);
         }
-        toast({
-          variant: "default",
-          title: "Link copied to clipboard",
-          className: "bg-green-500 border-green-500",
-          description: "Share the link with your friends.",
-          action: <ToastAction altText="Ok">Ok</ToastAction>,
-        });
-        return;
       } else {
-        console.error(
-          "No se encontró un enlace que coincida con el external_url."
-        );
+        console.error("No se encontró un enlace que coincida con el external_url.");
         toast({
           variant: "destructive",
           title: "No link found",
