@@ -24,7 +24,7 @@ export default function Page() {
         transition={{ duration: 2 }}
       >
         <Image
-          src="/icons/icon-192x192.png"
+          src="/icons/icon-home.svg"
           width={100}
           height={100}
           alt="logo"

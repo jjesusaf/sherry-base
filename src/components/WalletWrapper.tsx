@@ -35,15 +35,15 @@ export default function WalletWrapper({
         <ConnectWallet
           withWalletAggregator={withWalletAggregator}
           text={text}
-          className={`${className} bg-crimson11 `}
+          className={`custom-connect-wallet ${className} ${address ? "bg-transparent" : "bg-foreground"}`}
         >
           <Avatar
             className="size-10"
             address={address}
             chain={base}
             defaultComponent={
-              <div className="size-8 border">
-                <img src="/icons/icon-192x192.png" alt="@sherry" />
+              <div className="items-center justify-center flex w-full h-full">
+                <img src="/images/avatar.svg" alt="@sherry" />
               </div>
             }
           />

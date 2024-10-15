@@ -12,11 +12,12 @@ import { getTransactionEvents } from "../actions/events";
 import { useToast } from "@/src/hooks/use-toast";
 import { ToastAction } from "@/src/components/ui/toast";
 import { useAccount } from "wagmi";
-import { useRouter } from 'nextjs-toploader/app';
+import { useRouter } from "nextjs-toploader/app";
 import { Button } from "@/src/components/ui/button";
+import { Card } from "@/src/components/ui/card";
+import SignupButton from "@/src/components/SignupButton";
 
 const ActionFormPost = () => {
- 
   const router = useRouter();
   const sherry: Contract = getSherryContract();
   const sherryAddress = sherry.address.replace(/^0x/, "");
@@ -53,7 +54,6 @@ const ActionFormPost = () => {
       throw error;
     }
   };
-  
 
   const { setLoading, idCampaign, idKolCampaign, isLoading } = useAppContext();
 
@@ -118,10 +118,17 @@ const ActionFormPost = () => {
     clearCampaignCover();
   };
 
+  if (!address)
+    return (
+      <Card className="px-[16px] w-full max-w-[352px] py-[24px] flex justify-center items-center flex-col gap-4">
+        <h1 className="text-l font-medium">Please connect your wallet</h1>
+        <SignupButton />
+      </Card>
+    );
 
   return (
     <>
-      {idKolCampaign  ? (
+      {idKolCampaign ? (
         <FormPost
           descriptionPlaceholder="Enter a description..."
           onSubmit={handleSubmit}
@@ -132,15 +139,17 @@ const ActionFormPost = () => {
         />
       ) : (
         <>
-          <div>You must subscribed to this Campaign</div>
-          <Button
-            className="w-full my-2 bg-crimson11"
-            onClick={() => {
-              router.push(`/home/`);
-            }}
-          >
-            Subscribe!
-          </Button>
+          <Card className="px-[16px] w-full max-w-[352px] py-[24px] flex justify-center items-center flex-col gap-4">
+            <h1>You must subscribed to this Campaign</h1>
+            <Button
+              className="w-full my-2 bg-crimson11 max-w-[152px]"
+              onClick={() => {
+                router.push(`/home/`);
+              }}
+            >
+              Subscribe!
+            </Button>
+          </Card>
         </>
       )}
     </>

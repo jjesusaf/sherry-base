@@ -11,10 +11,10 @@ const TabsBar: React.FC = () => {
   return (
     <div className="w-full flex justify-center items-center fixed top-[119px] z-10 bg-background-secondary">
       <Tabs defaultValue="Insights" className="">
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="grid w-full grid-cols-1">
           <TabsTrigger value="Insights">Insights</TabsTrigger>
-          <TabsTrigger value="Champion">Champion</TabsTrigger>
-          <TabsTrigger value="Voters">Voters</TabsTrigger>
+          {/**  <TabsTrigger value="Champion">Champion</TabsTrigger>
+          <TabsTrigger value="Voters">Voters</TabsTrigger>*/}
         </TabsList>
       </Tabs>
     </div>

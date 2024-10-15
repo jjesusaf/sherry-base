@@ -14,7 +14,6 @@ export default function DashboardLayout({
     <main className="flex w-full items-start justify-center min-h-[calc(100vh-259.5px)] p-[1rem] mb-[65px] bg-background-secondary mt-[155px]">
       <NavBar />
       <NavMain />
-      <TabsBar />
       {children}
       <TabBar />
     </main>

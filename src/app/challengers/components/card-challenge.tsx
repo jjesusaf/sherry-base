@@ -304,3 +304,5 @@ const CardChallenge: React.FC<CardChallengeProps> = ({ challenges }) => {
 };
 
 export default CardChallenge;
+
+

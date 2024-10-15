@@ -133,11 +133,7 @@ const CardCampaigns: React.FC<CardCampaignsProps> = ({
           <div
             className={`${address ? "flex items-center gap-2 justify-center rounded-[8px] w-full border border-border max-w-[116px] relative " : "flex relative"}`}
           >
-            {address ? (
-              <StarIcon className="h-[14px] w-[14px]" />
-            ) : (
-              <Wallet2Icon className="h-[40px] w-[40px] absolute inset-0" />
-            )}
+            {address ? <StarIcon className="h-[14px] w-[14px]" /> : ""}
 
             <ButtonChain
               onClick={sendTx}
@@ -154,7 +150,7 @@ const CardCampaigns: React.FC<CardCampaignsProps> = ({
       >
         <TooltipProvider delayDuration={200}>
           <Tooltip>
-            <TooltipTrigger asChild >
+            <TooltipTrigger asChild>
               <Image
                 alt={campaign.metadata?.brand_name || "Campaign image"}
                 src={campaign.metadata?.image || "/placeholder.jpg"}
@@ -164,7 +160,11 @@ const CardCampaigns: React.FC<CardCampaignsProps> = ({
                 className="w-full object-cover rounded-t-[8px] h-[140px]"
               />
             </TooltipTrigger>
-            <TooltipContent side="bottom" sticky="always" className="bg-black/95 text-white">
+            <TooltipContent
+              side="bottom"
+              sticky="always"
+              className="bg-black/95 text-white"
+            >
               <p>More Details</p>
             </TooltipContent>
           </Tooltip>

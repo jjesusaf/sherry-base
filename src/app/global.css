@@ -9,7 +9,9 @@ body {
   font-family: "Inter", sans-serif;
 }
 
-
+.custom-connect-wallet .cn .color-inverse {
+  color: black !important; /* O el color que necesites */
+}
 .my-swiper-container .swiper-button-next,
 .my-swiper-container .swiper-button-prev {
   display: none;

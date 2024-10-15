@@ -15,7 +15,8 @@ import { formatAddress } from "@/src/utils/address";
 import { SpinnerLeader } from "./spinner";
 import { Avatar, Name } from "@coinbase/onchainkit/identity";
 import { base } from "viem/chains";
-
+import { useAccount } from "wagmi";
+import SignupButton from "src/components/SignupButton";
 interface Kol {
   address: string;
   name: string;
@@ -32,6 +33,16 @@ interface CardTopOneProps {
 }
 
 const CardTopOne: React.FC<CardTopOneProps> = ({ kol }) => {
+  const { address } = useAccount();
+
+  if (!address)
+    return (
+      <Card className="px-[16px] w-full max-w-[352px] py-[24px] flex justify-center items-center flex-col gap-4">
+        <h1 className="text-l font-medium">Please connect your wallet</h1>
+        <SignupButton />
+      </Card>
+    );
+
   return (
     <Card className="px-[16px] w-full max-w-[352px] py-[24px] flex justify-between items-center">
       <CardHeader className="flex gap-[6px]">
@@ -43,7 +54,7 @@ const CardTopOne: React.FC<CardTopOneProps> = ({ kol }) => {
               className="size-8"
               defaultComponent={
                 <AvatarSherry className="size-8 border">
-                  <AvatarImage src="/icons/icon-192x192.png" alt="@sherry" />
+                  <AvatarImage src="/images/avatar.svg" alt="@sherry" />
                   <AvatarFallback className="border">SC</AvatarFallback>
                 </AvatarSherry>
               }

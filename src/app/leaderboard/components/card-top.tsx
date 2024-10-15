@@ -76,10 +76,10 @@ const CardTop: React.FC<CardTopProps> = ({ metrics, address, isLoading }) => {
                       <Avatar
                         address={`0x${metric.kol.trim().slice(2)}`}
                         chain={base}
-                        className="size-8 bg-crimson11"
+                        className="size-8"
                         defaultComponent={
-                          <AvatarSherry className="size-8 border p-1">
-                            <AvatarImage src="/icons/icon-192x192.png" alt="@sherry"/>
+                          <AvatarSherry className="size-8">
+                            <AvatarImage src="/images/avatar2.svg" alt="@sherry"/>
                             <AvatarFallback>SC</AvatarFallback>
                           </AvatarSherry>
                         }

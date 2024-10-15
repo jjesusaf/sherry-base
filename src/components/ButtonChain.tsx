@@ -71,7 +71,7 @@ const ButtonChain = React.forwardRef<HTMLButtonElement, ButtonProps>(
         <div className="">
           <WalletWrapper
             className={` ${buttonVariants()} hover:bg-black`}
-            text="Log In"
+            text="Login"
           />
         </div>
       );

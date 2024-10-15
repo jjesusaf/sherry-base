@@ -1,16 +1,34 @@
 "use client";
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { ChevronLeft } from "lucide-react";
 import { Button } from "src/components/ui/button";
 import { useRouter } from 'nextjs-toploader/app';
 import Link from "next/link";
 import { Badge } from "src/components/ui/badge";
+import { useAppContext } from "@/src/context/GlobalContext";
+import { usePathname } from "next/navigation";
+import { getActiveCampaigns } from "@/src/actions/subgraph/active-campaigns";
+import EndsCampaign from "../../home/componentes/ends-campaign";
 
 const NavMain: React.FC = () => {
   const router = useRouter();
+  const pathname = usePathname();
+
+  const { idCampaign } = useAppContext();
   const handleBack = () => {
     router.back();
   };
+  const [activeCampaigns, setActiveCampaigns] = useState<any[]>([]);
+  const handleActiveCampaigns = async () => {
+    const activeCampaigns = await getActiveCampaigns();
+    setActiveCampaigns(activeCampaigns);
+  }
+
+  useEffect(() => {
+    handleActiveCampaigns();
+  }, []);
+
+  const campaign = activeCampaigns.find((campaign) => campaign.idCampaign === idCampaign);
 
   return (
     <div className="fixed top-[58px] z-10 left-0 flex items-center gap-4 w-full justify-between p-[16px] bg-background-secondary">
@@ -21,10 +39,10 @@ const NavMain: React.FC = () => {
       </Link>
 
       <h1 className="flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0">
-        Home
+        Contest 
       </h1>
       <div className="flex items-center  gap-2 md:ml-auto">
-        <Badge className="bg-transparent text-foreground border border-border px-[10px]">Ends in 5 days</Badge>
+      <EndsCampaign end_date={campaign?.endDate} />
       </div>
     </div>
   );
