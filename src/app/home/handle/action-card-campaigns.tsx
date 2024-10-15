@@ -119,7 +119,7 @@ const ActionCardCampaigns: React.FC = () => {
           </Swiper>
         ) : (
           <p className="text-gray-500">
-            You are not subscribed to any challenges yet.
+            You are not subscribed to any challenge yet.
           </p>
         )}
       </section>
