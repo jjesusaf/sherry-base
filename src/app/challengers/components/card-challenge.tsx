@@ -83,8 +83,21 @@ const CardChallenge: React.FC<CardChallengeProps> = ({ challenges }) => {
       const successful = document.execCommand("copy");
       if (successful) {
         console.log("Fallback: Copiado exitosamente al portapapeles");
+        toast({
+          variant: "default",
+          title: "Link copied using fallback",
+          className: "bg-green-500 border-green-500",
+          description: "Share the link with your friends.",
+          action: <ToastAction altText="Ok">Ok</ToastAction>,
+        });
       } else {
         console.error("Fallback: No se pudo copiar");
+        toast({
+          variant: "destructive",
+          title: "Fallback failed",
+          description: "The fallback method failed to copy the link.",
+          action: <ToastAction altText="Ok">Ok</ToastAction>,
+        });
       }
     } catch (err) {
       console.error("Fallback: Error al copiar", err);
@@ -95,13 +108,12 @@ const CardChallenge: React.FC<CardChallengeProps> = ({ challenges }) => {
   const handleShare = async (external_url: string) => {
     try {
       const linkData = await getLink(external_url);
-      console.log("Datos del enlace:", linkData);
-
       const matchingLink = linkData.find(
         (link: any) => link.id === external_url
       );
 
       if (matchingLink && matchingLink.shortLink) {
+        // Intentamos copiar al portapapeles
         try {
           await navigator.clipboard.writeText(matchingLink.shortLink);
           console.log("Link copiado al portapapeles:", matchingLink.shortLink);
@@ -112,26 +124,44 @@ const CardChallenge: React.FC<CardChallengeProps> = ({ challenges }) => {
             description: "Share the link with your friends.",
             action: <ToastAction altText="Ok">Ok</ToastAction>,
           });
-        } catch (error: unknown) {
-          console.warn("Fallo al usar clipboard API, usando fallback.");
-          fallbackCopyTextToClipboard(matchingLink.shortLink);
-
-          // Manejo seguro del error
-          const errorMessage = error instanceof Error ? error.message : String(error);
-          toast({
-            variant: "destructive",
-            title: "Error copying link",
-            description: `Failed to copy the link: ${errorMessage}`,
-            action: <ToastAction altText="Ok">Ok</ToastAction>,
-          });
+        } catch (error) {
+          console.warn("Fallo al usar clipboard API, probando API de compartir.");
+          // Si la API de Clipboard falla, intentamos usar la API de compartir nativa (móviles)
+          if (navigator.share) {
+            try {
+              await navigator.share({
+                title: "Check this out!",
+                text: "Here is a cool link:",
+                url: matchingLink.shortLink,
+              });
+              console.log("Link compartido exitosamente.");
+              toast({
+                variant: "default",
+                title: "Link shared successfully",
+                description: "You shared the link with others.",
+                action: <ToastAction altText="Ok">Ok</ToastAction>,
+              });
+            } catch (shareError) {
+              console.error("Error al compartir el link:", shareError);
+              toast({
+                variant: "destructive",
+                title: "Error sharing link",
+                description: `Failed to share the link: ${String(shareError)}`,
+                action: <ToastAction altText="Ok">Ok</ToastAction>,
+              });
+            }
+          } else {
+            // Si la API de compartir tampoco está disponible, usamos el fallback
+            console.warn("API de compartir no disponible, usando fallback.");
+            fallbackCopyTextToClipboard(matchingLink.shortLink);
+          }
         }
-        return;
       } else {
         console.error("No se encontró un enlace que coincida con el external_url.");
         toast({
           variant: "destructive",
           title: "No link found",
-          description: "This post is not available link.",
+          description: "This post does not have a valid link.",
           action: <ToastAction altText="Ok">Ok</ToastAction>,
         });
       }
@@ -146,6 +176,8 @@ const CardChallenge: React.FC<CardChallengeProps> = ({ challenges }) => {
       });
     }
   };
+
+  
   return (
     <div className="flex flex-wrap items-center md:justify-start justify-center gap-[30px]">
       {challenges.length > 0 ? (
