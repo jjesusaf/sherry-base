@@ -9,9 +9,9 @@ import {
 
 const TabsBar: React.FC = () => {
   return (
-    <div className="w-full flex justify-center items-center fixed top-[119px] z-10 bg-background-secondary">
+    <div className="w-full flex justify-center items-center">
       <Tabs defaultValue="Insights" className="">
-        <TabsList className="grid w-full grid-cols-1">
+        <TabsList className="grid w-full grid-cols-1 items-center justify-center">
           <TabsTrigger value="Insights">Insights</TabsTrigger>
           {/**  <TabsTrigger value="Champion">Champion</TabsTrigger>
           <TabsTrigger value="Voters">Voters</TabsTrigger>*/}
