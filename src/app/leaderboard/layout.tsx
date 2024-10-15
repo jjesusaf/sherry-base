@@ -7,7 +7,7 @@ export default function LeaderboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <main className="flex items-start justify-center min-h-screen p-[1rem] mb-[65px] bg-background-secondary mt-[119px]">
+    <main className="flex items-start justify-center min-h-[calc(100vh-207.5px)] p-[1rem] mb-[89px] bg-background-secondary mt-[118.5px]">
       <NavBar />
       <NavMain />
       {children}
