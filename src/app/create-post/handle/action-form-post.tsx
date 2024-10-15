@@ -33,14 +33,27 @@ const ActionFormPost = () => {
   } = useWriteContract();
 
   const sendTx = async (urlMetadata: string) => {
-    const tx = await createPostContract({
-      abi: sherry.abi,
-      address: `0x${sherryAddress}`,
-      functionName: "createPost",
-      args: [idKolCampaign, urlMetadata],
-    });
-    return tx;
+    try {
+      const tx = await createPostContract({
+        abi: sherry.abi,
+        address: `0x${sherryAddress}`,
+        functionName: "createPost",
+        args: [idKolCampaign, urlMetadata],
+      });
+      console.log("Transaction sent:", tx);
+      return tx;
+    } catch (error) {
+      console.error("Error sending transaction:", error);
+      toast({
+        variant: "destructive",
+        title: "Transaction Error",
+        description: `Failed to send transaction: ${error}`,
+        action: <ToastAction altText="Ok">Ok</ToastAction>,
+      });
+      throw error;
+    }
   };
+  
 
   const { setLoading, idCampaign, idKolCampaign, isLoading } = useAppContext();
 

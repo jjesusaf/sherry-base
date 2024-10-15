@@ -20,6 +20,10 @@ body {
   border-radius: 100%;
 }
 
+input, textarea {
+  font-size: 16px; /* Asegúrate de que sea 16px o mayor */
+}
+
 
 @layer base {
   :root {
