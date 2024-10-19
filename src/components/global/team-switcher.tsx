@@ -81,7 +81,7 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
                 {selectedTeam ? selectedTeam.idCampaign : "SC"}
               </AvatarFallback>
             </Avatar>
-            {selectedTeam ? selectedTeam.name : "Select a campaign"}
+            {selectedTeam ? selectedTeam.name.split(' ').slice(0, 3).join(' ') : "Select a campaign"}
             <CaretSortIcon className="ml-auto h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
