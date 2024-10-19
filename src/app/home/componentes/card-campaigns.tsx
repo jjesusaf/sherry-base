@@ -106,7 +106,7 @@ const CardCampaigns: React.FC<CardCampaignsProps> = ({
           <EndsCampaign end_date={campaign?.endDate} />
         </div>
         <h2 className="text-xl font-bold mt-0" style={{ margin: 0 }}>
-          {campaign.name}
+          {campaign.name.split(' ').slice(0, 3).join(' ')}
         </h2>
         <p
           className="text-sm mt-0 text-muted-foreground h-[72px] overflow-y-scroll"
